@@ -2,14 +2,13 @@ package main
 
 import (
 	"context"
-	"net"
-	"net/http"
+	// "net"
+	// "net/http"
 	"os"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -35,10 +34,10 @@ func main() {
 
 	runDBMigrations(config.MigrationUrl, config.DBSource)
 
-	store := db.NewStore(connPool)
+	db.NewStore(connPool)
 
 	// Creates HandlerEvent to send events through HTTP Server Sent Events (SSE)
-	handlerEvent := sse.NewHandlerEvent()
+	// handlerEvent := sse.NewHandlerEvent()
 
 	// go runGRPCGatewayServer(config, store, handlerEvent)
 	// go runServerSentEvents(config, handlerEvent)

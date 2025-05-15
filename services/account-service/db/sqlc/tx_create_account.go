@@ -40,25 +40,6 @@ func (store *SQLStore) CreateAccountTx(ctx context.Context, arg CreateAccountTxP
 			return err
 		}
 
-		// Add base plan to account
-		// Get plan country to get current plan price for this country
-		planCountry, err := q.GetPlanCountry(ctx, GetPlanCountryParams{
-			PlanID:  3,
-			Country: arg.Country,
-		})
-		if err != nil {
-			return err
-		}
-		// Create account plan
-		_, err = q.CreateAccountPlan(ctx, CreateAccountPlanParams{
-			PlanID:    3,
-			AccountID: result.Account.ID,
-			Price:     planCountry.Price,
-		})
-		if err != nil {
-			return err
-		}
-
 		// Creates Admin Role
 		role, err := q.CreateRole(ctx, CreateRoleParams{
 			AccountID: result.Account.ID,
