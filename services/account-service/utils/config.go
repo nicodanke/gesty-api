@@ -20,7 +20,7 @@ type Config struct {
 }
 
 func LoadConfig() (config Config, err error) {
-	value, ok := os.LookupEnv("IA_ENVIRONMENT")
+	value, ok := os.LookupEnv("GESTY_ENVIRONMENT")
 	if ok {
 		return LoadCustomConfig(value)
 	}

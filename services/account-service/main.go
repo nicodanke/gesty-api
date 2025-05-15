@@ -13,6 +13,8 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/nicodanke/gesty-api/services/account-service/utils"
+	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
 )
 
 func main() {
@@ -41,4 +43,17 @@ func main() {
 	// go runGRPCGatewayServer(config, store, handlerEvent)
 	// go runServerSentEvents(config, handlerEvent)
 	// runGRPCServer(config, store, handlerEvent)
+}
+
+func runDBMigrations(migrationUrl string, dbSource string) {
+	migration, err := migrate.New(migrationUrl, dbSource)
+	if err != nil {
+		log.Error().Err(err).Msg("Cannot create new migrate instance")
+	}
+
+	if err = migration.Up(); err != nil && err != migrate.ErrNoChange {
+		log.Error().Err(err).Msg("Failed to run migrate up")
+	}
+
+	log.Info().Msg("DB migrations runned successfully")
 }
