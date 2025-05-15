@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package account_service.requests.role.delete_role;
+
+option go_package = "shared/proto/account-service/requests/role";
+
+message DeleteRoleRequest {
+    int64 id = 1;
+}

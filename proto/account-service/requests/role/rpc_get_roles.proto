@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package account_service.requests.role.get_roles;
+
+import "account-service/models/role.proto";
+
+option go_package = "shared/proto/account-service/requests/role";
+
+message GetRolesRequest {
+    optional int32 page = 1;
+    optional int32 size = 2;
+}
+
+message GetRolesResponse {
+    repeated account_service.models.role.Role roles= 1;
+}

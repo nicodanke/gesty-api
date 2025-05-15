@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package account_service.models.user;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "shared/proto/account-service/models";
+
+message User {
+    int64 id = 1;
+    string username = 2;
+    string name = 3;
+    string lastname = 4;
+    string email = 5;
+    string phone = 6;
+    bool active = 7;
+    bool isAdmin = 8;
+    google.protobuf.Timestamp passwordChangedAt = 9;
+    google.protobuf.Timestamp createdAt = 10;
+}

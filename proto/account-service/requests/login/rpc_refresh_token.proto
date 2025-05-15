@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package account_service.requests.login.refresh_token;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "shared/proto/account-service/requests/login";
+
+message RefreshTokenRequest {
+    string refreshToken = 1;
+}
+
+message RefreshTokenResponse {
+    string accessToken = 1;
+    google.protobuf.Timestamp accessTokenExpiresAt = 2;
+}

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package account_service.requests.account.create_account;
+
+import "account-service/models/user.proto";
+import "account-service/models/account.proto";
+
+option go_package = "shared/proto/account-service/requests/account";
+
+message CreateAccountRequest {
+    string companyName = 1;
+    string name = 2;
+    string lastname = 3;
+    string username = 4;
+    string email = 5;
+    string password = 6;
+    string country = 7;
+}
+
+message CreateAccountResponse {
+    account_service.models.account.Account account = 1;
+    account_service.models.user.User user = 2;
+}

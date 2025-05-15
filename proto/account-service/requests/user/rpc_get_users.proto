@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package account_service.requests.user.get_users;
+
+import "account-service/models/user.proto";
+
+option go_package = "shared/proto/account-service/requests/user";
+
+message GetUsersRequest {
+    optional int32 page = 1;
+    optional int32 size = 2;
+}
+
+message GetUsersResponse {
+    repeated account_service.models.user.User users= 1;
+}

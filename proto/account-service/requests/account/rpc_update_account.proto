@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package account_service.requests.account.update_account;
+
+import "account-service/models/account.proto";
+
+option go_package = "shared/proto/account-service/requests/account";
+
+message UpdateAccountRequest {
+    int64 id = 1;
+    optional string companyName = 2;
+    optional string email = 3;
+    optional bool active = 4;
+    optional string phone = 5;
+    optional string webUrl = 6;
+    optional string country = 7;
+}
+
+message UpdateAccountResponse {
+    account_service.models.account.Account account = 1;
+}

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package account_service.requests.user.delete_user;
+
+option go_package = "shared/proto/account-service/requests/user";
+
+message DeleteUserRequest {
+    int64 id = 1;
+}

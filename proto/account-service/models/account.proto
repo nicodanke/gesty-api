@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package account_service.models.account;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "shared/proto/account-service/models";
+
+message Account {
+    int64 id = 1;
+    string code = 2;
+    string companyName = 3;
+    string phone = 4;
+    string email = 5;
+    string webUrl = 6;
+    bool active = 7;
+    google.protobuf.Timestamp createdAt = 8;
+}

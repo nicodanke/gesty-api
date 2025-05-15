@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package account_service.requests.role.create_role;
+
+import "account-service/models/role.proto";
+
+option go_package = "shared/proto/account-service/requests/role";
+
+message CreateRoleRequest {
+    string name = 1;
+}
+
+message CreateRoleResponse {
+    account_service.models.role.Role role = 1;
+}

@@ -1,0 +1,11 @@
+INSERT INTO permission (id, name, parent_id) VALUES (1, 'Admin Roles', null),
+                                                    (2, 'Ver Roles', 1),
+                                                    (3, 'Crear Rol', 1),
+                                                    (4, 'Actualizar Rol', 1),
+                                                    (5, 'Eliminar Rol', 1),
+                                                    (6, 'Admin Usuarios', null),
+                                                    (7, 'Ver Usuario', 6),
+                                                    (8, 'Crear Usuario', 6),
+                                                    (9, 'Actualizar Usuario', 6),
+                                                    (10, 'Eliminar Usuario', 6),
+                                                    (11, 'Visualizar información de la cuenta', null);
