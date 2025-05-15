@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nicodanke/inventapp_v3/account-service/token"
+	"github.com/nicodanke/gesty-api/shared/token"
 )
 
 const (

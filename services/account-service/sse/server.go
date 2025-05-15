@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nicodanke/inventapp_v3/account-service/token"
-	"github.com/nicodanke/inventapp_v3/account-service/utils"
+	"github.com/nicodanke/gesty-api/shared/token"
+	"github.com/nicodanke/gesty-api/services/account-service/utils"
 )
 
 type Server struct {

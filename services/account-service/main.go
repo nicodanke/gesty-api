@@ -14,6 +14,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/nicodanke/gesty-api/services/account-service/utils"
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
+	"github.com/nicodanke/gesty-api/services/account-service/sse"
 )
 
 func main() {
@@ -37,10 +38,10 @@ func main() {
 	db.NewStore(connPool)
 
 	// Creates HandlerEvent to send events through HTTP Server Sent Events (SSE)
-	// handlerEvent := sse.NewHandlerEvent()
+	handlerEvent := sse.NewHandlerEvent()
 
 	// go runGRPCGatewayServer(config, store, handlerEvent)
-	// go runServerSentEvents(config, handlerEvent)
+	runServerSentEvents(config, handlerEvent)
 	// runGRPCServer(config, store, handlerEvent)
 }
 
@@ -55,4 +56,18 @@ func runDBMigrations(migrationUrl string, dbSource string) {
 	}
 
 	log.Info().Msg("DB migrations runned successfully")
+}
+
+func runServerSentEvents(config utils.Config, handlerEvent *sse.HandlerEvent) {
+	server, err := sse.NewServer(config, handlerEvent)
+	if err != nil {
+		log.Error().Err(err).Msg("Cannot create HTTP SSE server")
+	}
+
+	err = server.Start(config.SSEAddress)
+	if err != nil {
+		log.Error().Err(err).Msg("Cannot start HTTP SSE server")
+	}
+
+	log.Info().Msg("HTTP SSE server started")
 }
