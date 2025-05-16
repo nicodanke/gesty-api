@@ -7,11 +7,11 @@
 package login
 
 import (
+	models "github.com/nicodanke/gesty-api/shared/proto/account-service/models"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
-	models "shared/proto/account-service/models"
 	sync "sync"
 	unsafe "unsafe"
 )
@@ -173,7 +173,7 @@ const file_account_service_requests_login_rpc_login_proto_rawDesc = "" +
 	"\vaccessToken\x18\x03 \x01(\tR\vaccessToken\x12\"\n" +
 	"\frefreshToken\x18\x04 \x01(\tR\frefreshToken\x12N\n" +
 	"\x14accessTokenExpiresAt\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x14accessTokenExpiresAt\x12P\n" +
-	"\x15refreshTokenExpiresAt\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x15refreshTokenExpiresAtB-Z+shared/proto/account-service/requests/loginb\x06proto3"
+	"\x15refreshTokenExpiresAt\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x15refreshTokenExpiresAtBLZJgithub.com/nicodanke/gesty-api/shared/proto/account-service/requests/loginb\x06proto3"
 
 var (
 	file_account_service_requests_login_rpc_login_proto_rawDescOnce sync.Once

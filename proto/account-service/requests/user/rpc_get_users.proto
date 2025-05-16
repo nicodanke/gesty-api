@@ -4,7 +4,7 @@ package account_service.requests.user.get_users;
 
 import "account-service/models/user.proto";
 
-option go_package = "shared/proto/account-service/requests/user";
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user";
 
 message GetUsersRequest {
     optional int32 page = 1;

@@ -7,10 +7,10 @@
 package account
 
 import (
+	models "github.com/nicodanke/gesty-api/shared/proto/account-service/models"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	models "shared/proto/account-service/models"
 	sync "sync"
 	unsafe "unsafe"
 )
@@ -181,7 +181,7 @@ const file_account_service_requests_account_rpc_create_account_proto_rawDesc = "
 	"\acountry\x18\a \x01(\tR\acountry\"\x91\x01\n" +
 	"\x15CreateAccountResponse\x12A\n" +
 	"\aaccount\x18\x01 \x01(\v2'.account_service.models.account.AccountR\aaccount\x125\n" +
-	"\x04user\x18\x02 \x01(\v2!.account_service.models.user.UserR\x04userB/Z-shared/proto/account-service/requests/accountb\x06proto3"
+	"\x04user\x18\x02 \x01(\v2!.account_service.models.user.UserR\x04userBNZLgithub.com/nicodanke/gesty-api/shared/proto/account-service/requests/accountb\x06proto3"
 
 var (
 	file_account_service_requests_account_rpc_create_account_proto_rawDescOnce sync.Once

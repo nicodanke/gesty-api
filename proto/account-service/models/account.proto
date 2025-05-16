@@ -4,7 +4,7 @@ package account_service.models.account;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "shared/proto/account-service/models";
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/models";
 
 message Account {
     int64 id = 1;

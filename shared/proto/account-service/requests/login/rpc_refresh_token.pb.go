@@ -127,7 +127,7 @@ const file_account_service_requests_login_rpc_refresh_token_proto_rawDesc = "" +
 	"\frefreshToken\x18\x01 \x01(\tR\frefreshToken\"\x88\x01\n" +
 	"\x14RefreshTokenResponse\x12 \n" +
 	"\vaccessToken\x18\x01 \x01(\tR\vaccessToken\x12N\n" +
-	"\x14accessTokenExpiresAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x14accessTokenExpiresAtB-Z+shared/proto/account-service/requests/loginb\x06proto3"
+	"\x14accessTokenExpiresAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x14accessTokenExpiresAtBLZJgithub.com/nicodanke/gesty-api/shared/proto/account-service/requests/loginb\x06proto3"
 
 var (
 	file_account_service_requests_login_rpc_refresh_token_proto_rawDescOnce sync.Once

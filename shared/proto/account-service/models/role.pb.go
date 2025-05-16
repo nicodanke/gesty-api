@@ -80,7 +80,7 @@ const file_account_service_models_role_proto_rawDesc = "" +
 	"!account-service/models/role.proto\x12\x1baccount_service.models.role\"*\n" +
 	"\x04Role\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04nameB%Z#shared/proto/account-service/modelsb\x06proto3"
+	"\x04name\x18\x02 \x01(\tR\x04nameBDZBgithub.com/nicodanke/gesty-api/shared/proto/account-service/modelsb\x06proto3"
 
 var (
 	file_account_service_models_role_proto_rawDescOnce sync.Once

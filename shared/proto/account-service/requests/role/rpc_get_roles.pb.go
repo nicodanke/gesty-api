@@ -7,10 +7,10 @@
 package role
 
 import (
+	models "github.com/nicodanke/gesty-api/shared/proto/account-service/models"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	models "shared/proto/account-service/models"
 	sync "sync"
 	unsafe "unsafe"
 )
@@ -129,7 +129,7 @@ const file_account_service_requests_role_rpc_get_roles_proto_rawDesc = "" +
 	"\x05_pageB\a\n" +
 	"\x05_size\"K\n" +
 	"\x10GetRolesResponse\x127\n" +
-	"\x05roles\x18\x01 \x03(\v2!.account_service.models.role.RoleR\x05rolesB,Z*shared/proto/account-service/requests/roleb\x06proto3"
+	"\x05roles\x18\x01 \x03(\v2!.account_service.models.role.RoleR\x05rolesBKZIgithub.com/nicodanke/gesty-api/shared/proto/account-service/requests/roleb\x06proto3"
 
 var (
 	file_account_service_requests_role_rpc_get_roles_proto_rawDescOnce sync.Once

@@ -4,7 +4,7 @@ package account_service.requests.account.update_account;
 
 import "account-service/models/account.proto";
 
-option go_package = "shared/proto/account-service/requests/account";
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/account";
 
 message UpdateAccountRequest {
     int64 id = 1;

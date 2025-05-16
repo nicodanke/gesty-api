@@ -8,14 +8,14 @@ package account_service
 
 import (
 	context "context"
+	account "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/account"
+	login "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/login"
+	role "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role"
+	user "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	account "shared/proto/account-service/requests/account"
-	login "shared/proto/account-service/requests/login"
-	role "shared/proto/account-service/requests/role"
-	user "shared/proto/account-service/requests/user"
 )
 
 // This is a compile-time assertion to ensure that this generated file

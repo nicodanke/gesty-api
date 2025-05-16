@@ -71,7 +71,7 @@ const file_account_service_requests_user_rpc_delete_user_proto_rawDesc = "" +
 	"\n" +
 	"3account-service/requests/user/rpc_delete_user.proto\x12)account_service.requests.user.delete_user\"#\n" +
 	"\x11DeleteUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02idB,Z*shared/proto/account-service/requests/userb\x06proto3"
+	"\x02id\x18\x01 \x01(\x03R\x02idBKZIgithub.com/nicodanke/gesty-api/shared/proto/account-service/requests/userb\x06proto3"
 
 var (
 	file_account_service_requests_user_rpc_delete_user_proto_rawDescOnce sync.Once

@@ -154,7 +154,7 @@ const file_account_service_models_user_proto_rawDesc = "" +
 	"\aisAdmin\x18\b \x01(\bR\aisAdmin\x12H\n" +
 	"\x11passwordChangedAt\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\x11passwordChangedAt\x128\n" +
 	"\tcreatedAt\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtB%Z#shared/proto/account-service/modelsb\x06proto3"
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtBDZBgithub.com/nicodanke/gesty-api/shared/proto/account-service/modelsb\x06proto3"
 
 var (
 	file_account_service_models_user_proto_rawDescOnce sync.Once

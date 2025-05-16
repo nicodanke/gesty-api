@@ -4,7 +4,7 @@ package account_service.requests.login.refresh_token;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "shared/proto/account-service/requests/login";
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/login";
 
 message RefreshTokenRequest {
     string refreshToken = 1;

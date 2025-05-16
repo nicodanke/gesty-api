@@ -7,10 +7,10 @@
 package user
 
 import (
+	models "github.com/nicodanke/gesty-api/shared/proto/account-service/models"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	models "shared/proto/account-service/models"
 	sync "sync"
 	unsafe "unsafe"
 )
@@ -194,7 +194,7 @@ const file_account_service_requests_user_rpc_create_user_proto_rawDesc = "" +
 	"\n" +
 	"\b_isAdmin\"K\n" +
 	"\x12CreateUserResponse\x125\n" +
-	"\x04user\x18\x01 \x01(\v2!.account_service.models.user.UserR\x04userB,Z*shared/proto/account-service/requests/userb\x06proto3"
+	"\x04user\x18\x01 \x01(\v2!.account_service.models.user.UserR\x04userBKZIgithub.com/nicodanke/gesty-api/shared/proto/account-service/requests/userb\x06proto3"
 
 var (
 	file_account_service_requests_user_rpc_create_user_proto_rawDescOnce sync.Once

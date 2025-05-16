@@ -7,14 +7,14 @@
 package account_service
 
 import (
+	account "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/account"
+	login "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/login"
+	role "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role"
+	user "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
-	account "shared/proto/account-service/requests/account"
-	login "shared/proto/account-service/requests/login"
-	role "shared/proto/account-service/requests/role"
-	user "shared/proto/account-service/requests/user"
 	unsafe "unsafe"
 )
 
@@ -45,7 +45,7 @@ const file_account_service_account_service_proto_rawDesc = "" +
 	"\n" +
 	"CreateRole\x12<.account_service.requests.role.create_role.CreateRoleRequest\x1a=.account_service.requests.role.create_role.CreateRoleResponse\x12b\n" +
 	"\n" +
-	"DeleteRole\x12<.account_service.requests.role.delete_role.DeleteRoleRequest\x1a\x16.google.protobuf.EmptyB\x1eZ\x1cshared/proto/account-serviceb\x06proto3"
+	"DeleteRole\x12<.account_service.requests.role.delete_role.DeleteRoleRequest\x1a\x16.google.protobuf.EmptyB=Z;github.com/nicodanke/gesty-api/shared/proto/account-serviceb\x06proto3"
 
 var file_account_service_account_service_proto_goTypes = []any{
 	(*login.LoginRequest)(nil),            // 0: account_service.requests.login.login.LoginRequest

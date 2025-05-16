@@ -4,7 +4,7 @@ package account_service.requests.role.create_role;
 
 import "account-service/models/role.proto";
 
-option go_package = "shared/proto/account-service/requests/role";
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role";
 
 message CreateRoleRequest {
     string name = 1;

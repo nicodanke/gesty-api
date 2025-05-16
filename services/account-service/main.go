@@ -15,6 +15,8 @@ import (
 	"github.com/nicodanke/gesty-api/services/account-service/utils"
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
 	"github.com/nicodanke/gesty-api/services/account-service/sse"
+	"github.com/nicodanke/gesty-api/services/account-service/gapi"
+	"github.com/nicodanke/gesty-api/shared/proto/account-service"
 )
 
 func main() {
@@ -40,9 +42,8 @@ func main() {
 	// Creates HandlerEvent to send events through HTTP Server Sent Events (SSE)
 	handlerEvent := sse.NewHandlerEvent()
 
-	// go runGRPCGatewayServer(config, store, handlerEvent)
-	runServerSentEvents(config, handlerEvent)
-	// runGRPCServer(config, store, handlerEvent)
+	go runServerSentEvents(config, handlerEvent)
+	runGRPCServer(config, store, handlerEvent)
 }
 
 func runDBMigrations(migrationUrl string, dbSource string) {
@@ -56,6 +57,29 @@ func runDBMigrations(migrationUrl string, dbSource string) {
 	}
 
 	log.Info().Msg("DB migrations runned successfully")
+}
+
+func runGRPCServer(config utils.Config, store db.Store, notifier sse.Notifier) {
+	server, err := gapi.NewServer(config, store, notifier)
+	if err != nil {
+		log.Error().Err(err).Msg("Cannot create server")
+	}
+
+	grpcLogger := grpc.UnaryInterceptor(gapi.GrpcLogger)
+	grpcServer := grpc.NewServer(grpcLogger)
+	pb.RegisterInventAppV1Server(grpcServer, server)
+	reflection.Register(grpcServer)
+
+	listener, err := net.Listen("tcp", config.GRPCServerAddress)
+	if err != nil {
+		log.Error().Err(err).Msg("Cannot create listener")
+	}
+
+	log.Info().Msgf("gRPC server started at: %s", listener.Addr().String())
+	err = grpcServer.Serve(listener)
+	if err != nil {
+		log.Error().Err(err).Msg("Cannot start gRPC server")
+	}
 }
 
 func runServerSentEvents(config utils.Config, handlerEvent *sse.HandlerEvent) {

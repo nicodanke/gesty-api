@@ -135,7 +135,7 @@ const file_account_service_models_account_proto_rawDesc = "" +
 	"\x05email\x18\x05 \x01(\tR\x05email\x12\x16\n" +
 	"\x06webUrl\x18\x06 \x01(\tR\x06webUrl\x12\x16\n" +
 	"\x06active\x18\a \x01(\bR\x06active\x128\n" +
-	"\tcreatedAt\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtB%Z#shared/proto/account-service/modelsb\x06proto3"
+	"\tcreatedAt\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtBDZBgithub.com/nicodanke/gesty-api/shared/proto/account-service/modelsb\x06proto3"
 
 var (
 	file_account_service_models_account_proto_rawDescOnce sync.Once

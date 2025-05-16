@@ -5,7 +5,7 @@ package account_service.requests.login.login;
 import "google/protobuf/timestamp.proto";
 import "account-service/models/user.proto";
 
-option go_package = "shared/proto/account-service/requests/login";
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/login";
 
 message LoginRequest {
     string username = 1;

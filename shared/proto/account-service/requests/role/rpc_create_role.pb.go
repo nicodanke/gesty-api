@@ -7,10 +7,10 @@
 package role
 
 import (
+	models "github.com/nicodanke/gesty-api/shared/proto/account-service/models"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	models "shared/proto/account-service/models"
 	sync "sync"
 	unsafe "unsafe"
 )
@@ -118,7 +118,7 @@ const file_account_service_requests_role_rpc_create_role_proto_rawDesc = "" +
 	"\x11CreateRoleRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"K\n" +
 	"\x12CreateRoleResponse\x125\n" +
-	"\x04role\x18\x01 \x01(\v2!.account_service.models.role.RoleR\x04roleB,Z*shared/proto/account-service/requests/roleb\x06proto3"
+	"\x04role\x18\x01 \x01(\v2!.account_service.models.role.RoleR\x04roleBKZIgithub.com/nicodanke/gesty-api/shared/proto/account-service/requests/roleb\x06proto3"
 
 var (
 	file_account_service_requests_role_rpc_create_role_proto_rawDescOnce sync.Once
