@@ -1,12 +1,19 @@
 # API Gasty
 
-API made in Go
+Microservice architectured API made in GO. Use gRPC to communicate between micro services and gRPC Gateway to allow HTTP1.1 requests (like a regular RestAPI).
+
+## Database
+
+We use Postgres as database, each microservice is in charge of its own database. For local development we run the databases inside a docker compose file, this file runs the necessary databases to run the application.
+
+To generate database documentation we use [dbml/cli](https://dbml.dbdiagram.io/cli). This tool can be install with the following command: `sudo npm install -g @dbml/cli`. Previously you have to install [Node](https://nodejs.org/en/download) in your computer.
+
+Once installed, we can add the database documentation inside `doc/db.dbml` and visualize it in this [web page](https://databasediagram.com/app). After the doc/db.dbml is complete, then you can run make `make db_schema` inside the service to generate a file called `doc/schema.sql`. This file contains SQL DDL that will be used in the migrations.
+
 
 ## Migrations
 
-In order to run migrations you need to install golang-migration CLI ([docs](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate)).
-
-If you are using Mac, you can run: `brew install golang-migrate` to install it.
+In order to run migrations you need to install golang-migration CLI ([docs](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate)). If you are using Mac, you can run: `brew install golang-migrate` to install it.
 
 Migrations are run or created inside each service. The services are inside services folder.
 
@@ -40,7 +47,7 @@ to generate the SQL queries and models. The models and queries are going to be g
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+For the installation and run of the application you can do it manually
 
 ```bash
 pip install foobar

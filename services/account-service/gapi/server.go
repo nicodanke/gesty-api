@@ -4,14 +4,14 @@ import (
 	"fmt"
 
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
-	"github.com/nicodanke/gesty-api/shared/proto/account-service"
+	ac "github.com/nicodanke/gesty-api/shared/proto/account-service"
 	"github.com/nicodanke/gesty-api/services/account-service/sse"
 	"github.com/nicodanke/gesty-api/shared/token"
 	"github.com/nicodanke/gesty-api/services/account-service/utils"
 )
 
 type Server struct {
-	pb.UnimplementedInventAppV1Server
+	ac.UnimplementedAccountServiceServer
 	config     utils.Config
 	store      db.Store
 	tokenMaker token.Maker

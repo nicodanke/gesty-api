@@ -1,11 +1,13 @@
-INSERT INTO permission (id, name, parent_id) VALUES (1, 'Admin Roles', null),
-                                                    (2, 'Ver Roles', 1),
-                                                    (3, 'Crear Rol', 1),
-                                                    (4, 'Actualizar Rol', 1),
-                                                    (5, 'Eliminar Rol', 1),
-                                                    (6, 'Admin Usuarios', null),
-                                                    (7, 'Ver Usuario', 6),
-                                                    (8, 'Crear Usuario', 6),
-                                                    (9, 'Actualizar Usuario', 6),
-                                                    (10, 'Eliminar Usuario', 6),
-                                                    (11, 'Visualizar información de la cuenta', null);
+INSERT INTO permission (id, code, parent_id) VALUES (1, 'SAR', null),
+                                                    (2, 'LR', 1),
+                                                    (3, 'CR', 1),
+                                                    (4, 'UR', 1),
+                                                    (5, 'DR', 1),
+                                                    (6, 'SAU', null),
+                                                    (7, 'LU', 6),
+                                                    (8, 'CU', 6),
+                                                    (9, 'UU', 6),
+                                                    (10, 'DU', 6),
+                                                    (11, 'LSA', null);
+
+INSERT INTO module (id, code) VALUES (1, 'AC');

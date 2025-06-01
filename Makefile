@@ -11,7 +11,7 @@ generate-proto:
 		$(PROTO_SRC)
 
 run-all:
-	docker compose -f compose.base.yaml up -d
+	docker compose -f compose.base.yaml up -d --build
 
 stop-all:
 	docker compose -f compose.base.yaml down

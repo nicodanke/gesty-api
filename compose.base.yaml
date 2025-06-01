@@ -1,14 +1,49 @@
 services:
+  reverse-proxy:
+    image: traefik:v3.2
+    networks:
+      - traefik-net
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  account-service:
+    build:
+      context: .
+      dockerfile: services/account-service/Dockerfile
+    container_name: account-service
+    networks:
+      - traefik-net
+    environment:
+     - GESTY_ENVIRONMENT=dev-docker
+    labels:
+      - "traefik.http.routers.account.rule=
+          PathPrefix(`/v1/accounts`) ||
+          PathPrefix(`/v1/users`) ||
+          PathPrefix(`/v1/auth/login`)
+          "
+      - "traefik.http.services.account.loadbalancer.server.port=8081"
+    depends_on:
+      db-account:
+        condition: service_healthy
+
   db-account:
     image: postgres
     user: postgres
+    networks:
+      - traefik-net
     volumes:
       - db-data-account:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=account
-      - POSTGRES_PASSWORD=root
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
     ports:
       - "5432:5432"
+    secrets:
+       - db_password
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 10s
@@ -17,3 +52,11 @@ services:
 
 volumes:
   db-data-account:
+
+secrets:
+  db_password:
+    file: db_password.txt
+
+networks:
+  traefik-net:
+    external: true

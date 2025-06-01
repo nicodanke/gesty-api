@@ -1,0 +1,114 @@
+Project Gesty {
+  database_type: 'PostgreSQL'
+  Note: '''
+    # Gesty Account Service Database
+  '''
+}
+
+Table "account" {
+  "id" int8 [pk, not null]
+  "code" varchar [not null, unique]
+  "company_name" varchar [not null]
+  "phone" varchar
+  "email" varchar [not null]
+  "web_url" varchar
+  "active" bool [not null, default: false]
+  "created_at" timestamptz [not null, default: `now()`]
+  "updated_at" timestamptz [not null, default: `now()`]
+}
+
+Table "account_address" {
+  "account_id" int8 [pk, not null]
+  "country" varchar [not null]
+  "state" varchar [not null]
+  "sub_state" varchar
+  "street" varchar [not null]
+  "number" varchar [not null]
+  "unit" varchar
+  "postal_code" varchar [not null]
+  "lat" float8
+  "lng" float8
+}
+
+Table "account_module" {
+  "id" int8 [pk, not null]
+  "module_id" int8 [pk, not null]
+  "account_id" int8 [pk, not null]
+  "started_at" timestamptz [not null, default: `now()`]
+  "ended_at" timestamptz
+  "price" float8 [not null, default: 0]
+}
+
+Table "module" {
+  "id" int8 [pk, not null]
+  "code" varchar [not null]
+}
+
+Table "permission" {
+  "id" int8 [pk, not null]
+  "code" varchar [not null, unique]
+  "parent_id" int8 [null]
+}
+
+Table "role" {
+  "id" int8 [pk, not null]
+  "name" varchar [not null, unique]
+  "description" varchar
+  "account_id" int8 [not null]
+}
+
+Table "role_permission" {
+  "role_id" int8 [pk, not null]
+  "permission_id" int8 [pk, not null]
+}
+
+Table "session" {
+  "id" uuid [pk, not null]
+  "user_id" int8 [not null]
+  "refresh_token" varchar [not null]
+  "user_agent" varchar [not null]
+  "client_ip" varchar [not null]
+  "is_blocked" bool [not null, default: false]
+  "created_at" timestamptz [not null, default: `now()`]
+  "expires_at" timestamptz [not null]
+}
+
+Table "user" {
+  "id" int8 [pk, not null]
+  "username" varchar [not null]
+  "password" varchar [not null]
+  "name" varchar [not null]
+  "lastname" varchar [not null]
+  "email" varchar [not null]
+  "phone" varchar
+  "active" bool [not null, default: true]
+  "created_at" timestamptz [not null, default: `now()`]
+  "updated_at" timestamptz [not null, default: `now()`]
+  "password_changed_at" timestamptz [not null, default: `now()`]
+  "role_id" int8 [not null]
+  "account_id" int8 [not null]
+
+  indexes {
+    (username, account_id) [unique]
+  }
+}
+
+Ref:"account"."id" < "account_address"."account_id"
+
+Ref:"account"."id" < "account_module"."account_id"
+
+Ref:"module"."id" < "account_module"."module_id"
+
+Ref:"permission"."id" < "permission"."parent_id"
+
+Ref:"account"."id" < "role"."account_id"
+
+Ref:"role"."id" < "role_permission"."role_id"
+
+Ref:"permission"."id" < "role_permission"."permission_id"
+
+Ref:"account"."id" < "user"."account_id"
+
+Ref:"role"."id" < "user"."role_id"
+
+Ref:"user"."id" < "session"."user_id"
