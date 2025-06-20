@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package account_service.requests.user.get_user;
+
+import "account-service/models/user.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user";
+
+message GetUserRequest {
+    int64 id = 1;
+}
+
+message GetUserResponse {
+    account_service.models.user.User user= 1;
+}

@@ -24,6 +24,11 @@ func (server *Server) CreateUser(ctx context.Context, req *user.CreateUserReques
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}
 
+	authorized := server.authorizeUser(authPayload, [][]string{{"SAU", "CU"}})
+	if !authorized {
+		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+	}
+
 	violations := validateCreateUserRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package account_service.requests.user.update_user;
+
+import "account-service/models/user.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user";
+
+message UpdateUserRequest {
+    int64 id = 1;
+    optional string name = 2;
+    optional string lastname = 3;
+    optional string email = 4;
+    optional int64 roleId = 5;
+    optional string phone = 6;
+    optional bool active = 7;
+    optional bool isAdmin = 8;
+}
+
+message UpdateUserResponse {
+    account_service.models.user.User user = 1;
+}

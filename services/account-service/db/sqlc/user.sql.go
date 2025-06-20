@@ -215,3 +215,65 @@ func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]User, err
 	}
 	return items, nil
 }
+
+const updateUser = `-- name: UpdateUser :one
+UPDATE "user"
+SET
+    name = COALESCE($1, name),
+    lastname = COALESCE($2, lastname),
+    email = COALESCE($3, email),
+    role_id = COALESCE($4, role_id),
+    phone = COALESCE($5, phone),
+    active = COALESCE($6, active),
+    is_admin = COALESCE($7, is_admin),
+    updated_at = COALESCE($8, updated_at)
+WHERE
+    account_id = $9 AND id = $10
+RETURNING id, username, password, name, lastname, email, phone, active, is_admin, created_at, updated_at, password_changed_at, role_id, account_id
+`
+
+type UpdateUserParams struct {
+	Name      pgtype.Text        `json:"name"`
+	Lastname  pgtype.Text        `json:"lastname"`
+	Email     pgtype.Text        `json:"email"`
+	RoleID    pgtype.Int8        `json:"role_id"`
+	Phone     pgtype.Text        `json:"phone"`
+	Active    pgtype.Bool        `json:"active"`
+	IsAdmin   pgtype.Bool        `json:"is_admin"`
+	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+	AccountID int64              `json:"account_id"`
+	ID        int64              `json:"id"`
+}
+
+func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
+	row := q.db.QueryRow(ctx, updateUser,
+		arg.Name,
+		arg.Lastname,
+		arg.Email,
+		arg.RoleID,
+		arg.Phone,
+		arg.Active,
+		arg.IsAdmin,
+		arg.UpdatedAt,
+		arg.AccountID,
+		arg.ID,
+	)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.Password,
+		&i.Name,
+		&i.Lastname,
+		&i.Email,
+		&i.Phone,
+		&i.Active,
+		&i.IsAdmin,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.PasswordChangedAt,
+		&i.RoleID,
+		&i.AccountID,
+	)
+	return i, err
+}

@@ -29,8 +29,10 @@ const (
 	AccountService_CreateAccount_FullMethodName = "/account_service.AccountService/CreateAccount"
 	AccountService_UpdateAccount_FullMethodName = "/account_service.AccountService/UpdateAccount"
 	AccountService_AccountMe_FullMethodName     = "/account_service.AccountService/AccountMe"
+	AccountService_GetUser_FullMethodName       = "/account_service.AccountService/GetUser"
 	AccountService_GetUsers_FullMethodName      = "/account_service.AccountService/GetUsers"
 	AccountService_CreateUser_FullMethodName    = "/account_service.AccountService/CreateUser"
+	AccountService_UpdateUser_FullMethodName    = "/account_service.AccountService/UpdateUser"
 	AccountService_DeleteUser_FullMethodName    = "/account_service.AccountService/DeleteUser"
 	AccountService_GetRoles_FullMethodName      = "/account_service.AccountService/GetRoles"
 	AccountService_CreateRole_FullMethodName    = "/account_service.AccountService/CreateRole"
@@ -49,8 +51,10 @@ type AccountServiceClient interface {
 	UpdateAccount(ctx context.Context, in *account.UpdateAccountRequest, opts ...grpc.CallOption) (*account.UpdateAccountResponse, error)
 	AccountMe(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*account.AccountMeResponse, error)
 	// USER
+	GetUser(ctx context.Context, in *user.GetUserRequest, opts ...grpc.CallOption) (*user.GetUserResponse, error)
 	GetUsers(ctx context.Context, in *user.GetUsersRequest, opts ...grpc.CallOption) (*user.GetUsersResponse, error)
 	CreateUser(ctx context.Context, in *user.CreateUserRequest, opts ...grpc.CallOption) (*user.CreateUserResponse, error)
+	UpdateUser(ctx context.Context, in *user.UpdateUserRequest, opts ...grpc.CallOption) (*user.UpdateUserResponse, error)
 	DeleteUser(ctx context.Context, in *user.DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// ROLE
 	GetRoles(ctx context.Context, in *role.GetRolesRequest, opts ...grpc.CallOption) (*role.GetRolesResponse, error)
@@ -116,6 +120,16 @@ func (c *accountServiceClient) AccountMe(ctx context.Context, in *emptypb.Empty,
 	return out, nil
 }
 
+func (c *accountServiceClient) GetUser(ctx context.Context, in *user.GetUserRequest, opts ...grpc.CallOption) (*user.GetUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(user.GetUserResponse)
+	err := c.cc.Invoke(ctx, AccountService_GetUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accountServiceClient) GetUsers(ctx context.Context, in *user.GetUsersRequest, opts ...grpc.CallOption) (*user.GetUsersResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(user.GetUsersResponse)
@@ -130,6 +144,16 @@ func (c *accountServiceClient) CreateUser(ctx context.Context, in *user.CreateUs
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(user.CreateUserResponse)
 	err := c.cc.Invoke(ctx, AccountService_CreateUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServiceClient) UpdateUser(ctx context.Context, in *user.UpdateUserRequest, opts ...grpc.CallOption) (*user.UpdateUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(user.UpdateUserResponse)
+	err := c.cc.Invoke(ctx, AccountService_UpdateUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -188,8 +212,10 @@ type AccountServiceServer interface {
 	UpdateAccount(context.Context, *account.UpdateAccountRequest) (*account.UpdateAccountResponse, error)
 	AccountMe(context.Context, *emptypb.Empty) (*account.AccountMeResponse, error)
 	// USER
+	GetUser(context.Context, *user.GetUserRequest) (*user.GetUserResponse, error)
 	GetUsers(context.Context, *user.GetUsersRequest) (*user.GetUsersResponse, error)
 	CreateUser(context.Context, *user.CreateUserRequest) (*user.CreateUserResponse, error)
+	UpdateUser(context.Context, *user.UpdateUserRequest) (*user.UpdateUserResponse, error)
 	DeleteUser(context.Context, *user.DeleteUserRequest) (*emptypb.Empty, error)
 	// ROLE
 	GetRoles(context.Context, *role.GetRolesRequest) (*role.GetRolesResponse, error)
@@ -220,11 +246,17 @@ func (UnimplementedAccountServiceServer) UpdateAccount(context.Context, *account
 func (UnimplementedAccountServiceServer) AccountMe(context.Context, *emptypb.Empty) (*account.AccountMeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AccountMe not implemented")
 }
+func (UnimplementedAccountServiceServer) GetUser(context.Context, *user.GetUserRequest) (*user.GetUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
 func (UnimplementedAccountServiceServer) GetUsers(context.Context, *user.GetUsersRequest) (*user.GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
 }
 func (UnimplementedAccountServiceServer) CreateUser(context.Context, *user.CreateUserRequest) (*user.CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
+}
+func (UnimplementedAccountServiceServer) UpdateUser(context.Context, *user.UpdateUserRequest) (*user.UpdateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
 func (UnimplementedAccountServiceServer) DeleteUser(context.Context, *user.DeleteUserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
@@ -349,6 +381,24 @@ func _AccountService_AccountMe_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.GetUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).GetUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_GetUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).GetUser(ctx, req.(*user.GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AccountService_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(user.GetUsersRequest)
 	if err := dec(in); err != nil {
@@ -381,6 +431,24 @@ func _AccountService_CreateUser_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AccountServiceServer).CreateUser(ctx, req.(*user.CreateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountService_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.UpdateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).UpdateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_UpdateUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).UpdateUser(ctx, req.(*user.UpdateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -485,12 +553,20 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AccountService_AccountMe_Handler,
 		},
 		{
+			MethodName: "GetUser",
+			Handler:    _AccountService_GetUser_Handler,
+		},
+		{
 			MethodName: "GetUsers",
 			Handler:    _AccountService_GetUsers_Handler,
 		},
 		{
 			MethodName: "CreateUser",
 			Handler:    _AccountService_CreateUser_Handler,
+		},
+		{
+			MethodName: "UpdateUser",
+			Handler:    _AccountService_UpdateUser_Handler,
 		},
 		{
 			MethodName: "DeleteUser",

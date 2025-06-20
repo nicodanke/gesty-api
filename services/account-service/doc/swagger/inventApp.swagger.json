@@ -95,6 +95,14 @@
         }
       }
     },
+    "get_userGetUserResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/userUser"
+        }
+      }
+    },
     "get_usersGetUsersResponse": {
       "type": "object",
       "properties": {
@@ -189,6 +197,14 @@
       "properties": {
         "account": {
           "$ref": "#/definitions/accountAccount"
+        }
+      }
+    },
+    "update_userUpdateUserResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/userUser"
         }
       }
     },

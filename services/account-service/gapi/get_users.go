@@ -16,6 +16,11 @@ func (server *Server) GetUsers(ctx context.Context, req *user.GetUsersRequest) (
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}
 
+	authorized := server.authorizeUser(authPayload, [][]string{{"SAU", "LU"}})
+	if !authorized {
+		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+	}
+
 	violations := validateGetUsersRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

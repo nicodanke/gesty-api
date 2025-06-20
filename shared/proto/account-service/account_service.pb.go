@@ -29,16 +29,19 @@ var File_account_service_account_service_proto protoreflect.FileDescriptor
 
 const file_account_service_account_service_proto_rawDesc = "" +
 	"\n" +
-	"%account-service/account_service.proto\x12\x0faccount_service\x1a9account-service/requests/account/rpc_create_account.proto\x1a9account-service/requests/account/rpc_update_account.proto\x1a5account-service/requests/account/rpc_account_me.proto\x1a1account-service/requests/user/rpc_get_users.proto\x1a3account-service/requests/user/rpc_create_user.proto\x1a3account-service/requests/user/rpc_delete_user.proto\x1a1account-service/requests/role/rpc_get_roles.proto\x1a3account-service/requests/role/rpc_create_role.proto\x1a3account-service/requests/role/rpc_delete_role.proto\x1a.account-service/requests/login/rpc_login.proto\x1a6account-service/requests/login/rpc_refresh_token.proto\x1a\x1bgoogle/protobuf/empty.proto2\xa3\v\n" +
+	"%account-service/account_service.proto\x12\x0faccount_service\x1a9account-service/requests/account/rpc_create_account.proto\x1a9account-service/requests/account/rpc_update_account.proto\x1a5account-service/requests/account/rpc_account_me.proto\x1a1account-service/requests/user/rpc_get_users.proto\x1a0account-service/requests/user/rpc_get_user.proto\x1a3account-service/requests/user/rpc_create_user.proto\x1a3account-service/requests/user/rpc_update_user.proto\x1a3account-service/requests/user/rpc_delete_user.proto\x1a1account-service/requests/role/rpc_get_roles.proto\x1a3account-service/requests/role/rpc_create_role.proto\x1a3account-service/requests/role/rpc_delete_role.proto\x1a.account-service/requests/login/rpc_login.proto\x1a6account-service/requests/login/rpc_refresh_token.proto\x1a\x1bgoogle/protobuf/empty.proto2\xab\r\n" +
 	"\x0eAccountService\x12p\n" +
 	"\x05Login\x122.account_service.requests.login.login.LoginRequest\x1a3.account_service.requests.login.login.LoginResponse\x12\x95\x01\n" +
 	"\fRefreshToken\x12A.account_service.requests.login.refresh_token.RefreshTokenRequest\x1aB.account_service.requests.login.refresh_token.RefreshTokenResponse\x12\x9e\x01\n" +
 	"\rCreateAccount\x12E.account_service.requests.account.create_account.CreateAccountRequest\x1aF.account_service.requests.account.create_account.CreateAccountResponse\x12\x9e\x01\n" +
 	"\rUpdateAccount\x12E.account_service.requests.account.update_account.UpdateAccountRequest\x1aF.account_service.requests.account.update_account.UpdateAccountResponse\x12c\n" +
-	"\tAccountMe\x12\x16.google.protobuf.Empty\x1a>.account_service.requests.account.account_me.AccountMeResponse\x12\x7f\n" +
+	"\tAccountMe\x12\x16.google.protobuf.Empty\x1a>.account_service.requests.account.account_me.AccountMeResponse\x12z\n" +
+	"\aGetUser\x126.account_service.requests.user.get_user.GetUserRequest\x1a7.account_service.requests.user.get_user.GetUserResponse\x12\x7f\n" +
 	"\bGetUsers\x128.account_service.requests.user.get_users.GetUsersRequest\x1a9.account_service.requests.user.get_users.GetUsersResponse\x12\x89\x01\n" +
 	"\n" +
-	"CreateUser\x12<.account_service.requests.user.create_user.CreateUserRequest\x1a=.account_service.requests.user.create_user.CreateUserResponse\x12b\n" +
+	"CreateUser\x12<.account_service.requests.user.create_user.CreateUserRequest\x1a=.account_service.requests.user.create_user.CreateUserResponse\x12\x89\x01\n" +
+	"\n" +
+	"UpdateUser\x12<.account_service.requests.user.update_user.UpdateUserRequest\x1a=.account_service.requests.user.update_user.UpdateUserResponse\x12b\n" +
 	"\n" +
 	"DeleteUser\x12<.account_service.requests.user.delete_user.DeleteUserRequest\x1a\x16.google.protobuf.Empty\x12\x7f\n" +
 	"\bGetRoles\x128.account_service.requests.role.get_roles.GetRolesRequest\x1a9.account_service.requests.role.get_roles.GetRolesResponse\x12\x89\x01\n" +
@@ -53,21 +56,25 @@ var file_account_service_account_service_proto_goTypes = []any{
 	(*account.CreateAccountRequest)(nil),  // 2: account_service.requests.account.create_account.CreateAccountRequest
 	(*account.UpdateAccountRequest)(nil),  // 3: account_service.requests.account.update_account.UpdateAccountRequest
 	(*emptypb.Empty)(nil),                 // 4: google.protobuf.Empty
-	(*user.GetUsersRequest)(nil),          // 5: account_service.requests.user.get_users.GetUsersRequest
-	(*user.CreateUserRequest)(nil),        // 6: account_service.requests.user.create_user.CreateUserRequest
-	(*user.DeleteUserRequest)(nil),        // 7: account_service.requests.user.delete_user.DeleteUserRequest
-	(*role.GetRolesRequest)(nil),          // 8: account_service.requests.role.get_roles.GetRolesRequest
-	(*role.CreateRoleRequest)(nil),        // 9: account_service.requests.role.create_role.CreateRoleRequest
-	(*role.DeleteRoleRequest)(nil),        // 10: account_service.requests.role.delete_role.DeleteRoleRequest
-	(*login.LoginResponse)(nil),           // 11: account_service.requests.login.login.LoginResponse
-	(*login.RefreshTokenResponse)(nil),    // 12: account_service.requests.login.refresh_token.RefreshTokenResponse
-	(*account.CreateAccountResponse)(nil), // 13: account_service.requests.account.create_account.CreateAccountResponse
-	(*account.UpdateAccountResponse)(nil), // 14: account_service.requests.account.update_account.UpdateAccountResponse
-	(*account.AccountMeResponse)(nil),     // 15: account_service.requests.account.account_me.AccountMeResponse
-	(*user.GetUsersResponse)(nil),         // 16: account_service.requests.user.get_users.GetUsersResponse
-	(*user.CreateUserResponse)(nil),       // 17: account_service.requests.user.create_user.CreateUserResponse
-	(*role.GetRolesResponse)(nil),         // 18: account_service.requests.role.get_roles.GetRolesResponse
-	(*role.CreateRoleResponse)(nil),       // 19: account_service.requests.role.create_role.CreateRoleResponse
+	(*user.GetUserRequest)(nil),           // 5: account_service.requests.user.get_user.GetUserRequest
+	(*user.GetUsersRequest)(nil),          // 6: account_service.requests.user.get_users.GetUsersRequest
+	(*user.CreateUserRequest)(nil),        // 7: account_service.requests.user.create_user.CreateUserRequest
+	(*user.UpdateUserRequest)(nil),        // 8: account_service.requests.user.update_user.UpdateUserRequest
+	(*user.DeleteUserRequest)(nil),        // 9: account_service.requests.user.delete_user.DeleteUserRequest
+	(*role.GetRolesRequest)(nil),          // 10: account_service.requests.role.get_roles.GetRolesRequest
+	(*role.CreateRoleRequest)(nil),        // 11: account_service.requests.role.create_role.CreateRoleRequest
+	(*role.DeleteRoleRequest)(nil),        // 12: account_service.requests.role.delete_role.DeleteRoleRequest
+	(*login.LoginResponse)(nil),           // 13: account_service.requests.login.login.LoginResponse
+	(*login.RefreshTokenResponse)(nil),    // 14: account_service.requests.login.refresh_token.RefreshTokenResponse
+	(*account.CreateAccountResponse)(nil), // 15: account_service.requests.account.create_account.CreateAccountResponse
+	(*account.UpdateAccountResponse)(nil), // 16: account_service.requests.account.update_account.UpdateAccountResponse
+	(*account.AccountMeResponse)(nil),     // 17: account_service.requests.account.account_me.AccountMeResponse
+	(*user.GetUserResponse)(nil),          // 18: account_service.requests.user.get_user.GetUserResponse
+	(*user.GetUsersResponse)(nil),         // 19: account_service.requests.user.get_users.GetUsersResponse
+	(*user.CreateUserResponse)(nil),       // 20: account_service.requests.user.create_user.CreateUserResponse
+	(*user.UpdateUserResponse)(nil),       // 21: account_service.requests.user.update_user.UpdateUserResponse
+	(*role.GetRolesResponse)(nil),         // 22: account_service.requests.role.get_roles.GetRolesResponse
+	(*role.CreateRoleResponse)(nil),       // 23: account_service.requests.role.create_role.CreateRoleResponse
 }
 var file_account_service_account_service_proto_depIdxs = []int32{
 	0,  // 0: account_service.AccountService.Login:input_type -> account_service.requests.login.login.LoginRequest
@@ -75,25 +82,29 @@ var file_account_service_account_service_proto_depIdxs = []int32{
 	2,  // 2: account_service.AccountService.CreateAccount:input_type -> account_service.requests.account.create_account.CreateAccountRequest
 	3,  // 3: account_service.AccountService.UpdateAccount:input_type -> account_service.requests.account.update_account.UpdateAccountRequest
 	4,  // 4: account_service.AccountService.AccountMe:input_type -> google.protobuf.Empty
-	5,  // 5: account_service.AccountService.GetUsers:input_type -> account_service.requests.user.get_users.GetUsersRequest
-	6,  // 6: account_service.AccountService.CreateUser:input_type -> account_service.requests.user.create_user.CreateUserRequest
-	7,  // 7: account_service.AccountService.DeleteUser:input_type -> account_service.requests.user.delete_user.DeleteUserRequest
-	8,  // 8: account_service.AccountService.GetRoles:input_type -> account_service.requests.role.get_roles.GetRolesRequest
-	9,  // 9: account_service.AccountService.CreateRole:input_type -> account_service.requests.role.create_role.CreateRoleRequest
-	10, // 10: account_service.AccountService.DeleteRole:input_type -> account_service.requests.role.delete_role.DeleteRoleRequest
-	11, // 11: account_service.AccountService.Login:output_type -> account_service.requests.login.login.LoginResponse
-	12, // 12: account_service.AccountService.RefreshToken:output_type -> account_service.requests.login.refresh_token.RefreshTokenResponse
-	13, // 13: account_service.AccountService.CreateAccount:output_type -> account_service.requests.account.create_account.CreateAccountResponse
-	14, // 14: account_service.AccountService.UpdateAccount:output_type -> account_service.requests.account.update_account.UpdateAccountResponse
-	15, // 15: account_service.AccountService.AccountMe:output_type -> account_service.requests.account.account_me.AccountMeResponse
-	16, // 16: account_service.AccountService.GetUsers:output_type -> account_service.requests.user.get_users.GetUsersResponse
-	17, // 17: account_service.AccountService.CreateUser:output_type -> account_service.requests.user.create_user.CreateUserResponse
-	4,  // 18: account_service.AccountService.DeleteUser:output_type -> google.protobuf.Empty
-	18, // 19: account_service.AccountService.GetRoles:output_type -> account_service.requests.role.get_roles.GetRolesResponse
-	19, // 20: account_service.AccountService.CreateRole:output_type -> account_service.requests.role.create_role.CreateRoleResponse
-	4,  // 21: account_service.AccountService.DeleteRole:output_type -> google.protobuf.Empty
-	11, // [11:22] is the sub-list for method output_type
-	0,  // [0:11] is the sub-list for method input_type
+	5,  // 5: account_service.AccountService.GetUser:input_type -> account_service.requests.user.get_user.GetUserRequest
+	6,  // 6: account_service.AccountService.GetUsers:input_type -> account_service.requests.user.get_users.GetUsersRequest
+	7,  // 7: account_service.AccountService.CreateUser:input_type -> account_service.requests.user.create_user.CreateUserRequest
+	8,  // 8: account_service.AccountService.UpdateUser:input_type -> account_service.requests.user.update_user.UpdateUserRequest
+	9,  // 9: account_service.AccountService.DeleteUser:input_type -> account_service.requests.user.delete_user.DeleteUserRequest
+	10, // 10: account_service.AccountService.GetRoles:input_type -> account_service.requests.role.get_roles.GetRolesRequest
+	11, // 11: account_service.AccountService.CreateRole:input_type -> account_service.requests.role.create_role.CreateRoleRequest
+	12, // 12: account_service.AccountService.DeleteRole:input_type -> account_service.requests.role.delete_role.DeleteRoleRequest
+	13, // 13: account_service.AccountService.Login:output_type -> account_service.requests.login.login.LoginResponse
+	14, // 14: account_service.AccountService.RefreshToken:output_type -> account_service.requests.login.refresh_token.RefreshTokenResponse
+	15, // 15: account_service.AccountService.CreateAccount:output_type -> account_service.requests.account.create_account.CreateAccountResponse
+	16, // 16: account_service.AccountService.UpdateAccount:output_type -> account_service.requests.account.update_account.UpdateAccountResponse
+	17, // 17: account_service.AccountService.AccountMe:output_type -> account_service.requests.account.account_me.AccountMeResponse
+	18, // 18: account_service.AccountService.GetUser:output_type -> account_service.requests.user.get_user.GetUserResponse
+	19, // 19: account_service.AccountService.GetUsers:output_type -> account_service.requests.user.get_users.GetUsersResponse
+	20, // 20: account_service.AccountService.CreateUser:output_type -> account_service.requests.user.create_user.CreateUserResponse
+	21, // 21: account_service.AccountService.UpdateUser:output_type -> account_service.requests.user.update_user.UpdateUserResponse
+	4,  // 22: account_service.AccountService.DeleteUser:output_type -> google.protobuf.Empty
+	22, // 23: account_service.AccountService.GetRoles:output_type -> account_service.requests.role.get_roles.GetRolesResponse
+	23, // 24: account_service.AccountService.CreateRole:output_type -> account_service.requests.role.create_role.CreateRoleResponse
+	4,  // 25: account_service.AccountService.DeleteRole:output_type -> google.protobuf.Empty
+	13, // [13:26] is the sub-list for method output_type
+	0,  // [0:13] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

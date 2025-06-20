@@ -20,6 +20,11 @@ func (server *Server) DeleteUser(ctx context.Context, req *user.DeleteUserReques
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}
 
+	authorized := server.authorizeUser(authPayload, [][]string{{"SAU", "DU"}})
+	if !authorized {
+		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+	}
+
 	if req.GetId() == authPayload.UserID {
 		return nil, unprocessableError(ACTION_NOT_ALLOWED, "User cannot auto delete itself")
 	}

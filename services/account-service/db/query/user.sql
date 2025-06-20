@@ -30,3 +30,18 @@ JOIN "role" r ON r.id = u.role_id
 JOIN "role_permission" rp ON rp.role_id = r.id
 JOIN "permission" p ON p.id = rp.permission_id
 WHERE u.id = $1;
+
+-- name: UpdateUser :one
+UPDATE "user"
+SET
+    name = COALESCE(sqlc.narg(name), name),
+    lastname = COALESCE(sqlc.narg(lastname), lastname),
+    email = COALESCE(sqlc.narg(email), email),
+    role_id = COALESCE(sqlc.narg(role_id), role_id),
+    phone = COALESCE(sqlc.narg(phone), phone),
+    active = COALESCE(sqlc.narg(active), active),
+    is_admin = COALESCE(sqlc.narg(is_admin), is_admin),
+    updated_at = COALESCE(sqlc.narg(updated_at), updated_at)
+WHERE
+    account_id = sqlc.arg(account_id) AND id = sqlc.arg(id)
+RETURNING *;
