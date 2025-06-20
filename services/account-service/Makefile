@@ -31,9 +31,6 @@ generate-grpc-gateway:
 		../../proto/account-service/account_service.proto
 	statik -src=./doc/swagger -dest=./doc
 
-db_docs:
-	dbdocs build doc/db.dbml
-
 db_schema:
 	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
 

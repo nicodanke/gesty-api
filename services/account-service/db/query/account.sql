@@ -1,6 +1,6 @@
 -- name: CreateAccount :one
 INSERT INTO account (
-    code, company_name, email, country
+    code, company_name, email, active
 ) VALUES (
     $1, $2, $3, $4
 ) RETURNING *;
@@ -27,7 +27,6 @@ SET
     email = COALESCE(sqlc.narg(email), email),
     web_url = COALESCE(sqlc.narg(web_url), web_url),
     active = COALESCE(sqlc.narg(active), active),
-    country = COALESCE(sqlc.narg(country), country),
     updated_at = COALESCE(sqlc.narg(updated_at), updated_at)
 WHERE
     id = sqlc.arg(id)

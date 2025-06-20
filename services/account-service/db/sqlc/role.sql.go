@@ -14,7 +14,7 @@ INSERT INTO "role" (
     account_id, name
 ) VALUES (
     $1, $2
-) RETURNING id, name, account_id
+) RETURNING id, name, description, account_id
 `
 
 type CreateRoleParams struct {
@@ -25,7 +25,12 @@ type CreateRoleParams struct {
 func (q *Queries) CreateRole(ctx context.Context, arg CreateRoleParams) (Role, error) {
 	row := q.db.QueryRow(ctx, createRole, arg.AccountID, arg.Name)
 	var i Role
-	err := row.Scan(&i.ID, &i.Name, &i.AccountID)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.AccountID,
+	)
 	return i, err
 }
 
@@ -45,7 +50,7 @@ func (q *Queries) DeleteRole(ctx context.Context, arg DeleteRoleParams) error {
 }
 
 const getRole = `-- name: GetRole :one
-SELECT id, name, account_id FROM "role"
+SELECT id, name, description, account_id FROM "role"
 WHERE account_id = $1 AND id = $2 LIMIT 1
 `
 
@@ -57,12 +62,17 @@ type GetRoleParams struct {
 func (q *Queries) GetRole(ctx context.Context, arg GetRoleParams) (Role, error) {
 	row := q.db.QueryRow(ctx, getRole, arg.AccountID, arg.ID)
 	var i Role
-	err := row.Scan(&i.ID, &i.Name, &i.AccountID)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.AccountID,
+	)
 	return i, err
 }
 
 const getRoles = `-- name: GetRoles :many
-SELECT id, name, account_id FROM "role"
+SELECT id, name, description, account_id FROM "role"
 WHERE account_id = $1
 ORDER BY name
 LIMIT $2
@@ -84,7 +94,12 @@ func (q *Queries) GetRoles(ctx context.Context, arg GetRolesParams) ([]Role, err
 	items := []Role{}
 	for rows.Next() {
 		var i Role
-		if err := rows.Scan(&i.ID, &i.Name, &i.AccountID); err != nil {
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Description,
+			&i.AccountID,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

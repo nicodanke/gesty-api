@@ -28,6 +28,7 @@ const (
 	AccountService_RefreshToken_FullMethodName  = "/account_service.AccountService/RefreshToken"
 	AccountService_CreateAccount_FullMethodName = "/account_service.AccountService/CreateAccount"
 	AccountService_UpdateAccount_FullMethodName = "/account_service.AccountService/UpdateAccount"
+	AccountService_AccountMe_FullMethodName     = "/account_service.AccountService/AccountMe"
 	AccountService_GetUsers_FullMethodName      = "/account_service.AccountService/GetUsers"
 	AccountService_CreateUser_FullMethodName    = "/account_service.AccountService/CreateUser"
 	AccountService_DeleteUser_FullMethodName    = "/account_service.AccountService/DeleteUser"
@@ -46,6 +47,7 @@ type AccountServiceClient interface {
 	// ACCOUNT
 	CreateAccount(ctx context.Context, in *account.CreateAccountRequest, opts ...grpc.CallOption) (*account.CreateAccountResponse, error)
 	UpdateAccount(ctx context.Context, in *account.UpdateAccountRequest, opts ...grpc.CallOption) (*account.UpdateAccountResponse, error)
+	AccountMe(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*account.AccountMeResponse, error)
 	// USER
 	GetUsers(ctx context.Context, in *user.GetUsersRequest, opts ...grpc.CallOption) (*user.GetUsersResponse, error)
 	CreateUser(ctx context.Context, in *user.CreateUserRequest, opts ...grpc.CallOption) (*user.CreateUserResponse, error)
@@ -98,6 +100,16 @@ func (c *accountServiceClient) UpdateAccount(ctx context.Context, in *account.Up
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(account.UpdateAccountResponse)
 	err := c.cc.Invoke(ctx, AccountService_UpdateAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServiceClient) AccountMe(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*account.AccountMeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(account.AccountMeResponse)
+	err := c.cc.Invoke(ctx, AccountService_AccountMe_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -174,6 +186,7 @@ type AccountServiceServer interface {
 	// ACCOUNT
 	CreateAccount(context.Context, *account.CreateAccountRequest) (*account.CreateAccountResponse, error)
 	UpdateAccount(context.Context, *account.UpdateAccountRequest) (*account.UpdateAccountResponse, error)
+	AccountMe(context.Context, *emptypb.Empty) (*account.AccountMeResponse, error)
 	// USER
 	GetUsers(context.Context, *user.GetUsersRequest) (*user.GetUsersResponse, error)
 	CreateUser(context.Context, *user.CreateUserRequest) (*user.CreateUserResponse, error)
@@ -203,6 +216,9 @@ func (UnimplementedAccountServiceServer) CreateAccount(context.Context, *account
 }
 func (UnimplementedAccountServiceServer) UpdateAccount(context.Context, *account.UpdateAccountRequest) (*account.UpdateAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAccount not implemented")
+}
+func (UnimplementedAccountServiceServer) AccountMe(context.Context, *emptypb.Empty) (*account.AccountMeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AccountMe not implemented")
 }
 func (UnimplementedAccountServiceServer) GetUsers(context.Context, *user.GetUsersRequest) (*user.GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
@@ -311,6 +327,24 @@ func _AccountService_UpdateAccount_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AccountServiceServer).UpdateAccount(ctx, req.(*account.UpdateAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountService_AccountMe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).AccountMe(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_AccountMe_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).AccountMe(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -445,6 +479,10 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateAccount",
 			Handler:    _AccountService_UpdateAccount_Handler,
+		},
+		{
+			MethodName: "AccountMe",
+			Handler:    _AccountService_AccountMe_Handler,
 		},
 		{
 			MethodName: "GetUsers",

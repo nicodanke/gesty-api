@@ -48,6 +48,14 @@
         }
       }
     },
+    "account_meAccountMeResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/accountAccount"
+        }
+      }
+    },
     "create_accountCreateAccountResponse": {
       "type": "object",
       "properties": {

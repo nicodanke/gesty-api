@@ -29,7 +29,6 @@ func (server *Server) CreateAccount(ctx context.Context, req *account.CreateAcco
 	}
 
 	code := strings.ReplaceAll(req.GetCompanyName(), " ", "")
-
 	arg := db.CreateAccountTxParams{
 		Code:           code,
 		CompanyName:    req.GetCompanyName(),
@@ -37,7 +36,6 @@ func (server *Server) CreateAccount(ctx context.Context, req *account.CreateAcco
 		Name:           req.GetName(),
 		Lastname:       req.GetLastname(),
 		Username:       req.GetUsername(),
-		Country:        req.GetCountry(),
 		HashedPassword: hashedPassword,
 	}
 
@@ -80,10 +78,6 @@ func validateCreateAccountRequest(req *account.CreateAccountRequest) (violations
 
 	if err := accountValidator.ValidateCompanyName(req.GetCompanyName()); err != nil {
 		violations = append(violations, fieldViolation("companyName", err))
-	}
-
-	if err := accountValidator.ValidateCountry(req.GetCountry()); err != nil {
-		violations = append(violations, fieldViolation("country", err))
 	}
 
 	return violations

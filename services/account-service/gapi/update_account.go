@@ -47,10 +47,6 @@ func (server *Server) UpdateAccount(ctx context.Context, req *account.UpdateAcco
 			Bool:  req.GetActive(),
 			Valid: req.Active != nil,
 		},
-		Country: pgtype.Text{
-			String: req.GetCompanyName(),
-			Valid:  req.Country != nil,
-		},
 		UpdatedAt: pgtype.Timestamptz{
 			Time: time.Now().UTC(),
 		},
@@ -75,12 +71,6 @@ func validateUpdateAccountRequest(req *account.UpdateAccountRequest) (violations
 	if req.CompanyName != nil {
 		if err := accountValidator.ValidateCompanyName(req.GetCompanyName()); err != nil {
 			violations = append(violations, fieldViolation("companyName", err))
-		}
-	}
-
-	if req.Country != nil {
-		if err := accountValidator.ValidateCountry(req.GetCountry()); err != nil {
-			violations = append(violations, fieldViolation("country", err))
 		}
 	}
 

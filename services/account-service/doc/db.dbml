@@ -6,7 +6,7 @@ Project Gesty {
 }
 
 Table "account" {
-  "id" int8 [pk, not null]
+  "id" bigserial [pk]
   "code" varchar [not null, unique]
   "company_name" varchar [not null]
   "phone" varchar
@@ -18,7 +18,7 @@ Table "account" {
 }
 
 Table "account_address" {
-  "account_id" int8 [pk, not null]
+  "account_id" bigserial [pk]
   "country" varchar [not null]
   "state" varchar [not null]
   "sub_state" varchar
@@ -31,40 +31,44 @@ Table "account_address" {
 }
 
 Table "account_module" {
-  "id" int8 [pk, not null]
-  "module_id" int8 [pk, not null]
-  "account_id" int8 [pk, not null]
+  "id" bigserial [pk]
+  "module_id" bigserial [pk]
+  "account_id" bigserial [pk]
   "started_at" timestamptz [not null, default: `now()`]
   "ended_at" timestamptz
   "price" float8 [not null, default: 0]
 }
 
 Table "module" {
-  "id" int8 [pk, not null]
+  "id" bigserial [pk]
   "code" varchar [not null]
 }
 
 Table "permission" {
-  "id" int8 [pk, not null]
+  "id" bigserial [pk]
   "code" varchar [not null, unique]
   "parent_id" int8 [null]
 }
 
 Table "role" {
-  "id" int8 [pk, not null]
-  "name" varchar [not null, unique]
+  "id" bigserial [pk]
+  "name" varchar [not null]
   "description" varchar
-  "account_id" int8 [not null]
+  "account_id" bigserial [not null]
+
+  indexes {
+    (name, account_id) [unique]
+  }
 }
 
 Table "role_permission" {
-  "role_id" int8 [pk, not null]
-  "permission_id" int8 [pk, not null]
+  "role_id" bigserial [pk]
+  "permission_id" bigserial [pk]
 }
 
 Table "session" {
-  "id" uuid [pk, not null]
-  "user_id" int8 [not null]
+  "id" uuid [pk]
+  "user_id" bigserial [not null]
   "refresh_token" varchar [not null]
   "user_agent" varchar [not null]
   "client_ip" varchar [not null]
@@ -74,7 +78,7 @@ Table "session" {
 }
 
 Table "user" {
-  "id" int8 [pk, not null]
+  "id" bigserial [pk]
   "username" varchar [not null]
   "password" varchar [not null]
   "name" varchar [not null]
@@ -82,11 +86,12 @@ Table "user" {
   "email" varchar [not null]
   "phone" varchar
   "active" bool [not null, default: true]
+  "is_admin" bool [not null, default: false]
   "created_at" timestamptz [not null, default: `now()`]
   "updated_at" timestamptz [not null, default: `now()`]
   "password_changed_at" timestamptz [not null, default: `now()`]
-  "role_id" int8 [not null]
-  "account_id" int8 [not null]
+  "role_id" bigserial [not null]
+  "account_id" bigserial [not null]
 
   indexes {
     (username, account_id) [unique]

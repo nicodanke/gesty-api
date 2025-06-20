@@ -21,7 +21,7 @@ services:
      - GESTY_ENVIRONMENT=dev-docker
     labels:
       - "traefik.http.routers.account.rule=
-          PathPrefix(`/v1/accounts`) ||
+          PathPrefix(`/v1/account`) ||
           PathPrefix(`/v1/users`) ||
           PathPrefix(`/v1/auth/login`)
           "

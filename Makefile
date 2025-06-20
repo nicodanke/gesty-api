@@ -13,7 +13,13 @@ generate-proto:
 run-all:
 	docker compose -f compose.base.yaml up -d --build
 
+run-dbs:
+	docker compose -f compose.base.dbs.yaml up -d --build
+
 stop-all:
 	docker compose -f compose.base.yaml down
 
-.PHONY: generate-proto run-all stop-all
+stop-dbs:
+	docker compose -f compose.base.dbs.yaml down
+
+.PHONY: generate-proto run-all stop-all run-dbs stop-dbs

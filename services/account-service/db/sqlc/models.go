@@ -17,7 +17,6 @@ type Account struct {
 	CompanyName string      `json:"company_name"`
 	Phone       pgtype.Text `json:"phone"`
 	Email       string      `json:"email"`
-	Country     string      `json:"country"`
 	WebUrl      pgtype.Text `json:"web_url"`
 	Active      bool        `json:"active"`
 	CreatedAt   time.Time   `json:"created_at"`
@@ -27,12 +26,12 @@ type Account struct {
 type AccountAddress struct {
 	AccountID  int64         `json:"account_id"`
 	Country    string        `json:"country"`
-	State      pgtype.Text   `json:"state"`
+	State      string        `json:"state"`
 	SubState   pgtype.Text   `json:"sub_state"`
-	Street     pgtype.Text   `json:"street"`
-	Number     pgtype.Text   `json:"number"`
+	Street     string        `json:"street"`
+	Number     string        `json:"number"`
 	Unit       pgtype.Text   `json:"unit"`
-	PostalCode pgtype.Text   `json:"postal_code"`
+	PostalCode string        `json:"postal_code"`
 	Lat        pgtype.Float8 `json:"lat"`
 	Lng        pgtype.Float8 `json:"lng"`
 }
@@ -46,34 +45,22 @@ type AccountModule struct {
 	Price     float64            `json:"price"`
 }
 
-type Feature struct {
-	ID   int64  `json:"id"`
-	Name string `json:"name"`
-	Code string `json:"code"`
-}
-
 type Module struct {
 	ID   int64  `json:"id"`
-	Name string `json:"name"`
 	Code string `json:"code"`
 }
 
-type ModuleFeature struct {
-	ModuleID  int64 `json:"module_id"`
-	FeatureID int64 `json:"feature_id"`
-}
-
-// Common table shared by all accounts
 type Permission struct {
 	ID       int64       `json:"id"`
-	Name     string      `json:"name"`
+	Code     string      `json:"code"`
 	ParentID pgtype.Int8 `json:"parent_id"`
 }
 
 type Role struct {
-	ID        int64  `json:"id"`
-	Name      string `json:"name"`
-	AccountID int64  `json:"account_id"`
+	ID          int64       `json:"id"`
+	Name        string      `json:"name"`
+	Description pgtype.Text `json:"description"`
+	AccountID   int64       `json:"account_id"`
 }
 
 type RolePermission struct {
@@ -88,8 +75,8 @@ type Session struct {
 	UserAgent    string    `json:"user_agent"`
 	ClientIp     string    `json:"client_ip"`
 	IsBlocked    bool      `json:"is_blocked"`
-	ExpiresAt    time.Time `json:"expires_at"`
 	CreatedAt    time.Time `json:"created_at"`
+	ExpiresAt    time.Time `json:"expires_at"`
 }
 
 type User struct {
@@ -101,10 +88,10 @@ type User struct {
 	Email             string      `json:"email"`
 	Phone             pgtype.Text `json:"phone"`
 	Active            bool        `json:"active"`
-	IsAdmin           bool        `json:"is_admin"`
 	CreatedAt         time.Time   `json:"created_at"`
 	UpdatedAt         time.Time   `json:"updated_at"`
 	PasswordChangedAt time.Time   `json:"password_changed_at"`
 	RoleID            int64       `json:"role_id"`
 	AccountID         int64       `json:"account_id"`
+	IsAdmin           bool        `json:"is_admin"`
 }

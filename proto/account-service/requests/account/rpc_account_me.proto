@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package account_service.requests.account.account_me;
+
+import "account-service/models/account.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/account";
+
+message AccountMeResponse {
+    account_service.models.account.Account account = 1;
+}

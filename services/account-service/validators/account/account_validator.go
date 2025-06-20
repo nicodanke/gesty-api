@@ -42,10 +42,3 @@ func ValidatePhone(value string) error {
 	}
 	return nil
 }
-
-func ValidateCountry(value string) error {
-	if !isValidCountry(value) {
-		return fmt.Errorf("invalid country")
-	}
-	return nil
-}

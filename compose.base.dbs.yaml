@@ -1,0 +1,31 @@
+services:
+  db-account:
+    image: postgres
+    user: postgres
+    networks:
+      - traefik-net
+    volumes:
+      - db-data-account:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=account
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+    ports:
+      - "5432:5432"
+    secrets:
+       - db_password
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data-account:
+
+secrets:
+  db_password:
+    file: db_password.txt
+
+networks:
+  traefik-net:
+    external: true
