@@ -54,7 +54,7 @@ func (server *Server) RefreshToken(ctx context.Context, req *login.RefreshTokenR
 		return nil, status.Errorf(codes.Unauthenticated, "Error: %s", err)
 	}
 
-	accessToken, accessPayload, err := server.tokenMaker.CreateToken(refreshPayload.UserID, refreshPayload.AccountID, refreshPayload.AccountCode, server.config.AccessTokenDuration)
+	accessToken, accessPayload, err := server.tokenMaker.CreateToken(refreshPayload.UserID, refreshPayload.AccountID, refreshPayload.AccountCode, refreshPayload.Permissions, refreshPayload.Modules, server.config.AccessTokenDuration)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Error: %s", err)
 	}

@@ -23,7 +23,8 @@ services:
       - "traefik.http.routers.account.rule=
           PathPrefix(`/v1/account`) ||
           PathPrefix(`/v1/users`) ||
-          PathPrefix(`/v1/auth/login`)
+          PathPrefix(`/v1/auth/login`) ||
+          PathPrefix(`/v1/auth/refresh`)
           "
       - "traefik.http.services.account.loadbalancer.server.port=8081"
     depends_on:

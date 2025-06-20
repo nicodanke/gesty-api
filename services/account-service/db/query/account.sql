@@ -35,3 +35,8 @@ RETURNING *;
 -- name: DeleteAccount :exec
 DELETE FROM account
 WHERE id = $1;
+
+-- name: GetAccountModules :many
+SELECT m.code FROM "account_module" am
+JOIN "module" m ON m.id = am.module_id
+WHERE am.account_id = $1 AND am.ended_at IS NULL;

@@ -23,3 +23,10 @@ OFFSET $3;
 -- name: DeleteUser :exec
 DELETE FROM "user"
 WHERE account_id = $1 AND id = $2;
+
+-- name: GetUserPermissions :many
+SELECT p.code FROM "user" u
+JOIN "role" r ON r.id = u.role_id
+JOIN "role_permission" rp ON rp.role_id = r.id
+JOIN "permission" p ON p.id = rp.permission_id
+WHERE u.id = $1;

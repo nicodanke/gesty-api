@@ -102,6 +102,32 @@ func (q *Queries) GetAccountByCode(ctx context.Context, code string) (Account, e
 	return i, err
 }
 
+const getAccountModules = `-- name: GetAccountModules :many
+SELECT m.code FROM "account_module" am
+JOIN "module" m ON m.id = am.module_id
+WHERE am.account_id = $1 AND am.ended_at IS NULL
+`
+
+func (q *Queries) GetAccountModules(ctx context.Context, accountID int64) ([]string, error) {
+	rows, err := q.db.Query(ctx, getAccountModules, accountID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []string{}
+	for rows.Next() {
+		var code string
+		if err := rows.Scan(&code); err != nil {
+			return nil, err
+		}
+		items = append(items, code)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listAccounts = `-- name: ListAccounts :many
 SELECT id, code, company_name, phone, email, web_url, active, created_at, updated_at FROM account
 ORDER BY company_name

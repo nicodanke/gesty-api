@@ -1,47 +1,34 @@
 package gapi
 
 import (
-	"context"
-	"fmt"
-	"strings"
+	"slices"
 
 	"github.com/nicodanke/gesty-api/shared/token"
-	"google.golang.org/grpc/metadata"
 )
 
-const (
-	authorizationHeader     = "authorization"
-	authorizationTypeBearer = "bearer"
-)
+func (server *Server) authorizeUser(payload *token.Payload, permissions [][]string) bool {
+	payloadPermissions := payload.Permissions
 
-func (server *Server) authorizeUser(ctx context.Context) (*token.Payload, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return nil, fmt.Errorf("missing metadata")
+	if slices.Contains(payloadPermissions, "A") {
+		return true
 	}
 
-	values := md.Get(authorizationHeader)
-	if len(values) == 0 {
-		return nil, fmt.Errorf("missing authorization header")
+	// For each permission group in permissions
+	for _, permissionGroup := range permissions {
+		// Check if at least one permission from the group exists in payload
+		hasOnePermission := false
+		for _, permission := range permissionGroup {
+			if slices.Contains(payloadPermissions, permission) {
+				hasOnePermission = true
+				break
+			}
+		}
+		
+		// If no permission from this group was found, return false
+		if !hasOnePermission {
+			return false
+		}
 	}
 
-	authHeader := values[0]
-	fields := strings.Fields(authHeader)
-	if len(fields) < 2 {
-		return nil, fmt.Errorf("invalid authorization header format")
-	}
-
-	authType := strings.ToLower(fields[0])
-	if authType != authorizationTypeBearer {
-		return nil, fmt.Errorf("unsupported authorization type %s", authType)
-	}
-	// The JWT token is the second field in the authorization header
-	tokenString := fields[1]
-
-	payload, err := server.tokenMaker.VerifyToken(tokenString)
-	if err != nil {
-		return nil, fmt.Errorf("inavalid access token: %s", err)
-	}
-
-	return payload, nil
+	return true
 }

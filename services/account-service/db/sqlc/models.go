@@ -88,10 +88,10 @@ type User struct {
 	Email             string      `json:"email"`
 	Phone             pgtype.Text `json:"phone"`
 	Active            bool        `json:"active"`
+	IsAdmin           bool        `json:"is_admin"`
 	CreatedAt         time.Time   `json:"created_at"`
 	UpdatedAt         time.Time   `json:"updated_at"`
 	PasswordChangedAt time.Time   `json:"password_changed_at"`
 	RoleID            int64       `json:"role_id"`
 	AccountID         int64       `json:"account_id"`
-	IsAdmin           bool        `json:"is_admin"`
 }

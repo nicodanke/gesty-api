@@ -21,11 +21,13 @@ type Querier interface {
 	DeleteUser(ctx context.Context, arg DeleteUserParams) error
 	GetAccount(ctx context.Context, id int64) (Account, error)
 	GetAccountByCode(ctx context.Context, code string) (Account, error)
+	GetAccountModules(ctx context.Context, accountID int64) ([]string, error)
 	GetRole(ctx context.Context, arg GetRoleParams) (Role, error)
 	GetRoles(ctx context.Context, arg GetRolesParams) ([]Role, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUser(ctx context.Context, arg GetUserParams) (User, error)
 	GetUserByUsername(ctx context.Context, username string) (User, error)
+	GetUserPermissions(ctx context.Context, id int64) ([]string, error)
 	GetUsers(ctx context.Context, arg GetUsersParams) ([]User, error)
 	ListAccounts(ctx context.Context, arg ListAccountsParams) ([]Account, error)
 	UpdateAccount(ctx context.Context, arg UpdateAccountParams) (Account, error)

@@ -7,13 +7,14 @@ import (
 )
 
 const (
-	ACCOUNT_NOT_ACTIVE string = "ACCOUNT_NOT_ACTIVE"
-	ACCOUNT_NOT_FOUND  string = "ACCOUNT_NOT_FOUND"
-	INTERNAL           string = "INTERNAL"
-	UNAUTHENTICATED    string = "UNAUTHENTICATED"
-	USER_NOT_ACTIVE    string = "USER_NOT_ACTIVE"
-	USER_NOT_FOUND     string = "USER_NOT_FOUND"
-	ACTION_NOT_ALLOWED string = "ACTION_NOT_ALLOWED"
+	ACCOUNT_NOT_ACTIVE 		string = "ACCOUNT_NOT_ACTIVE"
+	ACCOUNT_NOT_FOUND  		string = "ACCOUNT_NOT_FOUND"
+	INTERNAL           		string = "INTERNAL"
+	UNAUTHENTICATED    		string = "UNAUTHENTICATED"
+	USER_NOT_ACTIVE    		string = "USER_NOT_ACTIVE"
+	USER_NOT_FOUND     		string = "USER_NOT_FOUND"
+	ACTION_NOT_ALLOWED 		string = "ACTION_NOT_ALLOWED"
+	PERMISSION_NOT_FOUND	string = "PERMISSION_NOT_FOUND"
 )
 
 func fieldViolation(field string, err error) *errdetails.BadRequest_FieldViolation {

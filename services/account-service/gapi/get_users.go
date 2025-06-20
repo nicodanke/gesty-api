@@ -11,7 +11,7 @@ import (
 )
 
 func (server *Server) GetUsers(ctx context.Context, req *user.GetUsersRequest) (*user.GetUsersResponse, error) {
-	authPayload, err := server.authorizeUser(ctx)
+	authPayload, err := server.authenticateUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}

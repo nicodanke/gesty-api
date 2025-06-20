@@ -52,12 +52,29 @@ func (server *Server) Login(ctx context.Context, req *login.LoginRequest) (*logi
 		return nil, unauthenticatedError(fmt.Sprintln("Invalid password:", err))
 	}
 
-	accessToken, accessPayload, err := server.tokenMaker.CreateToken(user.ID, account.ID, account.Code, server.config.AccessTokenDuration)
+	permissions, err := server.store.GetUserPermissions(ctx, user.ID)
+	if err != nil && !errors.Is(err, db.ErrRecordNotFound) {
+		return nil, internalError(fmt.Sprintln("Failed to get permissions:", err))
+	}
+	
+
+	if user.IsAdmin {
+		permissions = append([]string{"A"}, permissions...)
+	}
+
+	modules, err := server.store.GetAccountModules(ctx, account.ID)
+	if err != nil && !errors.Is(err, db.ErrRecordNotFound) {
+		return nil, internalError(fmt.Sprintln("Failed to get modules:", err))
+	}
+	
+	fmt.Println(modules)
+
+	accessToken, accessPayload, err := server.tokenMaker.CreateToken(user.ID, account.ID, account.Code, permissions, modules, server.config.AccessTokenDuration)
 	if err != nil {
 		return nil, internalError(fmt.Sprintln("Error creating accessToken:", err))
 	}
 
-	refreshToken, refreshPayload, err := server.tokenMaker.CreateToken(user.ID, account.ID, account.Code, server.config.RefreshTokenDuration)
+	refreshToken, refreshPayload, err := server.tokenMaker.CreateToken(user.ID, account.ID, account.Code, permissions, modules, server.config.RefreshTokenDuration)
 	if err != nil {
 		return nil, internalError(fmt.Sprintln("Error creating refreshToken:", err))
 	}

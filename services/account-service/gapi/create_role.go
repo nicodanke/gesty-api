@@ -16,7 +16,7 @@ const (
 )
 
 func (server *Server) CreateRole(ctx context.Context, req *role.CreateRoleRequest) (*role.CreateRoleResponse, error) {
-	authPayload, err := server.authorizeUser(ctx)
+	authPayload, err := server.authenticateUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}

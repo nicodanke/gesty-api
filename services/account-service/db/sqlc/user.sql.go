@@ -16,7 +16,7 @@ INSERT INTO "user" (
     account_id, name, lastname, email, username, password, phone, is_admin, role_id, active
 ) VALUES (
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
-) RETURNING id, username, password, name, lastname, email, phone, active, created_at, updated_at, password_changed_at, role_id, account_id, is_admin
+) RETURNING id, username, password, name, lastname, email, phone, active, is_admin, created_at, updated_at, password_changed_at, role_id, account_id
 `
 
 type CreateUserParams struct {
@@ -55,12 +55,12 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.Email,
 		&i.Phone,
 		&i.Active,
+		&i.IsAdmin,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.PasswordChangedAt,
 		&i.RoleID,
 		&i.AccountID,
-		&i.IsAdmin,
 	)
 	return i, err
 }
@@ -81,7 +81,7 @@ func (q *Queries) DeleteUser(ctx context.Context, arg DeleteUserParams) error {
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, username, password, name, lastname, email, phone, active, created_at, updated_at, password_changed_at, role_id, account_id, is_admin FROM "user"
+SELECT id, username, password, name, lastname, email, phone, active, is_admin, created_at, updated_at, password_changed_at, role_id, account_id FROM "user"
 WHERE account_id = $1 AND id = $2 LIMIT 1
 `
 
@@ -102,18 +102,18 @@ func (q *Queries) GetUser(ctx context.Context, arg GetUserParams) (User, error) 
 		&i.Email,
 		&i.Phone,
 		&i.Active,
+		&i.IsAdmin,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.PasswordChangedAt,
 		&i.RoleID,
 		&i.AccountID,
-		&i.IsAdmin,
 	)
 	return i, err
 }
 
 const getUserByUsername = `-- name: GetUserByUsername :one
-SELECT id, username, password, name, lastname, email, phone, active, created_at, updated_at, password_changed_at, role_id, account_id, is_admin FROM "user"
+SELECT id, username, password, name, lastname, email, phone, active, is_admin, created_at, updated_at, password_changed_at, role_id, account_id FROM "user"
 WHERE username = $1 LIMIT 1
 `
 
@@ -129,18 +129,46 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 		&i.Email,
 		&i.Phone,
 		&i.Active,
+		&i.IsAdmin,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.PasswordChangedAt,
 		&i.RoleID,
 		&i.AccountID,
-		&i.IsAdmin,
 	)
 	return i, err
 }
 
+const getUserPermissions = `-- name: GetUserPermissions :many
+SELECT p.code FROM "user" u
+JOIN "role" r ON r.id = u.role_id
+JOIN "role_permission" rp ON rp.role_id = r.id
+JOIN "permission" p ON p.id = rp.permission_id
+WHERE u.id = $1
+`
+
+func (q *Queries) GetUserPermissions(ctx context.Context, id int64) ([]string, error) {
+	rows, err := q.db.Query(ctx, getUserPermissions, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []string{}
+	for rows.Next() {
+		var code string
+		if err := rows.Scan(&code); err != nil {
+			return nil, err
+		}
+		items = append(items, code)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getUsers = `-- name: GetUsers :many
-SELECT id, username, password, name, lastname, email, phone, active, created_at, updated_at, password_changed_at, role_id, account_id, is_admin FROM "user"
+SELECT id, username, password, name, lastname, email, phone, active, is_admin, created_at, updated_at, password_changed_at, role_id, account_id FROM "user"
 WHERE account_id = $1
 ORDER BY name, lastname
 LIMIT $2
@@ -171,12 +199,12 @@ func (q *Queries) GetUsers(ctx context.Context, arg GetUsersParams) ([]User, err
 			&i.Email,
 			&i.Phone,
 			&i.Active,
+			&i.IsAdmin,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.PasswordChangedAt,
 			&i.RoleID,
 			&i.AccountID,
-			&i.IsAdmin,
 		); err != nil {
 			return nil, err
 		}

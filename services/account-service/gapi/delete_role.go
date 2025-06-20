@@ -15,7 +15,7 @@ const (
 )
 
 func (server *Server) DeleteRole(ctx context.Context, req *role.DeleteRoleRequest) (*emptypb.Empty, error) {
-	authPayload, err := server.authorizeUser(ctx)
+	authPayload, err := server.authenticateUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}

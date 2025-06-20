@@ -11,7 +11,7 @@ import (
 )
 
 func (server *Server) GetRoles(ctx context.Context, req *role.GetRolesRequest) (*role.GetRolesResponse, error) {
-	authPayload, err := server.authorizeUser(ctx)
+	authPayload, err := server.authenticateUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}
