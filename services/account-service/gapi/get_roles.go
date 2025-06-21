@@ -16,6 +16,11 @@ func (server *Server) GetRoles(ctx context.Context, req *role.GetRolesRequest) (
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}
 
+	authorized := server.authorizeUser(authPayload, [][]string{{"SAR", "LR"}})
+	if !authorized {
+		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+	}
+
 	violations := validateGetRolesRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
@@ -42,8 +47,9 @@ func (server *Server) GetRoles(ctx context.Context, req *role.GetRolesRequest) (
 		return nil, internalError(fmt.Sprintln("Failed to get roles:", err))
 	}
 
+	fmt.Println(result)
 	rsp := &role.GetRolesResponse{
-		Roles: convertRoles(result),
+		Roles: convertRolesRow(result),
 	}
 	return rsp, nil
 }

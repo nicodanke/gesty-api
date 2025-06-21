@@ -34,8 +34,10 @@ const (
 	AccountService_CreateUser_FullMethodName    = "/account_service.AccountService/CreateUser"
 	AccountService_UpdateUser_FullMethodName    = "/account_service.AccountService/UpdateUser"
 	AccountService_DeleteUser_FullMethodName    = "/account_service.AccountService/DeleteUser"
+	AccountService_GetRole_FullMethodName       = "/account_service.AccountService/GetRole"
 	AccountService_GetRoles_FullMethodName      = "/account_service.AccountService/GetRoles"
 	AccountService_CreateRole_FullMethodName    = "/account_service.AccountService/CreateRole"
+	AccountService_UpdateRole_FullMethodName    = "/account_service.AccountService/UpdateRole"
 	AccountService_DeleteRole_FullMethodName    = "/account_service.AccountService/DeleteRole"
 )
 
@@ -57,8 +59,10 @@ type AccountServiceClient interface {
 	UpdateUser(ctx context.Context, in *user.UpdateUserRequest, opts ...grpc.CallOption) (*user.UpdateUserResponse, error)
 	DeleteUser(ctx context.Context, in *user.DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// ROLE
+	GetRole(ctx context.Context, in *role.GetRoleRequest, opts ...grpc.CallOption) (*role.GetRoleResponse, error)
 	GetRoles(ctx context.Context, in *role.GetRolesRequest, opts ...grpc.CallOption) (*role.GetRolesResponse, error)
 	CreateRole(ctx context.Context, in *role.CreateRoleRequest, opts ...grpc.CallOption) (*role.CreateRoleResponse, error)
+	UpdateRole(ctx context.Context, in *role.UpdateRoleRequest, opts ...grpc.CallOption) (*role.UpdateRoleResponse, error)
 	DeleteRole(ctx context.Context, in *role.DeleteRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
@@ -170,6 +174,16 @@ func (c *accountServiceClient) DeleteUser(ctx context.Context, in *user.DeleteUs
 	return out, nil
 }
 
+func (c *accountServiceClient) GetRole(ctx context.Context, in *role.GetRoleRequest, opts ...grpc.CallOption) (*role.GetRoleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(role.GetRoleResponse)
+	err := c.cc.Invoke(ctx, AccountService_GetRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accountServiceClient) GetRoles(ctx context.Context, in *role.GetRolesRequest, opts ...grpc.CallOption) (*role.GetRolesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(role.GetRolesResponse)
@@ -184,6 +198,16 @@ func (c *accountServiceClient) CreateRole(ctx context.Context, in *role.CreateRo
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(role.CreateRoleResponse)
 	err := c.cc.Invoke(ctx, AccountService_CreateRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServiceClient) UpdateRole(ctx context.Context, in *role.UpdateRoleRequest, opts ...grpc.CallOption) (*role.UpdateRoleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(role.UpdateRoleResponse)
+	err := c.cc.Invoke(ctx, AccountService_UpdateRole_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -218,8 +242,10 @@ type AccountServiceServer interface {
 	UpdateUser(context.Context, *user.UpdateUserRequest) (*user.UpdateUserResponse, error)
 	DeleteUser(context.Context, *user.DeleteUserRequest) (*emptypb.Empty, error)
 	// ROLE
+	GetRole(context.Context, *role.GetRoleRequest) (*role.GetRoleResponse, error)
 	GetRoles(context.Context, *role.GetRolesRequest) (*role.GetRolesResponse, error)
 	CreateRole(context.Context, *role.CreateRoleRequest) (*role.CreateRoleResponse, error)
+	UpdateRole(context.Context, *role.UpdateRoleRequest) (*role.UpdateRoleResponse, error)
 	DeleteRole(context.Context, *role.DeleteRoleRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
@@ -261,11 +287,17 @@ func (UnimplementedAccountServiceServer) UpdateUser(context.Context, *user.Updat
 func (UnimplementedAccountServiceServer) DeleteUser(context.Context, *user.DeleteUserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
+func (UnimplementedAccountServiceServer) GetRole(context.Context, *role.GetRoleRequest) (*role.GetRoleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRole not implemented")
+}
 func (UnimplementedAccountServiceServer) GetRoles(context.Context, *role.GetRolesRequest) (*role.GetRolesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRoles not implemented")
 }
 func (UnimplementedAccountServiceServer) CreateRole(context.Context, *role.CreateRoleRequest) (*role.CreateRoleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRole not implemented")
+}
+func (UnimplementedAccountServiceServer) UpdateRole(context.Context, *role.UpdateRoleRequest) (*role.UpdateRoleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRole not implemented")
 }
 func (UnimplementedAccountServiceServer) DeleteRole(context.Context, *role.DeleteRoleRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRole not implemented")
@@ -471,6 +503,24 @@ func _AccountService_DeleteUser_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_GetRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(role.GetRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).GetRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_GetRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).GetRole(ctx, req.(*role.GetRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AccountService_GetRoles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(role.GetRolesRequest)
 	if err := dec(in); err != nil {
@@ -503,6 +553,24 @@ func _AccountService_CreateRole_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AccountServiceServer).CreateRole(ctx, req.(*role.CreateRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountService_UpdateRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(role.UpdateRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).UpdateRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_UpdateRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).UpdateRole(ctx, req.(*role.UpdateRoleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -573,12 +641,20 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AccountService_DeleteUser_Handler,
 		},
 		{
+			MethodName: "GetRole",
+			Handler:    _AccountService_GetRole_Handler,
+		},
+		{
 			MethodName: "GetRoles",
 			Handler:    _AccountService_GetRoles_Handler,
 		},
 		{
 			MethodName: "CreateRole",
 			Handler:    _AccountService_CreateRole_Handler,
+		},
+		{
+			MethodName: "UpdateRole",
+			Handler:    _AccountService_UpdateRole_Handler,
 		},
 		{
 			MethodName: "DeleteRole",

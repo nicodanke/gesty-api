@@ -7,4 +7,6 @@ option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service
 message Role {
     int64 id = 1;
     string name = 2;
+    string description = 3;
+    repeated int64 permissionIds = 4;
 }

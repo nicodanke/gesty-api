@@ -10,6 +10,9 @@ import (
 type Store interface {
 	Querier
 	CreateAccountTx(ctx context.Context, arg CreateAccountTxParams) (CreateAccountTxResult, error)
+	CreateRoleTx(ctx context.Context, arg CreateRoleTxParams) (CreateRoleTxResult, error)
+	UpdateRoleTx(ctx context.Context, arg UpdateRoleTxParams) (UpdateRoleTxResult, error)
+	DeleteRoleTx(ctx context.Context, arg DeleteRoleTxParams) error
 }
 
 // SQLStore provides all functions to execute SQL queries and transactions

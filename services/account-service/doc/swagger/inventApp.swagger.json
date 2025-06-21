@@ -83,6 +83,14 @@
         }
       }
     },
+    "get_roleGetRoleResponse": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "$ref": "#/definitions/roleRole"
+        }
+      }
+    },
     "get_rolesGetRolesResponse": {
       "type": "object",
       "properties": {
@@ -170,6 +178,16 @@
         },
         "name": {
           "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "permissionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         }
       }
     },
@@ -197,6 +215,14 @@
       "properties": {
         "account": {
           "$ref": "#/definitions/accountAccount"
+        }
+      }
+    },
+    "update_roleUpdateRoleResponse": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "$ref": "#/definitions/roleRole"
         }
       }
     },

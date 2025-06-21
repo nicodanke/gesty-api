@@ -4,3 +4,7 @@ INSERT INTO role_permission (
 ) VALUES (
     $1, $2
 ) RETURNING *;
+
+-- name: DeleteRolePermissions :exec
+DELETE FROM role_permission
+WHERE role_id = $1;

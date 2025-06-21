@@ -7,23 +7,26 @@ package db
 
 import (
 	"context"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createRole = `-- name: CreateRole :one
 INSERT INTO "role" (
-    account_id, name
+    account_id, name, description
 ) VALUES (
-    $1, $2
+    $1, $2, $3
 ) RETURNING id, name, description, account_id
 `
 
 type CreateRoleParams struct {
-	AccountID int64  `json:"account_id"`
-	Name      string `json:"name"`
+	AccountID   int64       `json:"account_id"`
+	Name        string      `json:"name"`
+	Description pgtype.Text `json:"description"`
 }
 
 func (q *Queries) CreateRole(ctx context.Context, arg CreateRoleParams) (Role, error) {
-	row := q.db.QueryRow(ctx, createRole, arg.AccountID, arg.Name)
+	row := q.db.QueryRow(ctx, createRole, arg.AccountID, arg.Name, arg.Description)
 	var i Role
 	err := row.Scan(
 		&i.ID,
@@ -50,8 +53,16 @@ func (q *Queries) DeleteRole(ctx context.Context, arg DeleteRoleParams) error {
 }
 
 const getRole = `-- name: GetRole :one
-SELECT id, name, description, account_id FROM "role"
-WHERE account_id = $1 AND id = $2 LIMIT 1
+SELECT r.id, r.name, r.description,
+    COALESCE(
+        ARRAY_AGG(rp.permission_id) FILTER (WHERE rp.permission_id IS NOT NULL),
+        '{}'::int8[]
+    ) as permission_ids
+FROM "role" r
+LEFT JOIN role_permission rp ON r.id = rp.role_id
+WHERE r.account_id = $1 AND id = $2
+GROUP BY r.id, r.name, r.description
+LIMIT 1
 `
 
 type GetRoleParams struct {
@@ -59,22 +70,36 @@ type GetRoleParams struct {
 	ID        int64 `json:"id"`
 }
 
-func (q *Queries) GetRole(ctx context.Context, arg GetRoleParams) (Role, error) {
+type GetRoleRow struct {
+	ID            int64       `json:"id"`
+	Name          string      `json:"name"`
+	Description   pgtype.Text `json:"description"`
+	PermissionIds interface{} `json:"permission_ids"`
+}
+
+func (q *Queries) GetRole(ctx context.Context, arg GetRoleParams) (GetRoleRow, error) {
 	row := q.db.QueryRow(ctx, getRole, arg.AccountID, arg.ID)
-	var i Role
+	var i GetRoleRow
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
 		&i.Description,
-		&i.AccountID,
+		&i.PermissionIds,
 	)
 	return i, err
 }
 
 const getRoles = `-- name: GetRoles :many
-SELECT id, name, description, account_id FROM "role"
-WHERE account_id = $1
-ORDER BY name
+SELECT r.id, r.name, r.description,
+    COALESCE(
+        ARRAY_AGG(rp.permission_id) FILTER (WHERE rp.permission_id IS NOT NULL),
+        '{}'::int8[]
+    ) as permission_ids
+FROM "role" r
+LEFT JOIN role_permission rp ON r.id = rp.role_id
+WHERE r.account_id = $1
+GROUP BY r.id, r.name, r.description
+ORDER BY r.name
 LIMIT $2
 OFFSET $3
 `
@@ -85,20 +110,27 @@ type GetRolesParams struct {
 	Offset    int32 `json:"offset"`
 }
 
-func (q *Queries) GetRoles(ctx context.Context, arg GetRolesParams) ([]Role, error) {
+type GetRolesRow struct {
+	ID            int64       `json:"id"`
+	Name          string      `json:"name"`
+	Description   pgtype.Text `json:"description"`
+	PermissionIds interface{} `json:"permission_ids"`
+}
+
+func (q *Queries) GetRoles(ctx context.Context, arg GetRolesParams) ([]GetRolesRow, error) {
 	rows, err := q.db.Query(ctx, getRoles, arg.AccountID, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Role{}
+	items := []GetRolesRow{}
 	for rows.Next() {
-		var i Role
+		var i GetRolesRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
 			&i.Description,
-			&i.AccountID,
+			&i.PermissionIds,
 		); err != nil {
 			return nil, err
 		}
@@ -108,4 +140,38 @@ func (q *Queries) GetRoles(ctx context.Context, arg GetRolesParams) ([]Role, err
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateRole = `-- name: UpdateRole :one
+UPDATE "role"
+SET
+    name = COALESCE($1, name),
+    description = COALESCE($2, description)
+WHERE
+    account_id = $3 AND id = $4
+RETURNING id, name, description, account_id
+`
+
+type UpdateRoleParams struct {
+	Name        pgtype.Text `json:"name"`
+	Description pgtype.Text `json:"description"`
+	AccountID   int64       `json:"account_id"`
+	ID          int64       `json:"id"`
+}
+
+func (q *Queries) UpdateRole(ctx context.Context, arg UpdateRoleParams) (Role, error) {
+	row := q.db.QueryRow(ctx, updateRole,
+		arg.Name,
+		arg.Description,
+		arg.AccountID,
+		arg.ID,
+	)
+	var i Role
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.AccountID,
+	)
+	return i, err
 }

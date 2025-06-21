@@ -25,6 +25,8 @@ type Role struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	PermissionIds []int64                `protobuf:"varint,4,rep,packed,name=permissionIds,proto3" json:"permissionIds,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -73,14 +75,30 @@ func (x *Role) GetName() string {
 	return ""
 }
 
+func (x *Role) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *Role) GetPermissionIds() []int64 {
+	if x != nil {
+		return x.PermissionIds
+	}
+	return nil
+}
+
 var File_account_service_models_role_proto protoreflect.FileDescriptor
 
 const file_account_service_models_role_proto_rawDesc = "" +
 	"\n" +
-	"!account-service/models/role.proto\x12\x1baccount_service.models.role\"*\n" +
+	"!account-service/models/role.proto\x12\x1baccount_service.models.role\"r\n" +
 	"\x04Role\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04nameBDZBgithub.com/nicodanke/gesty-api/shared/proto/account-service/modelsb\x06proto3"
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12$\n" +
+	"\rpermissionIds\x18\x04 \x03(\x03R\rpermissionIdsBDZBgithub.com/nicodanke/gesty-api/shared/proto/account-service/modelsb\x06proto3"
 
 var (
 	file_account_service_models_role_proto_rawDescOnce sync.Once

@@ -25,6 +25,8 @@ const (
 type CreateRoleRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description   *string                `protobuf:"bytes,2,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	PermissionIds []int64                `protobuf:"varint,3,rep,packed,name=permissionIds,proto3" json:"permissionIds,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -64,6 +66,20 @@ func (x *CreateRoleRequest) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *CreateRoleRequest) GetDescription() string {
+	if x != nil && x.Description != nil {
+		return *x.Description
+	}
+	return ""
+}
+
+func (x *CreateRoleRequest) GetPermissionIds() []int64 {
+	if x != nil {
+		return x.PermissionIds
+	}
+	return nil
 }
 
 type CreateRoleResponse struct {
@@ -114,9 +130,12 @@ var File_account_service_requests_role_rpc_create_role_proto protoreflect.FileDe
 
 const file_account_service_requests_role_rpc_create_role_proto_rawDesc = "" +
 	"\n" +
-	"3account-service/requests/role/rpc_create_role.proto\x12)account_service.requests.role.create_role\x1a!account-service/models/role.proto\"'\n" +
+	"3account-service/requests/role/rpc_create_role.proto\x12)account_service.requests.role.create_role\x1a!account-service/models/role.proto\"\x84\x01\n" +
 	"\x11CreateRoleRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"K\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
+	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01\x12$\n" +
+	"\rpermissionIds\x18\x03 \x03(\x03R\rpermissionIdsB\x0e\n" +
+	"\f_description\"K\n" +
 	"\x12CreateRoleResponse\x125\n" +
 	"\x04role\x18\x01 \x01(\v2!.account_service.models.role.RoleR\x04roleBKZIgithub.com/nicodanke/gesty-api/shared/proto/account-service/requests/roleb\x06proto3"
 
@@ -152,6 +171,7 @@ func file_account_service_requests_role_rpc_create_role_proto_init() {
 	if File_account_service_requests_role_rpc_create_role_proto != nil {
 		return
 	}
+	file_account_service_requests_role_rpc_create_role_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

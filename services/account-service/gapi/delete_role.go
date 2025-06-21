@@ -20,12 +20,17 @@ func (server *Server) DeleteRole(ctx context.Context, req *role.DeleteRoleReques
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}
 
-	arg := db.DeleteRoleParams{
+	authorized := server.authorizeUser(authPayload, [][]string{{"SAR", "DR"}})
+	if !authorized {
+		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+	}
+
+	arg := db.DeleteRoleTxParams{
 		AccountID: authPayload.AccountID,
 		ID:        req.GetId(),
 	}
 
-	err = server.store.DeleteRole(ctx, arg)
+	err = server.store.DeleteRoleTx(ctx, arg)
 	if err != nil {
 		return nil, internalError(fmt.Sprintln("Failed to delete role with id:", req.GetId(), err))
 	}

@@ -51,12 +51,58 @@ func convertRole(role db.Role) *models.Role {
 	}
 }
 
-func convertRoles(roles []db.Role) []*models.Role {
+func convertRolesRowEach(role db.GetRolesRow) *models.Role {
+	permissionIds := make([]int64, 0)
+	for _, v := range role.PermissionIds.([]interface{}) {
+		permissionIds = append(permissionIds, v.(int64))
+	}
+
+	return &models.Role{
+		Id:          role.ID,
+		Name:        role.Name,
+		Description: role.Description.String,
+		PermissionIds: permissionIds,
+	}
+}
+
+func convertRolesRow(roles []db.GetRolesRow) []*models.Role {
 	result := make([]*models.Role, len(roles))
 
 	for i, v := range roles {
-		result[i] = convertRole(v)
+		result[i] = convertRolesRowEach(v)
 	}
 
 	return result
+}
+
+func convertRoleRow(role db.GetRoleRow) *models.Role {
+	permissionIds := make([]int64, 0)
+	for _, v := range role.PermissionIds.([]interface{}) {
+		permissionIds = append(permissionIds, v.(int64))
+	}
+
+	return &models.Role{
+		Id:          role.ID,
+		Name:        role.Name,
+		Description: role.Description.String,
+		PermissionIds: permissionIds,
+	}
+}
+
+func convertRoleCreate(role db.CreateRoleTxResult) *models.Role {
+	return &models.Role{
+		Id:   role.Role.ID,
+		Name: role.Role.Name,
+		Description: role.Role.Description.String,
+		PermissionIds: role.PermissionIDs,
+	}
+}
+
+func convertRoleUpdate(role db.UpdateRoleTxResult) *models.Role {
+	return &models.Role{
+		Id:   role.Role.ID,
+		Name: role.Role.Name,
+		Description: role.Role.Description.String,
+		PermissionIds: role.PermissionIDs,
+	}
 }

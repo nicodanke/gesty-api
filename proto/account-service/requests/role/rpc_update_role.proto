@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package account_service.requests.role.update_role;
+
+import "account-service/models/role.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role";
+
+message UpdateRoleRequest {
+    int64 id = 1;
+    optional string name = 2;
+    optional string description = 3;
+    repeated int64 permissionIds = 4;
+}
+
+message UpdateRoleResponse {
+    account_service.models.role.Role role = 1;
+}

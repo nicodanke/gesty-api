@@ -21,23 +21,30 @@ func (server *Server) CreateRole(ctx context.Context, req *role.CreateRoleReques
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}
 
+	authorized := server.authorizeUser(authPayload, [][]string{{"SAR", "CR"}})
+	if !authorized {
+		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+	}
+
 	violations := validateCreateRoleRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
 	}
 
-	arg := db.CreateRoleParams{
-		Name:      req.GetName(),
-		AccountID: authPayload.AccountID,
+	arg := db.CreateRoleTxParams{
+		AccountID:      authPayload.AccountID,
+		Name:           req.GetName(),
+		Description:    req.GetDescription(),
+		PermissionIDs:  req.GetPermissionIds(),
 	}
 
-	result, err := server.store.CreateRole(ctx, arg)
+	result, err := server.store.CreateRoleTx(ctx, arg)
 	if err != nil {
 		return nil, internalError(fmt.Sprintln("Failed to create role", err))
 	}
 
 	rsp := &role.CreateRoleResponse{
-		Role: convertRole(result),
+		Role: convertRoleCreate(result),
 	}
 
 	// Notify role creation
