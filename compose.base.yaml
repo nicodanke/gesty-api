@@ -23,6 +23,7 @@ services:
       - "traefik.http.routers.account.rule=
           PathPrefix(`/v1/account`) ||
           PathPrefix(`/v1/users`) ||
+          PathPrefix(`/v1/roles`) ||
           PathPrefix(`/v1/auth/login`) ||
           PathPrefix(`/v1/auth/refresh`)
           "
