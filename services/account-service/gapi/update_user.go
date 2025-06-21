@@ -7,10 +7,10 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
-	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user"
 	"github.com/nicodanke/gesty-api/services/account-service/sse"
 	"github.com/nicodanke/gesty-api/services/account-service/validators"
 	userValidator "github.com/nicodanke/gesty-api/services/account-service/validators/user"
+	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
@@ -39,7 +39,7 @@ func (server *Server) UpdateUser(ctx context.Context, req *user.UpdateUserReques
 
 	getRoleParams := db.GetRoleParams{
 		AccountID: authPayload.AccountID,
-		ID: req.GetRoleId(),
+		ID:        req.GetRoleId(),
 	}
 
 	_, err = server.store.GetRole(ctx, getRoleParams)
@@ -49,7 +49,7 @@ func (server *Server) UpdateUser(ctx context.Context, req *user.UpdateUserReques
 
 	arg := db.UpdateUserParams{
 		AccountID: authPayload.AccountID,
-		ID: req.GetId(),
+		ID:        req.GetId(),
 		Name: pgtype.Text{
 			String: req.GetName(),
 			Valid:  req.Name != nil,
@@ -79,7 +79,8 @@ func (server *Server) UpdateUser(ctx context.Context, req *user.UpdateUserReques
 			Valid: req.IsAdmin != nil,
 		},
 		UpdatedAt: pgtype.Timestamptz{
-			Time: time.Now().UTC(),
+			Time:  time.Now().UTC(),
+			Valid: true,
 		},
 	}
 

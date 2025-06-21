@@ -3,22 +3,23 @@ package db
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
 // UpdateRoleTxParams contains the input parameters to update a role
 type UpdateRoleTxParams struct {
-	AccountID      int64   `json:"account_id"`
-	ID             int64   `json:"id"`
-	Name           pgtype.Text  `json:"name"`
-	Description    pgtype.Text  `json:"description"`
-	PermissionIDs  []int64 `json:"permission_ids"`
+	AccountID     int64       `json:"account_id"`
+	ID            int64       `json:"id"`
+	Name          pgtype.Text `json:"name"`
+	Description   pgtype.Text `json:"description"`
+	PermissionIDs []int64     `json:"permission_ids"`
 }
 
 // UpdateRoleTxResult is the result of the role update
 type UpdateRoleTxResult struct {
-	Role Role `json:"role"`
+	Role          Role    `json:"role"`
 	PermissionIDs []int64 `json:"permissions_ids"`
 }
 
@@ -31,10 +32,14 @@ func (store *SQLStore) UpdateRoleTx(ctx context.Context, arg UpdateRoleTxParams)
 
 		// Updates Role
 		result.Role, err = q.UpdateRole(ctx, UpdateRoleParams{
-			AccountID: 		arg.AccountID,
-			ID:             arg.ID,
-			Name:      		arg.Name,
-			Description: 	arg.Description,
+			AccountID:   arg.AccountID,
+			ID:          arg.ID,
+			Name:        arg.Name,
+			Description: arg.Description,
+			UpdatedAt: pgtype.Timestamptz{
+				Time:  time.Now().UTC(),
+				Valid: true,
+			},
 		})
 
 		if err != nil {

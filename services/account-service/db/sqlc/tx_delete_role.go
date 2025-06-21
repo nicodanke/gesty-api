@@ -7,12 +7,12 @@ import (
 
 // DeleteRoleTxParams contains the input parameters to delete a role
 type DeleteRoleTxParams struct {
-	AccountID      int64   `json:"account_id"`
-	ID             int64   `json:"id"`
+	AccountID int64 `json:"account_id"`
+	ID        int64 `json:"id"`
 }
 
 // DeleteRoleTx performs the deletion of the role.
-func (store *SQLStore) DeleteRoleTx(ctx context.Context, arg DeleteRoleTxParams) (error) {
+func (store *SQLStore) DeleteRoleTx(ctx context.Context, arg DeleteRoleTxParams) error {
 
 	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
@@ -25,10 +25,7 @@ func (store *SQLStore) DeleteRoleTx(ctx context.Context, arg DeleteRoleTxParams)
 		}
 
 		// Deletes Role
-		err = q.DeleteRole(ctx, DeleteRoleParams{
-			AccountID: arg.AccountID,
-			ID:        arg.ID,
-		})
+		err = q.DeleteRole(ctx, DeleteRoleParams(arg))
 
 		if err != nil {
 			fmt.Println("error deleting role", err)

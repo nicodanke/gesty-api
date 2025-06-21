@@ -16,7 +16,7 @@ INSERT INTO "role" (
     account_id, name, description
 ) VALUES (
     $1, $2, $3
-) RETURNING id, name, description, account_id
+) RETURNING id, name, description, account_id, created_at, updated_at
 `
 
 type CreateRoleParams struct {
@@ -33,6 +33,8 @@ func (q *Queries) CreateRole(ctx context.Context, arg CreateRoleParams) (Role, e
 		&i.Name,
 		&i.Description,
 		&i.AccountID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
 	)
 	return i, err
 }
@@ -146,23 +148,26 @@ const updateRole = `-- name: UpdateRole :one
 UPDATE "role"
 SET
     name = COALESCE($1, name),
-    description = COALESCE($2, description)
+    description = COALESCE($2, description),
+    updated_at = COALESCE($3, updated_at)
 WHERE
-    account_id = $3 AND id = $4
-RETURNING id, name, description, account_id
+    account_id = $4 AND id = $5
+RETURNING id, name, description, account_id, created_at, updated_at
 `
 
 type UpdateRoleParams struct {
-	Name        pgtype.Text `json:"name"`
-	Description pgtype.Text `json:"description"`
-	AccountID   int64       `json:"account_id"`
-	ID          int64       `json:"id"`
+	Name        pgtype.Text        `json:"name"`
+	Description pgtype.Text        `json:"description"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
+	AccountID   int64              `json:"account_id"`
+	ID          int64              `json:"id"`
 }
 
 func (q *Queries) UpdateRole(ctx context.Context, arg UpdateRoleParams) (Role, error) {
 	row := q.db.QueryRow(ctx, updateRole,
 		arg.Name,
 		arg.Description,
+		arg.UpdatedAt,
 		arg.AccountID,
 		arg.ID,
 	)
@@ -172,6 +177,8 @@ func (q *Queries) UpdateRole(ctx context.Context, arg UpdateRoleParams) (Role, e
 		&i.Name,
 		&i.Description,
 		&i.AccountID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
 	)
 	return i, err
 }

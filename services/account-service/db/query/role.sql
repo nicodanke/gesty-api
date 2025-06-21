@@ -39,7 +39,8 @@ WHERE account_id = $1 AND id = $2;
 UPDATE "role"
 SET
     name = COALESCE(sqlc.narg(name), name),
-    description = COALESCE(sqlc.narg(description), description)
+    description = COALESCE(sqlc.narg(description), description),
+    updated_at = COALESCE(sqlc.narg(updated_at), updated_at)
 WHERE
     account_id = sqlc.arg(account_id) AND id = sqlc.arg(id)
 RETURNING *;

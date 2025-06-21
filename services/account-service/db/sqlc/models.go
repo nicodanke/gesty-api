@@ -61,6 +61,8 @@ type Role struct {
 	Name        string      `json:"name"`
 	Description pgtype.Text `json:"description"`
 	AccountID   int64       `json:"account_id"`
+	CreatedAt   time.Time   `json:"created_at"`
+	UpdatedAt   time.Time   `json:"updated_at"`
 }
 
 type RolePermission struct {
