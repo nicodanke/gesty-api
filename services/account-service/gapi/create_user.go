@@ -12,6 +12,7 @@ import (
 	"github.com/nicodanke/gesty-api/services/account-service/validators"
 	userValidator "github.com/nicodanke/gesty-api/services/account-service/validators/user"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -19,6 +20,8 @@ const (
 )
 
 func (server *Server) CreateUser(ctx context.Context, req *user.CreateUserRequest) (*user.CreateUserResponse, error) {
+	log.Info().Str("method", "CreateUser").Str("request", fmt.Sprintf("%+v", req)).Msg("Processing CreateUser request")
+
 	authPayload, err := server.authenticateUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
@@ -26,7 +29,7 @@ func (server *Server) CreateUser(ctx context.Context, req *user.CreateUserReques
 
 	authorized := server.authorizeUser(authPayload, [][]string{{"SAU", "CU"}})
 	if !authorized {
-		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+		return nil, permissionDeniedError(fmt.Sprintln("User not authorized, missing permission: SAU or CU"))
 	}
 
 	violations := validateCreateUserRequest(req)
@@ -41,8 +44,7 @@ func (server *Server) CreateUser(ctx context.Context, req *user.CreateUserReques
 
 	role, err := server.store.GetRole(ctx, db.GetRoleParams{AccountID: authPayload.AccountID, ID: req.GetRoleId()})
 	if err != nil {
-		violations = append(violations, fieldViolation("roleId", fmt.Errorf("error checking if role is  valid: %w", err)))
-		return nil, invalidArgumentError(violations)
+		return nil, conflictError("", fmt.Sprintln("Role not found"), "role_id")
 	}
 
 	arg := db.CreateUserParams{
@@ -63,6 +65,16 @@ func (server *Server) CreateUser(ctx context.Context, req *user.CreateUserReques
 
 	result, err := server.store.CreateUser(ctx, arg)
 	if err != nil {
+		errCode := db.ErrorCode(err)
+		if errCode == db.UniqueViolation {
+			constraintName := db.ConstraintName(err)
+			return nil, conflictError(CONFLICT_UNIQUE, fmt.Sprintln("Failed to create user due to unique constraint violation"), constraintName)
+		}
+		if errCode == db.ForeignKeyViolation {
+			constraintName := db.ConstraintName(err)
+			return nil, conflictError(CONFLICT_FK, fmt.Sprintln("Failed to create user due to foreign key constraint violation"), constraintName)
+		}
+
 		return nil, internalError(fmt.Sprintln("Failed to create user", err))
 	}
 

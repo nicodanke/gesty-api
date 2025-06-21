@@ -11,13 +11,13 @@ import (
 	"github.com/nicodanke/gesty-api/services/account-service/validators"
 	accountValidator "github.com/nicodanke/gesty-api/services/account-service/validators/account"
 	userValidator "github.com/nicodanke/gesty-api/services/account-service/validators/user"
+	"github.com/rs/zerolog/log"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func (server *Server) CreateAccount(ctx context.Context, req *account.CreateAccountRequest) (*account.CreateAccountResponse, error) {
-	fmt.Println("CreateAccount")
+	log.Info().Str("method", "CreateAccount").Str("request", fmt.Sprintf("%+v", req)).Msg("Processing CreateAccount request")
+
 	violations := validateCreateAccountRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
@@ -25,7 +25,7 @@ func (server *Server) CreateAccount(ctx context.Context, req *account.CreateAcco
 
 	hashedPassword, err := utils.HashPassword(req.GetPassword())
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "Failed to hash password: %s", err)
+		return nil, internalError(fmt.Sprintln("Failed to hash password:", err))
 	}
 
 	code := strings.ReplaceAll(req.GetCompanyName(), " ", "")
@@ -43,9 +43,15 @@ func (server *Server) CreateAccount(ctx context.Context, req *account.CreateAcco
 	if err != nil {
 		errCode := db.ErrorCode(err)
 		if errCode == db.UniqueViolation {
-			return nil, status.Error(codes.Internal, "Failed to create account: code already in use")
+			constraintName := db.ConstraintName(err)
+			return nil, conflictError(CONFLICT_UNIQUE,fmt.Sprintln("Failed to create account due to unique constraint violation"), constraintName)
 		}
-		return nil, status.Errorf(codes.Internal, "Fail to create account: %s", err)
+		if errCode == db.ForeignKeyViolation {
+			constraintName := db.ConstraintName(err)
+			return nil, conflictError(CONFLICT_FK, fmt.Sprintln("Failed to create account due to foreign key constraint violation"), constraintName)
+		}
+
+		return nil, internalError(fmt.Sprintln("Failed to create account:", err))
 	}
 
 	rsp := &account.CreateAccountResponse{

@@ -11,9 +11,8 @@ import (
 	"github.com/nicodanke/gesty-api/services/account-service/sse"
 	"github.com/nicodanke/gesty-api/services/account-service/validators"
 	userValidator "github.com/nicodanke/gesty-api/services/account-service/validators/user"
+	"github.com/rs/zerolog/log"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 const (
@@ -21,6 +20,8 @@ const (
 )
 
 func (server *Server) UpdateUser(ctx context.Context, req *user.UpdateUserRequest) (*user.UpdateUserResponse, error) {
+	log.Info().Str("method", "UpdateUser").Str("request", fmt.Sprintf("%+v", req)).Msg("Processing UpdateUser request")
+
 	authPayload, err := server.authenticateUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
@@ -28,7 +29,7 @@ func (server *Server) UpdateUser(ctx context.Context, req *user.UpdateUserReques
 
 	authorized := server.authorizeUser(authPayload, [][]string{{"SAU", "UU"}})
 	if !authorized {
-		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+		return nil, permissionDeniedError(fmt.Sprintln("User not authorized, missing permission: SAU or UU"))
 	}
 
 	violations := validateUpdateUserRequest(req)
@@ -43,7 +44,7 @@ func (server *Server) UpdateUser(ctx context.Context, req *user.UpdateUserReques
 
 	_, err = server.store.GetRole(ctx, getRoleParams)
 	if err != nil {
-		return nil, unprocessableError("INVALID_ARGUMENT", fmt.Sprintln("Role not found"))
+		return nil, conflictError("", fmt.Sprintln("Role not found"), "role_id")
 	}
 
 	arg := db.UpdateUserParams{
@@ -84,7 +85,17 @@ func (server *Server) UpdateUser(ctx context.Context, req *user.UpdateUserReques
 
 	result, err := server.store.UpdateUser(ctx, arg)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "Fail to update user: %s", err)
+		errCode := db.ErrorCode(err)
+		if errCode == db.UniqueViolation {
+			constraintName := db.ConstraintName(err)
+			return nil, conflictError(CONFLICT_UNIQUE, fmt.Sprintln("Failed to update user due to unique constraint violation"), constraintName)
+		}
+		if errCode == db.ForeignKeyViolation {
+			constraintName := db.ConstraintName(err)
+			return nil, conflictError(CONFLICT_FK, fmt.Sprintln("Failed to update user due to foreign key constraint violation"), constraintName)
+		}
+
+		return nil, internalError(fmt.Sprintln("Failed to update user", err))
 	}
 
 	rsp := &user.UpdateUserResponse{

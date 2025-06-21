@@ -7,10 +7,13 @@ import (
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
 	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user"
 	"github.com/nicodanke/gesty-api/services/account-service/validators"
+	"github.com/rs/zerolog/log"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
 func (server *Server) GetUsers(ctx context.Context, req *user.GetUsersRequest) (*user.GetUsersResponse, error) {
+	log.Info().Str("method", "GetUsers").Str("request", fmt.Sprintf("%+v", req)).Msg("Processing GetUsers request")
+
 	authPayload, err := server.authenticateUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
@@ -18,7 +21,7 @@ func (server *Server) GetUsers(ctx context.Context, req *user.GetUsersRequest) (
 
 	authorized := server.authorizeUser(authPayload, [][]string{{"SAU", "LU"}})
 	if !authorized {
-		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+		return nil, permissionDeniedError(fmt.Sprintln("User not authorized, missing permission: SAU or LU"))
 	}
 
 	violations := validateGetUsersRequest(req)

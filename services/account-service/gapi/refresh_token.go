@@ -13,9 +13,12 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"github.com/rs/zerolog/log"
 )
 
 func (server *Server) RefreshToken(ctx context.Context, req *login.RefreshTokenRequest) (*login.RefreshTokenResponse, error) {
+	log.Info().Str("method", "RefreshToken").Str("request", fmt.Sprintf("%+v", req)).Msg("Processing RefreshToken request")
+
 	violations := validateRefreshTokenRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

@@ -7,10 +7,13 @@ import (
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
 	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role"
 	"github.com/nicodanke/gesty-api/services/account-service/validators"
+	"github.com/rs/zerolog/log"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
 func (server *Server) GetRoles(ctx context.Context, req *role.GetRolesRequest) (*role.GetRolesResponse, error) {
+	log.Info().Str("method", "GetRoles").Str("request", fmt.Sprintf("%+v", req)).Msg("Processing GetRoles request")
+	
 	authPayload, err := server.authenticateUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
@@ -18,7 +21,7 @@ func (server *Server) GetRoles(ctx context.Context, req *role.GetRolesRequest) (
 
 	authorized := server.authorizeUser(authPayload, [][]string{{"SAR", "LR"}})
 	if !authorized {
-		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+		return nil, permissionDeniedError(fmt.Sprintln("User not authorized, missing permission: SAR or LR"))
 	}
 
 	violations := validateGetRolesRequest(req)

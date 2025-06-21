@@ -14,9 +14,12 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"github.com/rs/zerolog/log"
 )
 
 func (server *Server) Login(ctx context.Context, req *login.LoginRequest) (*login.LoginResponse, error) {
+	log.Info().Str("method", "Login").Str("request", fmt.Sprintf("%+v", req)).Msg("Processing Login request")
+
 	violations := validateLoginRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)

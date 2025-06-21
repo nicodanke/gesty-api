@@ -7,14 +7,23 @@ import (
 )
 
 const (
-	ACCOUNT_NOT_ACTIVE 		string = "ACCOUNT_NOT_ACTIVE"
-	ACCOUNT_NOT_FOUND  		string = "ACCOUNT_NOT_FOUND"
 	INTERNAL           		string = "INTERNAL"
 	UNAUTHENTICATED    		string = "UNAUTHENTICATED"
-	USER_NOT_ACTIVE    		string = "USER_NOT_ACTIVE"
-	USER_NOT_FOUND     		string = "USER_NOT_FOUND"
+	FORBIDDEN          		string = "FORBIDDEN"
+	UNPROCESSABLE_ENTITY    string = "UNPROCESSABLE_ENTITY"
+	CONFLICT                string = "CONFLICT"
+	CONFLICT_FK             string = "CONFLICT_FK"
+	CONFLICT_UNIQUE         string = "CONFLICT_UNIQUE"
+	
 	ACTION_NOT_ALLOWED 		string = "ACTION_NOT_ALLOWED"
-	PERMISSION_NOT_FOUND	string = "PERMISSION_NOT_FOUND"
+
+	ACCOUNT_NOT_ACTIVE 		string = "ACCOUNT_NOT_ACTIVE"
+	USER_NOT_ACTIVE    		string = "USER_NOT_ACTIVE"
+
+	NOT_FOUND	            string = "NOT_FOUND"
+	ACCOUNT_NOT_FOUND  		string = "ACCOUNT_NOT_FOUND"
+	USER_NOT_FOUND     		string = "USER_NOT_FOUND"
+	ROLE_NOT_FOUND     		string = "ROLE_NOT_FOUND"
 )
 
 func fieldViolation(field string, err error) *errdetails.BadRequest_FieldViolation {
@@ -24,9 +33,10 @@ func fieldViolation(field string, err error) *errdetails.BadRequest_FieldViolati
 	}
 }
 
+// This error returns a 400 status code
 func invalidArgumentError(violations []*errdetails.BadRequest_FieldViolation) error {
 	badRequest := &errdetails.BadRequest{FieldViolations: violations}
-	statusInvalid := status.New(codes.InvalidArgument, "invalid parameters")
+	statusInvalid := status.New(codes.InvalidArgument, "Invalid parameters")
 	statusDetails, err := statusInvalid.WithDetails(badRequest)
 	if err != nil {
 		return statusInvalid.Err()
@@ -34,35 +44,80 @@ func invalidArgumentError(violations []*errdetails.BadRequest_FieldViolation) er
 	return statusDetails.Err()
 }
 
-func notFoundError(code string, msg string) error {
-	return GetError(codes.NotFound, code, msg)
+// This error returns a 404 status code
+func notFoundError(msg string, reason string) error {
+	if msg == "" {
+		msg = NOT_FOUND
+	}
+	return GetError(codes.NotFound, msg, reason)
 }
 
+// This error returns a 401 status code
 func unauthenticatedError(msg string) error {
 	return GetError(codes.Unauthenticated, UNAUTHENTICATED, msg)
 }
 
-func internalError(msg string) error {
-	return GetError(codes.Internal, INTERNAL, msg)
+// This error returns a 500 status code
+func internalError(reason string) error {
+	return GetError(codes.Internal, INTERNAL, reason)
 }
 
-func unprocessableError(code string, msg string) error {
-	return GetError(codes.Code(422), code, msg)
-}
-
-func permissionDeniedError(code string, msg string) error {
-	return GetError(codes.PermissionDenied, code, msg)
-}
-
-func GetError(code codes.Code, codeStr string, msg string) error {
-	st := status.New(code, msg)
-	ds, err := st.WithDetails(
-		&errdetails.ErrorInfo{
-			Reason: codeStr,
-		},
-	)
-	if err != nil {
-		return st.Err()
+// This error returns a 422 status code
+func unprocessableError(msg string, reason string) error {
+	if msg == "" {
+		msg = UNPROCESSABLE_ENTITY
 	}
-	return ds.Err()
+	return GetError(codes.FailedPrecondition, msg, reason)
+}
+
+// This error returns a 409 status code
+func conflictError(msg string, reason string, constraintName string) error {
+	if msg == "" {
+		msg = CONFLICT
+	}
+	return GetErrorConstraint(codes.AlreadyExists, msg, reason, constraintName)
+}
+
+// This error returns a 403 status code
+func permissionDeniedError(reason string) error {
+	return GetError(codes.PermissionDenied, FORBIDDEN, reason)
+}
+
+func GetError(code codes.Code, msg string, reason string) error {
+	st := status.New(code, msg)
+
+	if reason != "" {
+		ds, err := st.WithDetails(
+			&errdetails.ErrorInfo{
+				Reason: reason,
+			},
+		)
+		if err != nil {
+			return st.Err()
+		}
+		return ds.Err()
+	}
+
+	return st.Err()
+}
+
+func GetErrorConstraint(code codes.Code, msg string, reason string, constraintName string) error {
+	st := status.New(code, msg)
+
+	if reason != "" {
+		ds, err := st.WithDetails(
+			&errdetails.ErrorInfo{
+				Reason: reason,
+				Metadata: map[string]string{
+					"constraint_name": constraintName,
+				},
+			},
+		)
+		if err != nil {
+			return st.Err()
+		}
+		return ds.Err()
+	}
+
+	return st.Err()
 }

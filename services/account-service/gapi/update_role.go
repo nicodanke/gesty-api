@@ -9,9 +9,8 @@ import (
 	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role"
 	"github.com/nicodanke/gesty-api/services/account-service/sse"
 	roleValidator "github.com/nicodanke/gesty-api/services/account-service/validators/role"
+	"github.com/rs/zerolog/log"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 const (
@@ -19,6 +18,8 @@ const (
 )
 
 func (server *Server) UpdateRole(ctx context.Context, req *role.UpdateRoleRequest) (*role.UpdateRoleResponse, error) {
+	log.Info().Str("method", "UpdateRole").Str("request", fmt.Sprintf("%+v", req)).Msg("Processing UpdateRole request")
+
 	authPayload, err := server.authenticateUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
@@ -26,7 +27,7 @@ func (server *Server) UpdateRole(ctx context.Context, req *role.UpdateRoleReques
 
 	authorized := server.authorizeUser(authPayload, [][]string{{"SAR", "UR"}})
 	if !authorized {
-		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+		return nil, permissionDeniedError(fmt.Sprintln("User not authorized, missing permission: SAR or UR"))
 	}
 
 	violations := validateUpdateRoleRequest(req)
@@ -50,7 +51,17 @@ func (server *Server) UpdateRole(ctx context.Context, req *role.UpdateRoleReques
 
 	result, err := server.store.UpdateRoleTx(ctx, arg)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "Fail to update role: %s", err)
+		errCode := db.ErrorCode(err)
+		if errCode == db.UniqueViolation {
+			constraintName := db.ConstraintName(err)
+			return nil, conflictError(CONFLICT_UNIQUE, fmt.Sprintln("Failed to update role due to unique constraint violation"), constraintName)
+		}
+		if errCode == db.ForeignKeyViolation {
+			constraintName := db.ConstraintName(err)
+			return nil, conflictError(CONFLICT_FK, fmt.Sprintln("Failed to update role due to foreign key constraint violation"), constraintName)
+		}
+
+		return nil, internalError(fmt.Sprintln("Failed to update role", err))
 	}
 
 	rsp := &role.UpdateRoleResponse{

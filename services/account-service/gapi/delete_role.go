@@ -7,6 +7,7 @@ import (
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
 	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role"
 	"github.com/nicodanke/gesty-api/services/account-service/sse"
+	"github.com/rs/zerolog/log"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -15,6 +16,8 @@ const (
 )
 
 func (server *Server) DeleteRole(ctx context.Context, req *role.DeleteRoleRequest) (*emptypb.Empty, error) {
+	log.Info().Str("method", "DeleteRole").Str("request", fmt.Sprintf("%+v", req)).Msg("Processing DeleteRole request")
+
 	authPayload, err := server.authenticateUser(ctx)
 	if err != nil {
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
@@ -22,7 +25,7 @@ func (server *Server) DeleteRole(ctx context.Context, req *role.DeleteRoleReques
 
 	authorized := server.authorizeUser(authPayload, [][]string{{"SAR", "DR"}})
 	if !authorized {
-		return nil, permissionDeniedError("FORBIDDEN", fmt.Sprintln("User not authorized"))
+		return nil, permissionDeniedError(fmt.Sprintln("User not authorized, missing permission: SAR or DR"))
 	}
 
 	arg := db.DeleteRoleTxParams{
