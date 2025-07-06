@@ -1,10 +1,31 @@
 package gapi
 
 import (
+	"strconv"
+
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
+	"github.com/nicodanke/gesty-api/services/account-service/sse/eventdata"
 	"github.com/nicodanke/gesty-api/shared/proto/account-service/models"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
+
+func convertPermission(permission db.Permission) *models.Permission {
+	return &models.Permission{
+		Id:       permission.ID,
+		Code:     permission.Code,
+		ParentId: permission.ParentID.Int64,
+	}
+}
+
+func convertPermissions(permissions []db.Permission) []*models.Permission {
+	result := make([]*models.Permission, len(permissions))
+
+	for i, v := range permissions {
+		result[i] = convertPermission(v)
+	}
+
+	return result
+}
 
 func convertUser(user db.User) *models.User {
 	return &models.User{
@@ -16,8 +37,25 @@ func convertUser(user db.User) *models.User {
 		Phone:             user.Phone.String,
 		Active:            user.Active,
 		IsAdmin:           user.IsAdmin,
+		RoleId:            user.RoleID,
 		PasswordChangedAt: timestamppb.New(user.PasswordChangedAt),
 		CreatedAt:         timestamppb.New(user.CreatedAt),
+	}
+}
+
+func convertUserEvent(user db.User) *eventdata.User {
+	return &eventdata.User{
+		Id:                strconv.FormatInt(user.ID, 10),
+		Username:          user.Username,
+		Name:              user.Name,
+		Lastname:          user.Lastname,
+		Email:             user.Email,
+		Phone:             user.Phone.String,
+		Active:            user.Active,
+		IsAdmin:           user.IsAdmin,
+		RoleId:            strconv.FormatInt(user.RoleID, 10),
+		PasswordChangedAt: user.PasswordChangedAt,
+		CreatedAt:         user.CreatedAt,
 	}
 }
 
@@ -44,10 +82,31 @@ func convertAccount(user db.Account) *models.Account {
 	}
 }
 
-func convertRole(role db.Role) *models.Role {
-	return &models.Role{
-		Id:   role.ID,
-		Name: role.Name,
+func convertRoleCreateEvent(role db.CreateRoleTxResult) *eventdata.Role {
+	permissionIds := make([]string, 0)
+	for _, v := range role.PermissionIDs {
+		permissionIds = append(permissionIds, strconv.FormatInt(v, 10))
+	}
+
+	return &eventdata.Role{
+		Id:            strconv.FormatInt(role.Role.ID, 10),
+		Name:          role.Role.Name,
+		Description:   role.Role.Description.String,
+		PermissionIds: permissionIds,
+	}
+}
+
+func convertRoleUpdateEvent(role db.UpdateRoleTxResult) *eventdata.Role {
+	permissionIds := make([]string, 0)
+	for _, v := range role.PermissionIDs {
+		permissionIds = append(permissionIds, strconv.FormatInt(v, 10))
+	}
+
+	return &eventdata.Role{
+		Id:            strconv.FormatInt(role.Role.ID, 10),
+		Name:          role.Role.Name,
+		Description:   role.Role.Description.String,
+		PermissionIds: permissionIds,
 	}
 }
 
@@ -58,9 +117,9 @@ func convertRolesRowEach(role db.GetRolesRow) *models.Role {
 	}
 
 	return &models.Role{
-		Id:          role.ID,
-		Name:        role.Name,
-		Description: role.Description.String,
+		Id:            role.ID,
+		Name:          role.Name,
+		Description:   role.Description.String,
 		PermissionIds: permissionIds,
 	}
 }
@@ -82,27 +141,27 @@ func convertRoleRow(role db.GetRoleRow) *models.Role {
 	}
 
 	return &models.Role{
-		Id:          role.ID,
-		Name:        role.Name,
-		Description: role.Description.String,
+		Id:            role.ID,
+		Name:          role.Name,
+		Description:   role.Description.String,
 		PermissionIds: permissionIds,
 	}
 }
 
 func convertRoleCreate(role db.CreateRoleTxResult) *models.Role {
 	return &models.Role{
-		Id:   role.Role.ID,
-		Name: role.Role.Name,
-		Description: role.Role.Description.String,
+		Id:            role.Role.ID,
+		Name:          role.Role.Name,
+		Description:   role.Role.Description.String,
 		PermissionIds: role.PermissionIDs,
 	}
 }
 
 func convertRoleUpdate(role db.UpdateRoleTxResult) *models.Role {
 	return &models.Role{
-		Id:   role.Role.ID,
-		Name: role.Role.Name,
-		Description: role.Role.Description.String,
+		Id:            role.Role.ID,
+		Name:          role.Role.Name,
+		Description:   role.Role.Description.String,
 		PermissionIds: role.PermissionIDs,
 	}
 }

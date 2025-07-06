@@ -37,14 +37,16 @@ func (server *Server) UpdateUser(ctx context.Context, req *user.UpdateUserReques
 		return nil, invalidArgumentError(violations)
 	}
 
-	getRoleParams := db.GetRoleParams{
-		AccountID: authPayload.AccountID,
-		ID:        req.GetRoleId(),
-	}
+	if req.GetRoleId() != 0 {
+		getRoleParams := db.GetRoleParams{
+			AccountID: authPayload.AccountID,
+			ID:        req.GetRoleId(),
+		}
 
-	_, err = server.store.GetRole(ctx, getRoleParams)
-	if err != nil {
-		return nil, conflictError("", fmt.Sprintln("Role not found"), "role_id")
+		_, err = server.store.GetRole(ctx, getRoleParams)
+		if err != nil {
+			return nil, conflictError("", fmt.Sprintln("Role not found"), "role_id")
+		}
 	}
 
 	arg := db.UpdateUserParams{
@@ -99,12 +101,15 @@ func (server *Server) UpdateUser(ctx context.Context, req *user.UpdateUserReques
 		return nil, internalError(fmt.Sprintln("Failed to update user", err))
 	}
 
+	userModel := convertUser(result)
+	userEvent := convertUserEvent(result)
+
 	rsp := &user.UpdateUserResponse{
-		User: convertUser(result),
+		User: userModel,
 	}
 
 	// Notify account update
-	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_update_user, rsp), result.ID, nil)
+	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_update_user, userEvent), result.ID, nil)
 
 	return rsp, nil
 }

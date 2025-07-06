@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package account_service.models.permission;
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/models";
+
+message Permission {
+    int64 id = 1;
+    string code = 2;
+    int64 parentId = 3;
+}

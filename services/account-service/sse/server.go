@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nicodanke/gesty-api/shared/token"
 	"github.com/nicodanke/gesty-api/services/account-service/utils"
+	"github.com/nicodanke/gesty-api/shared/token"
 )
 
 type Server struct {
@@ -30,6 +30,10 @@ func NewServer(config utils.Config, handlerEvent *HandlerEvent) (*Server, error)
 
 func (server *Server) setupRouter() {
 	router := gin.Default()
+
+	// Add CORS middleware
+	router.Use(corsMiddleware())
+
 	authRoutes := router.Group("/").Use(authMiddleware(server.tokenMaker))
 
 	// Auth Required
@@ -46,4 +50,23 @@ func (server *Server) Start(address string) error {
 
 func errorResponse(err error) gin.H {
 	return gin.H{"error": err.Error()}
+}
+
+// corsMiddleware handles CORS headers and OPTIONS preflight requests
+func corsMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Expose-Headers", "Content-Length")
+		c.Header("Access-Control-Allow-Credentials", "true")
+
+		// Handle preflight requests
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }

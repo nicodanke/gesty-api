@@ -170,7 +170,7 @@ func (q *Queries) GetUserPermissions(ctx context.Context, id int64) ([]string, e
 const getUsers = `-- name: GetUsers :many
 SELECT id, username, password, name, lastname, email, phone, active, is_admin, created_at, updated_at, password_changed_at, role_id, account_id FROM "user"
 WHERE account_id = $1
-ORDER BY name, lastname
+ORDER BY LOWER(name), LOWER(lastname)
 LIMIT $2
 OFFSET $3
 `

@@ -55,12 +55,15 @@ func (server *Server) CreateRole(ctx context.Context, req *role.CreateRoleReques
 		return nil, internalError(fmt.Sprintln("Failed to create role", err))
 	}
 
+	roleModel := convertRoleCreate(result)
+	roleEvent := convertRoleCreateEvent(result)
+
 	rsp := &role.CreateRoleResponse{
-		Role: convertRoleCreate(result),
+		Role: roleModel,
 	}
 
 	// Notify role creation
-	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_create_role, rsp), authPayload.AccountID, &authPayload.UserID)
+	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_create_role, roleEvent), authPayload.AccountID, &authPayload.UserID)
 
 	return rsp, nil
 }

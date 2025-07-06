@@ -15,6 +15,7 @@ message User {
     string phone = 6;
     bool active = 7;
     bool isAdmin = 8;
-    google.protobuf.Timestamp passwordChangedAt = 9;
-    google.protobuf.Timestamp createdAt = 10;
+    int64 roleId = 9;
+    google.protobuf.Timestamp passwordChangedAt = 10;
+    google.protobuf.Timestamp createdAt = 11;
 }

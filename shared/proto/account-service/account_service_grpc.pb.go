@@ -10,6 +10,7 @@ import (
 	context "context"
 	account "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/account"
 	login "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/login"
+	permission "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/permission"
 	role "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role"
 	user "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user"
 	grpc "google.golang.org/grpc"
@@ -24,21 +25,22 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AccountService_Login_FullMethodName         = "/account_service.AccountService/Login"
-	AccountService_RefreshToken_FullMethodName  = "/account_service.AccountService/RefreshToken"
-	AccountService_CreateAccount_FullMethodName = "/account_service.AccountService/CreateAccount"
-	AccountService_UpdateAccount_FullMethodName = "/account_service.AccountService/UpdateAccount"
-	AccountService_AccountMe_FullMethodName     = "/account_service.AccountService/AccountMe"
-	AccountService_GetUser_FullMethodName       = "/account_service.AccountService/GetUser"
-	AccountService_GetUsers_FullMethodName      = "/account_service.AccountService/GetUsers"
-	AccountService_CreateUser_FullMethodName    = "/account_service.AccountService/CreateUser"
-	AccountService_UpdateUser_FullMethodName    = "/account_service.AccountService/UpdateUser"
-	AccountService_DeleteUser_FullMethodName    = "/account_service.AccountService/DeleteUser"
-	AccountService_GetRole_FullMethodName       = "/account_service.AccountService/GetRole"
-	AccountService_GetRoles_FullMethodName      = "/account_service.AccountService/GetRoles"
-	AccountService_CreateRole_FullMethodName    = "/account_service.AccountService/CreateRole"
-	AccountService_UpdateRole_FullMethodName    = "/account_service.AccountService/UpdateRole"
-	AccountService_DeleteRole_FullMethodName    = "/account_service.AccountService/DeleteRole"
+	AccountService_Login_FullMethodName          = "/account_service.AccountService/Login"
+	AccountService_RefreshToken_FullMethodName   = "/account_service.AccountService/RefreshToken"
+	AccountService_CreateAccount_FullMethodName  = "/account_service.AccountService/CreateAccount"
+	AccountService_UpdateAccount_FullMethodName  = "/account_service.AccountService/UpdateAccount"
+	AccountService_AccountMe_FullMethodName      = "/account_service.AccountService/AccountMe"
+	AccountService_GetUser_FullMethodName        = "/account_service.AccountService/GetUser"
+	AccountService_GetUsers_FullMethodName       = "/account_service.AccountService/GetUsers"
+	AccountService_CreateUser_FullMethodName     = "/account_service.AccountService/CreateUser"
+	AccountService_UpdateUser_FullMethodName     = "/account_service.AccountService/UpdateUser"
+	AccountService_DeleteUser_FullMethodName     = "/account_service.AccountService/DeleteUser"
+	AccountService_GetRole_FullMethodName        = "/account_service.AccountService/GetRole"
+	AccountService_GetRoles_FullMethodName       = "/account_service.AccountService/GetRoles"
+	AccountService_CreateRole_FullMethodName     = "/account_service.AccountService/CreateRole"
+	AccountService_UpdateRole_FullMethodName     = "/account_service.AccountService/UpdateRole"
+	AccountService_DeleteRole_FullMethodName     = "/account_service.AccountService/DeleteRole"
+	AccountService_GetPermissions_FullMethodName = "/account_service.AccountService/GetPermissions"
 )
 
 // AccountServiceClient is the client API for AccountService service.
@@ -64,6 +66,7 @@ type AccountServiceClient interface {
 	CreateRole(ctx context.Context, in *role.CreateRoleRequest, opts ...grpc.CallOption) (*role.CreateRoleResponse, error)
 	UpdateRole(ctx context.Context, in *role.UpdateRoleRequest, opts ...grpc.CallOption) (*role.UpdateRoleResponse, error)
 	DeleteRole(ctx context.Context, in *role.DeleteRoleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetPermissions(ctx context.Context, in *permission.GetPermissionsRequest, opts ...grpc.CallOption) (*permission.GetPermissionsResponse, error)
 }
 
 type accountServiceClient struct {
@@ -224,6 +227,16 @@ func (c *accountServiceClient) DeleteRole(ctx context.Context, in *role.DeleteRo
 	return out, nil
 }
 
+func (c *accountServiceClient) GetPermissions(ctx context.Context, in *permission.GetPermissionsRequest, opts ...grpc.CallOption) (*permission.GetPermissionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(permission.GetPermissionsResponse)
+	err := c.cc.Invoke(ctx, AccountService_GetPermissions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountServiceServer is the server API for AccountService service.
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility.
@@ -247,6 +260,7 @@ type AccountServiceServer interface {
 	CreateRole(context.Context, *role.CreateRoleRequest) (*role.CreateRoleResponse, error)
 	UpdateRole(context.Context, *role.UpdateRoleRequest) (*role.UpdateRoleResponse, error)
 	DeleteRole(context.Context, *role.DeleteRoleRequest) (*emptypb.Empty, error)
+	GetPermissions(context.Context, *permission.GetPermissionsRequest) (*permission.GetPermissionsResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -301,6 +315,9 @@ func (UnimplementedAccountServiceServer) UpdateRole(context.Context, *role.Updat
 }
 func (UnimplementedAccountServiceServer) DeleteRole(context.Context, *role.DeleteRoleRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRole not implemented")
+}
+func (UnimplementedAccountServiceServer) GetPermissions(context.Context, *permission.GetPermissionsRequest) (*permission.GetPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPermissions not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 func (UnimplementedAccountServiceServer) testEmbeddedByValue()                        {}
@@ -593,6 +610,24 @@ func _AccountService_DeleteRole_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_GetPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(permission.GetPermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).GetPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_GetPermissions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).GetPermissions(ctx, req.(*permission.GetPermissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountService_ServiceDesc is the grpc.ServiceDesc for AccountService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -659,6 +694,10 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteRole",
 			Handler:    _AccountService_DeleteRole_Handler,
+		},
+		{
+			MethodName: "GetPermissions",
+			Handler:    _AccountService_GetPermissions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

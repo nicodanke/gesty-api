@@ -16,7 +16,7 @@ WHERE username = $1 LIMIT 1;
 -- name: GetUsers :many
 SELECT * FROM "user"
 WHERE account_id = $1
-ORDER BY name, lastname
+ORDER BY LOWER(name), LOWER(lastname)
 LIMIT $2
 OFFSET $3;
 

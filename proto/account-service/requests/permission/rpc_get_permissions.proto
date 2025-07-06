@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package account_service.requests.permission.get_permissions;
+
+import "account-service/models/permission.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/account-service/requests/permission";
+
+message GetPermissionsRequest {
+    optional int32 page = 1;
+    optional int32 size = 2;
+}
+
+message GetPermissionsResponse {
+    repeated account_service.models.permission.Permission permissions = 1;
+}

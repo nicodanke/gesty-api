@@ -18,9 +18,40 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  
+  db-face-recognition:
+    image: postgres
+    user: postgres
+    networks:
+      - traefik-net
+    volumes:
+      - db-data-face-recognition:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=face-recognition
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+    ports:
+      - "5433:5432"
+    secrets:
+       - db_password
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # face-recognition-service:
+  #   image: deepface:latest
+  #   networks:
+  #     - traefik-net
+  #   ports:
+  #     - "5005:5000"
+  #   depends_on:
+  #     db-face-recognition:
+  #       condition: service_healthy
 
 volumes:
   db-data-account:
+  db-data-face-recognition:
 
 secrets:
   db_password:

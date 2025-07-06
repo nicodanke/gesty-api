@@ -6,9 +6,9 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
-	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role"
 	"github.com/nicodanke/gesty-api/services/account-service/sse"
 	roleValidator "github.com/nicodanke/gesty-api/services/account-service/validators/role"
+	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
@@ -37,7 +37,7 @@ func (server *Server) UpdateRole(ctx context.Context, req *role.UpdateRoleReques
 
 	arg := db.UpdateRoleTxParams{
 		AccountID: authPayload.AccountID,
-		ID: req.GetId(),
+		ID:        req.GetId(),
 		Name: pgtype.Text{
 			String: req.GetName(),
 			Valid:  req.Name != nil,
@@ -64,12 +64,15 @@ func (server *Server) UpdateRole(ctx context.Context, req *role.UpdateRoleReques
 		return nil, internalError(fmt.Sprintln("Failed to update role", err))
 	}
 
+	roleModel := convertRoleUpdate(result)
+	roleEvent := convertRoleUpdateEvent(result)
+
 	rsp := &role.UpdateRoleResponse{
-		Role: convertRoleUpdate(result),
+		Role: roleModel,
 	}
 
 	// Notify account update
-	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_update_role, rsp), result.Role.ID, nil)
+	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_update_role, roleEvent), result.Role.ID, nil)
 
 	return rsp, nil
 }

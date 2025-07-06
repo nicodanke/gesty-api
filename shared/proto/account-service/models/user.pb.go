@@ -32,8 +32,9 @@ type User struct {
 	Phone             string                 `protobuf:"bytes,6,opt,name=phone,proto3" json:"phone,omitempty"`
 	Active            bool                   `protobuf:"varint,7,opt,name=active,proto3" json:"active,omitempty"`
 	IsAdmin           bool                   `protobuf:"varint,8,opt,name=isAdmin,proto3" json:"isAdmin,omitempty"`
-	PasswordChangedAt *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=passwordChangedAt,proto3" json:"passwordChangedAt,omitempty"`
-	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
+	RoleId            int64                  `protobuf:"varint,9,opt,name=roleId,proto3" json:"roleId,omitempty"`
+	PasswordChangedAt *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=passwordChangedAt,proto3" json:"passwordChangedAt,omitempty"`
+	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -124,6 +125,13 @@ func (x *User) GetIsAdmin() bool {
 	return false
 }
 
+func (x *User) GetRoleId() int64 {
+	if x != nil {
+		return x.RoleId
+	}
+	return 0
+}
+
 func (x *User) GetPasswordChangedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.PasswordChangedAt
@@ -142,7 +150,7 @@ var File_account_service_models_user_proto protoreflect.FileDescriptor
 
 const file_account_service_models_user_proto_rawDesc = "" +
 	"\n" +
-	"!account-service/models/user.proto\x12\x1baccount_service.models.user\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc4\x02\n" +
+	"!account-service/models/user.proto\x12\x1baccount_service.models.user\x1a\x1fgoogle/protobuf/timestamp.proto\"\xdc\x02\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x12\n" +
@@ -151,10 +159,11 @@ const file_account_service_models_user_proto_rawDesc = "" +
 	"\x05email\x18\x05 \x01(\tR\x05email\x12\x14\n" +
 	"\x05phone\x18\x06 \x01(\tR\x05phone\x12\x16\n" +
 	"\x06active\x18\a \x01(\bR\x06active\x12\x18\n" +
-	"\aisAdmin\x18\b \x01(\bR\aisAdmin\x12H\n" +
-	"\x11passwordChangedAt\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\x11passwordChangedAt\x128\n" +
-	"\tcreatedAt\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtBDZBgithub.com/nicodanke/gesty-api/shared/proto/account-service/modelsb\x06proto3"
+	"\aisAdmin\x18\b \x01(\bR\aisAdmin\x12\x16\n" +
+	"\x06roleId\x18\t \x01(\x03R\x06roleId\x12H\n" +
+	"\x11passwordChangedAt\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\x11passwordChangedAt\x128\n" +
+	"\tcreatedAt\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtBDZBgithub.com/nicodanke/gesty-api/shared/proto/account-service/modelsb\x06proto3"
 
 var (
 	file_account_service_models_user_proto_rawDescOnce sync.Once

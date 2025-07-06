@@ -6,13 +6,13 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
-	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user"
 	"github.com/nicodanke/gesty-api/services/account-service/sse"
-	"github.com/nicodanke/gesty-api/shared/utils"
 	"github.com/nicodanke/gesty-api/services/account-service/validators"
 	userValidator "github.com/nicodanke/gesty-api/services/account-service/validators/user"
-	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user"
+	"github.com/nicodanke/gesty-api/shared/utils"
 	"github.com/rs/zerolog/log"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
 
 const (
@@ -78,12 +78,16 @@ func (server *Server) CreateUser(ctx context.Context, req *user.CreateUserReques
 		return nil, internalError(fmt.Sprintln("Failed to create user", err))
 	}
 
+	userModel := convertUser(result)
+	userEvent := convertUserEvent(result)
+
 	rsp := &user.CreateUserResponse{
-		User: convertUser(result),
+		User: userModel,
 	}
 
 	// Notify user creation
-	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_create_user, rsp), authPayload.AccountID, &authPayload.UserID)
+	fmt.Println("UserEvent:", userEvent)
+	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_create_user, userEvent), authPayload.AccountID, &authPayload.UserID)
 
 	return rsp, nil
 }

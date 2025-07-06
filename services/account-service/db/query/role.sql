@@ -27,7 +27,7 @@ FROM "role" r
 LEFT JOIN role_permission rp ON r.id = rp.role_id
 WHERE r.account_id = $1
 GROUP BY r.id, r.name, r.description
-ORDER BY r.name
+ORDER BY LOWER(r.name)
 LIMIT $2
 OFFSET $3;
 

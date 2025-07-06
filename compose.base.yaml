@@ -3,10 +3,16 @@ services:
     image: traefik:v3.2
     networks:
       - traefik-net
-    command: --api.insecure=true --providers.docker
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --entrypoints.api.address=:80
+      - --entrypoints.sse.address=:8085
+      - --entrypoints.sse.transport.respondingTimeouts.idleTimeout=0
     ports:
       - "80:80"
       - "8080:8080"
+      - "8085:8085"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -20,14 +26,23 @@ services:
     environment:
      - GESTY_ENVIRONMENT=dev-docker
     labels:
+      - "traefik.http.routers.account.entrypoints=api"
       - "traefik.http.routers.account.rule=
           PathPrefix(`/v1/account`) ||
           PathPrefix(`/v1/users`) ||
           PathPrefix(`/v1/roles`) ||
+          PathPrefix(`/v1/permissions`) ||
           PathPrefix(`/v1/auth/login`) ||
           PathPrefix(`/v1/auth/refresh`)
           "
-      - "traefik.http.services.account.loadbalancer.server.port=8081"
+      - "traefik.http.routers.account.service=account-service"
+      - "traefik.http.services.account-service.loadbalancer.server.port=8081"
+      - "traefik.http.routers.account-sse.entrypoints=sse"
+      - "traefik.http.routers.account-sse.rule=Path(`/account/events`)"
+      - "traefik.http.routers.account-sse.service=account-sse-service"
+      - "traefik.http.routers.account-sse.middlewares=strip-app@docker"
+      - "traefik.http.middlewares.strip-app.stripprefix.prefixes=/account"
+      - "traefik.http.services.account-sse-service.loadbalancer.server.port=8085"
     depends_on:
       db-account:
         condition: service_healthy

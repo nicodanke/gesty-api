@@ -83,6 +83,18 @@
         }
       }
     },
+    "get_permissionsGetPermissionsResponse": {
+      "type": "object",
+      "properties": {
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/permissionPermission"
+          }
+        }
+      }
+    },
     "get_roleGetRoleResponse": {
       "type": "object",
       "properties": {
@@ -145,6 +157,22 @@
         "refreshTokenExpiresAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "permissionPermission": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "code": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -261,6 +289,10 @@
         },
         "isAdmin": {
           "type": "boolean"
+        },
+        "roleId": {
+          "type": "string",
+          "format": "int64"
         },
         "passwordChangedAt": {
           "type": "string",

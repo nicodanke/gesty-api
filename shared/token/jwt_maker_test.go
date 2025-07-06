@@ -54,7 +54,7 @@ func TestExpiredJWTToken(t *testing.T) {
 }
 
 func TestInvalidJWTTokenAlgNone(t *testing.T) {
-	payload, err := NewPayload(int64(1), int64(1), "ACC001", ["AA", "BB"], time.Minute)
+	payload, err := NewPayload(int64(1), int64(1), "ACC001", []string{"AA", "BB"}, []string{"MM"}, time.Minute)
 	require.NoError(t, err)
 
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodNone, payload)
