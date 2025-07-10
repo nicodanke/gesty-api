@@ -9,17 +9,17 @@ import (
 )
 
 type PasetoMaker struct {
-	paseto *paseto.V2
+	paseto       *paseto.V2
 	symentricKey []byte
 }
 
 func NewPasetoMaker(symentricKey string) (Maker, error) {
 	if len(symentricKey) != chacha20poly1305.KeySize {
-		return nil, fmt.Errorf("invalid key size: must be exactly %d characters", chacha20poly1305.KeySize )
+		return nil, fmt.Errorf("invalid key size: must be exactly %d characters", chacha20poly1305.KeySize)
 	}
 
 	maker := &PasetoMaker{
-		paseto: paseto.NewV2(),
+		paseto:       paseto.NewV2(),
 		symentricKey: []byte(symentricKey),
 	}
 

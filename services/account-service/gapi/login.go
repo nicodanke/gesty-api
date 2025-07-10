@@ -70,8 +70,6 @@ func (server *Server) Login(ctx context.Context, req *login.LoginRequest) (*logi
 		return nil, internalError(fmt.Sprintln("Failed to get modules:", err))
 	}
 	
-	fmt.Println(modules)
-
 	accessToken, accessPayload, err := server.tokenMaker.CreateToken(user.ID, account.ID, account.Code, permissions, modules, server.config.AccessTokenDuration)
 	if err != nil {
 		return nil, internalError(fmt.Sprintln("Error creating accessToken:", err))

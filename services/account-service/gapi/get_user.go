@@ -17,9 +17,11 @@ func (server *Server) GetUser(ctx context.Context, req *user.GetUserRequest) (*u
 		return nil, unauthenticatedError(fmt.Sprintln("", err))
 	}
 
-	authorized := server.authorizeUser(authPayload, [][]string{{"SAU", "LU"}})
-	if !authorized {
-		return nil, permissionDeniedError(fmt.Sprintln("User not authorized, missing permission: SAU or LU"))
+	if req.GetId() != authPayload.UserID {
+		authorized := server.authorizeUser(authPayload, [][]string{{"SAU", "LU"}})
+		if !authorized {
+			return nil, permissionDeniedError(fmt.Sprintln("User not authorized, missing permission: SAU or LU"))
+		}
 	}
 
 	arg := db.GetUserParams{

@@ -35,6 +35,11 @@ func (server *Server) UpdateRole(ctx context.Context, req *role.UpdateRoleReques
 		return nil, invalidArgumentError(violations)
 	}
 
+	permissionIDs := []int64{}
+	if !req.GetRemoveAllPermissions() {
+		permissionIDs = req.GetPermissionIds()
+	}
+
 	arg := db.UpdateRoleTxParams{
 		AccountID: authPayload.AccountID,
 		ID:        req.GetId(),
@@ -46,7 +51,7 @@ func (server *Server) UpdateRole(ctx context.Context, req *role.UpdateRoleReques
 			String: req.GetDescription(),
 			Valid:  req.Description != nil,
 		},
-		PermissionIDs: req.GetPermissionIds(),
+		PermissionIDs: permissionIDs,
 	}
 
 	result, err := server.store.UpdateRoleTx(ctx, arg)
@@ -72,7 +77,7 @@ func (server *Server) UpdateRole(ctx context.Context, req *role.UpdateRoleReques
 	}
 
 	// Notify account update
-	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_update_role, roleEvent), result.Role.ID, nil)
+	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_update_role, roleEvent), authPayload.AccountID, &authPayload.UserID)
 
 	return rsp, nil
 }

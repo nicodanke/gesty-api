@@ -50,7 +50,6 @@ func (server *Server) GetRoles(ctx context.Context, req *role.GetRolesRequest) (
 		return nil, internalError(fmt.Sprintln("Failed to get roles:", err))
 	}
 
-	fmt.Println(result)
 	rsp := &role.GetRolesResponse{
 		Roles: convertRolesRow(result),
 	}

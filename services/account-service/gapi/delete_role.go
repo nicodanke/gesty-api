@@ -3,10 +3,11 @@ package gapi
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
-	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role"
 	"github.com/nicodanke/gesty-api/services/account-service/sse"
+	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/role"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -35,12 +36,18 @@ func (server *Server) DeleteRole(ctx context.Context, req *role.DeleteRoleReques
 
 	err = server.store.DeleteRoleTx(ctx, arg)
 	if err != nil {
-		return nil, internalError(fmt.Sprintln("Failed to delete role with id:", req.GetId(), err))
+		errCode := db.ErrorCode(err)
+		if errCode == db.ForeignKeyViolation {
+			constraintName := db.ConstraintName(err)
+			return nil, conflictError(CONFLICT_FK, fmt.Sprintln("Failed to delete role due to foreign key constraint violation"), constraintName)
+		}
+
+		return nil, internalError(fmt.Sprintln("Failed to delete role:", err))
 	}
 
 	// Notify delete role
 	var data = map[string]any{}
-	data["id"] = req.GetId()
+	data["id"] = strconv.FormatInt(req.GetId(), 10)
 	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_delete_role, data), authPayload.AccountID, &authPayload.UserID)
 
 	return &emptypb.Empty{}, nil

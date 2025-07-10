@@ -109,7 +109,7 @@ func (server *Server) UpdateUser(ctx context.Context, req *user.UpdateUserReques
 	}
 
 	// Notify account update
-	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_update_user, userEvent), result.ID, nil)
+	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_update_user, userEvent), authPayload.AccountID, &authPayload.UserID)
 
 	return rsp, nil
 }

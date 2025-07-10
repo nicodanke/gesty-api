@@ -3,10 +3,11 @@ package gapi
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
-	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user"
 	"github.com/nicodanke/gesty-api/services/account-service/sse"
+	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/user"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -39,12 +40,18 @@ func (server *Server) DeleteUser(ctx context.Context, req *user.DeleteUserReques
 
 	err = server.store.DeleteUser(ctx, arg)
 	if err != nil {
-		return nil, internalError(fmt.Sprintln("Failed to delete user with id:", req.GetId(), err))
+		errCode := db.ErrorCode(err)
+		if errCode == db.ForeignKeyViolation {
+			constraintName := db.ConstraintName(err)
+			return nil, conflictError(CONFLICT_FK, fmt.Sprintln("Failed to delete user due to foreign key constraint violation"), constraintName)
+		}
+
+		return nil, internalError(fmt.Sprintln("Failed to delete user:", err))
 	}
 
 	// Notify delete user
 	var data = map[string]any{}
-	data["id"] = req.GetId()
+	data["id"] = strconv.FormatInt(req.GetId(), 10)
 	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_delete_user, data), authPayload.AccountID, &authPayload.UserID)
 
 	return &emptypb.Empty{}, nil

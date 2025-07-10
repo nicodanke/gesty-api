@@ -29,7 +29,6 @@ func (store *SQLStore) CreateAccountTx(ctx context.Context, arg CreateAccountTxP
 	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
 
-		fmt.Println("arg.Code", arg.Code)
 		// Creates account
 		result.Account, err = q.CreateAccount(ctx, CreateAccountParams{
 			Code:        arg.Code,
@@ -42,8 +41,6 @@ func (store *SQLStore) CreateAccountTx(ctx context.Context, arg CreateAccountTxP
 			return err
 		}
 
-		fmt.Println("result.Account", result.Account)
-
 		// Creates Admin Role
 		role, err := q.CreateRole(ctx, CreateRoleParams{
 			AccountID: result.Account.ID,
@@ -53,8 +50,6 @@ func (store *SQLStore) CreateAccountTx(ctx context.Context, arg CreateAccountTxP
 			fmt.Println("error creating role", err)
 			return err
 		}
-
-		fmt.Println("role", role)
 
 		// Assign all permissions to admin role
 		permissionIDs := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
@@ -68,8 +63,6 @@ func (store *SQLStore) CreateAccountTx(ctx context.Context, arg CreateAccountTxP
 				return err
 			}
 		}
-
-		fmt.Println("role", role)
 
 		// Creates user
 		result.User, err = q.CreateUser(ctx, CreateUserParams{
@@ -86,8 +79,6 @@ func (store *SQLStore) CreateAccountTx(ctx context.Context, arg CreateAccountTxP
 		if err != nil {
 			return err
 		}
-
-		fmt.Println("result.User", result.User)
 
 		return err
 	})

@@ -86,7 +86,6 @@ func (server *Server) CreateUser(ctx context.Context, req *user.CreateUserReques
 	}
 
 	// Notify user creation
-	fmt.Println("UserEvent:", userEvent)
 	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_create_user, userEvent), authPayload.AccountID, &authPayload.UserID)
 
 	return rsp, nil

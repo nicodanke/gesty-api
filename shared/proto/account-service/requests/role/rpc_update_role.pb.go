@@ -23,13 +23,14 @@ const (
 )
 
 type UpdateRoleRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	Description   *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	PermissionIds []int64                `protobuf:"varint,4,rep,packed,name=permissionIds,proto3" json:"permissionIds,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	Id                   int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name                 *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Description          *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	PermissionIds        []int64                `protobuf:"varint,4,rep,packed,name=permissionIds,proto3" json:"permissionIds,omitempty"`
+	RemoveAllPermissions *bool                  `protobuf:"varint,5,opt,name=removeAllPermissions,proto3,oneof" json:"removeAllPermissions,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *UpdateRoleRequest) Reset() {
@@ -90,6 +91,13 @@ func (x *UpdateRoleRequest) GetPermissionIds() []int64 {
 	return nil
 }
 
+func (x *UpdateRoleRequest) GetRemoveAllPermissions() bool {
+	if x != nil && x.RemoveAllPermissions != nil {
+		return *x.RemoveAllPermissions
+	}
+	return false
+}
+
 type UpdateRoleResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Role          *models.Role           `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"`
@@ -138,14 +146,16 @@ var File_account_service_requests_role_rpc_update_role_proto protoreflect.FileDe
 
 const file_account_service_requests_role_rpc_update_role_proto_rawDesc = "" +
 	"\n" +
-	"3account-service/requests/role/rpc_update_role.proto\x12)account_service.requests.role.update_role\x1a!account-service/models/role.proto\"\xa2\x01\n" +
+	"3account-service/requests/role/rpc_update_role.proto\x12)account_service.requests.role.update_role\x1a!account-service/models/role.proto\"\xf4\x01\n" +
 	"\x11UpdateRoleRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01\x12$\n" +
-	"\rpermissionIds\x18\x04 \x03(\x03R\rpermissionIdsB\a\n" +
+	"\rpermissionIds\x18\x04 \x03(\x03R\rpermissionIds\x127\n" +
+	"\x14removeAllPermissions\x18\x05 \x01(\bH\x02R\x14removeAllPermissions\x88\x01\x01B\a\n" +
 	"\x05_nameB\x0e\n" +
-	"\f_description\"K\n" +
+	"\f_descriptionB\x17\n" +
+	"\x15_removeAllPermissions\"K\n" +
 	"\x12UpdateRoleResponse\x125\n" +
 	"\x04role\x18\x01 \x01(\v2!.account_service.models.role.RoleR\x04roleBKZIgithub.com/nicodanke/gesty-api/shared/proto/account-service/requests/roleb\x06proto3"
 

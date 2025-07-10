@@ -11,6 +11,7 @@ message UpdateRoleRequest {
     optional string name = 2;
     optional string description = 3;
     repeated int64 permissionIds = 4;
+    optional bool removeAllPermissions = 5;
 }
 
 message UpdateRoleResponse {
