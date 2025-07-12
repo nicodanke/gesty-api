@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package employee_service.models.action;
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/models";
+
+message Action {
+    int64 id = 1;
+    string name = 2;
+    string description = 3;
+    bool enabled = 4;
+    bool canBeDeleted = 5;
+}

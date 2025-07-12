@@ -1,0 +1,17 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    - selector: employee_service.EmployeeService.GetActions
+      get: /v1/actions
+    - selector: employee_service.EmployeeService.GetAction
+      get: /v1/actions/{id}
+    - selector: employee_service.EmployeeService.CreateAction
+      post: /v1/actions
+      body: "*"
+    - selector: employee_service.EmployeeService.UpdateAction
+      patch: /v1/actions/{id}
+      body: "*"
+    - selector: employee_service.EmployeeService.DeleteAction
+      delete: /v1/actions/{id}

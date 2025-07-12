@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package employee_service.requests.action.get_actions;
+
+import "employee-service/models/action.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action";
+
+message GetActionsRequest {
+    optional int32 page = 1;
+    optional int32 size = 2;
+}
+
+message GetActionsResponse {
+    repeated employee_service.models.action.Action actions= 1;
+}

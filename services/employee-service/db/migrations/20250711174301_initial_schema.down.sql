@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS "attendance";
+DROP TABLE IF EXISTS "device_health";
+DROP TABLE IF EXISTS "device_action";
+DROP TABLE IF EXISTS "device";
+DROP TABLE IF EXISTS "employee_facility";
+DROP TABLE IF EXISTS "employee_address";
+DROP TABLE IF EXISTS "employee";
+DROP TABLE IF EXISTS "facility_address";
+DROP TABLE IF EXISTS "facility";
+DROP TABLE IF EXISTS "action";

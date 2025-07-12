@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package employee_service.requests.action.create_action;
+
+import "employee-service/models/action.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action";
+
+message CreateActionRequest {
+    string name = 1;
+    optional string description = 2;
+    optional bool enabled = 3;
+}
+
+message CreateActionResponse {
+    employee_service.models.action.Action action = 1;
+}

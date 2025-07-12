@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package employee_service;
+
+import "employee-service/requests/action/rpc_get_actions.proto";
+import "employee-service/requests/action/rpc_get_action.proto";
+import "employee-service/requests/action/rpc_create_action.proto";
+import "employee-service/requests/action/rpc_update_action.proto";
+import "employee-service/requests/action/rpc_delete_action.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service";
+
+service EmployeeService {
+
+    // ACTION
+    rpc GetAction (employee_service.requests.action.get_action.GetActionRequest) returns (employee_service.requests.action.get_action.GetActionResponse);
+
+    rpc GetActions (employee_service.requests.action.get_actions.GetActionsRequest) returns (employee_service.requests.action.get_actions.GetActionsResponse);
+
+    rpc CreateAction (employee_service.requests.action.create_action.CreateActionRequest) returns (employee_service.requests.action.create_action.CreateActionResponse);
+
+    rpc UpdateAction (employee_service.requests.action.update_action.UpdateActionRequest) returns (employee_service.requests.action.update_action.UpdateActionResponse);
+
+    rpc DeleteAction (employee_service.requests.action.delete_action.DeleteActionRequest) returns (google.protobuf.Empty);
+}

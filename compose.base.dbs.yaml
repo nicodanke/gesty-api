@@ -18,6 +18,26 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  db-employee:
+    image: postgres
+    user: postgres
+    networks:
+      - traefik-net
+    volumes:
+      - db-data-employee:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=employee
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+    ports:
+      - "5433:5432"
+    secrets:
+       - db_password
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   
   db-face-recognition:
     image: postgres
@@ -30,7 +50,7 @@ services:
       - POSTGRES_DB=face-recognition
       - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
     ports:
-      - "5433:5432"
+      - "5434:5432"
     secrets:
        - db_password
     healthcheck:
@@ -51,6 +71,7 @@ services:
 
 volumes:
   db-data-account:
+  db-data-employee:
   db-data-face-recognition:
 
 secrets:
