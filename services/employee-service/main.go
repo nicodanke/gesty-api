@@ -9,21 +9,21 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	_ "github.com/nicodanke/gesty-api/services/account-service/doc/statik"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
-	"github.com/nicodanke/gesty-api/services/account-service/utils"
-	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
-	"github.com/nicodanke/gesty-api/services/account-service/sse"
-	"github.com/nicodanke/gesty-api/services/account-service/gapi"
-	ac "github.com/nicodanke/gesty-api/shared/proto/account-service"
-	gw "github.com/nicodanke/gesty-api/services/account-service/gw/account-service"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
+	db "github.com/nicodanke/gesty-api/services/employee-service/db/sqlc"
+	_ "github.com/nicodanke/gesty-api/services/employee-service/doc/statik"
+	"github.com/nicodanke/gesty-api/services/employee-service/gapi"
+	gw "github.com/nicodanke/gesty-api/services/employee-service/gw/employee-service"
+	"github.com/nicodanke/gesty-api/services/employee-service/sse"
+	"github.com/nicodanke/gesty-api/services/employee-service/utils"
+	ac "github.com/nicodanke/gesty-api/shared/proto/employee-service"
 	"github.com/rakyll/statik/fs"
 	"github.com/rs/cors"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -75,7 +75,7 @@ func runGRPCServer(config utils.Config, store db.Store, notifier sse.Notifier) {
 
 	grpcLogger := grpc.UnaryInterceptor(gapi.GrpcLogger)
 	grpcServer := grpc.NewServer(grpcLogger)
-	ac.RegisterAccountServiceServer(grpcServer, server)
+	ac.RegisterEmployeeServiceServer(grpcServer, server)
 	reflection.Register(grpcServer)
 
 	listener, err := net.Listen("tcp", config.GRPCServerAddress)
@@ -101,7 +101,7 @@ func runGRPCGatewayServer(config utils.Config, store db.Store, notifier sse.Noti
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	err = gw.RegisterAccountServiceHandlerServer(ctx, grpcMux, server)
+	err = gw.RegisterEmployeeServiceHandlerServer(ctx, grpcMux, server)
 	if err != nil {
 		log.Error().Err(err).Msg("Cannot register handler server")
 	}

@@ -2,7 +2,7 @@ module github.com/nicodanke/gesty-api/services/employee-service
 
 go 1.24.3
 
-replace github.com/nicodanke/gesty-api/shared => ../../shared
+replace github.com/nicodanke/gesty-api/shared => ./shared
 
 require (
 	github.com/gin-gonic/gin v1.10.0

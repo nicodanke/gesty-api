@@ -120,10 +120,6 @@ github.com/modern-go/reflect2 v1.0.2 h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9G
 github.com/modern-go/reflect2 v1.0.2/go.mod h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjYzDa0/r8luk=
 github.com/morikuni/aec v1.0.0 h1:nP9CBfwrvYnBRgY6qfDQkygYDmYwOilePFkwzv4dU8A=
 github.com/morikuni/aec v1.0.0/go.mod h1:BbKIizmSmc5MMPqRYbxO4ZU0S0+P200+tUnFx7PXmsc=
-github.com/nicodanke/gesty-api/services/account-service v0.0.0-20250710193702-baabebd0a9c5 h1:MJ8yDFYKcQbFwGIyDiEbJk+tzGLmAFOTKas9QhAlLLU=
-github.com/nicodanke/gesty-api/services/account-service v0.0.0-20250710193702-baabebd0a9c5/go.mod h1:50jADM6Ub/Z86gjzxWGua+WqgYSed9r+6O630j0+MDk=
-github.com/nicodanke/gesty-api/shared v0.0.0-20250710193702-baabebd0a9c5 h1:fphETlCfgMu88LmBv/QBrngrWYP+pzwmhdnzzc9/9wQ=
-github.com/nicodanke/gesty-api/shared v0.0.0-20250710193702-baabebd0a9c5/go.mod h1:GXNExQGtoJGFzJjoduf1id94KBDv4o3a0VmjrTYOmvY=
 github.com/o1egl/paseto v1.0.0 h1:bwpvPu2au176w4IBlhbyUv/S5VPptERIA99Oap5qUd0=
 github.com/o1egl/paseto v1.0.0/go.mod h1:5HxsZPmw/3RI2pAwGo1HhOOwSdvBpcuVzO7uDkm+CLU=
 github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=

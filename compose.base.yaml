@@ -40,11 +40,37 @@ services:
       - "traefik.http.routers.account-sse.entrypoints=sse"
       - "traefik.http.routers.account-sse.rule=Path(`/account/events`)"
       - "traefik.http.routers.account-sse.service=account-sse-service"
-      - "traefik.http.routers.account-sse.middlewares=strip-app@docker"
-      - "traefik.http.middlewares.strip-app.stripprefix.prefixes=/account"
+      - "traefik.http.routers.account-sse.middlewares=strip-app-account@docker"
+      - "traefik.http.middlewares.strip-app-account.stripprefix.prefixes=/account"
       - "traefik.http.services.account-sse-service.loadbalancer.server.port=8085"
     depends_on:
       db-account:
+        condition: service_healthy
+
+  employee-service:
+    build:
+      context: .
+      dockerfile: services/employee-service/Dockerfile
+    container_name: employee-service
+    networks:
+      - traefik-net
+    environment:
+     - GESTY_ENVIRONMENT=dev-docker
+    labels:
+      - "traefik.http.routers.employee.entrypoints=api"
+      - "traefik.http.routers.employee.rule=
+          PathPrefix(`/v1/actions`)
+          "
+      - "traefik.http.routers.employee.service=employee-service"
+      - "traefik.http.services.employee-service.loadbalancer.server.port=8081"
+      - "traefik.http.routers.employee-sse.entrypoints=sse"
+      - "traefik.http.routers.employee-sse.rule=Path(`/employee/events`)"
+      - "traefik.http.routers.employee-sse.service=employee-sse-service"
+      - "traefik.http.routers.employee-sse.middlewares=strip-app-employee@docker"
+      - "traefik.http.middlewares.strip-app-employee.stripprefix.prefixes=/employee"
+      - "traefik.http.services.employee-sse-service.loadbalancer.server.port=8085"
+    depends_on:
+      db-employee:
         condition: service_healthy
 
   db-account:
