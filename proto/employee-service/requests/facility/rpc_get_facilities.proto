@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package employee_service.requests.facility.get_facilities;
+
+import "employee-service/models/facility.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/facility";
+
+message GetFacilitiesRequest {
+    optional int32 page = 1;
+    optional int32 size = 2;
+}
+
+message GetFacilitiesResponse {
+    repeated employee_service.models.facility.Facility facilities= 1;
+}

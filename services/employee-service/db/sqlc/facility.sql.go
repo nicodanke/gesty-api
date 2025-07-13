@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"time"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -66,7 +65,7 @@ func (q *Queries) DeleteFacility(ctx context.Context, arg DeleteFacilityParams) 
 }
 
 const getFacilities = `-- name: GetFacilities :many
-SELECT f.id, f.name, f.description, f.open_time, f.close_time, f.account_id, f.created_at, f.updated_at, fa.facility_id, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng 
+SELECT f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng
 FROM "facility" f
 LEFT JOIN facility_address fa ON f.id = fa.facility_id
 WHERE f.account_id = $1
@@ -88,10 +87,6 @@ type GetFacilitiesRow struct {
 	Description pgtype.Text   `json:"description"`
 	OpenTime    pgtype.Time   `json:"open_time"`
 	CloseTime   pgtype.Time   `json:"close_time"`
-	AccountID   int64         `json:"account_id"`
-	CreatedAt   time.Time     `json:"created_at"`
-	UpdatedAt   time.Time     `json:"updated_at"`
-	FacilityID  pgtype.Int8   `json:"facility_id"`
 	Country     pgtype.Text   `json:"country"`
 	State       pgtype.Text   `json:"state"`
 	SubState    pgtype.Text   `json:"sub_state"`
@@ -118,10 +113,6 @@ func (q *Queries) GetFacilities(ctx context.Context, arg GetFacilitiesParams) ([
 			&i.Description,
 			&i.OpenTime,
 			&i.CloseTime,
-			&i.AccountID,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-			&i.FacilityID,
 			&i.Country,
 			&i.State,
 			&i.SubState,
@@ -143,7 +134,7 @@ func (q *Queries) GetFacilities(ctx context.Context, arg GetFacilitiesParams) ([
 }
 
 const getFacility = `-- name: GetFacility :one
-SELECT f.id, f.name, f.description, f.open_time, f.close_time, f.account_id, f.created_at, f.updated_at, fa.facility_id, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng 
+SELECT f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng
 FROM "facility" f
 LEFT JOIN facility_address fa ON f.id = fa.facility_id
 WHERE f.account_id = $1 AND f.id = $2
@@ -162,10 +153,6 @@ type GetFacilityRow struct {
 	Description pgtype.Text   `json:"description"`
 	OpenTime    pgtype.Time   `json:"open_time"`
 	CloseTime   pgtype.Time   `json:"close_time"`
-	AccountID   int64         `json:"account_id"`
-	CreatedAt   time.Time     `json:"created_at"`
-	UpdatedAt   time.Time     `json:"updated_at"`
-	FacilityID  pgtype.Int8   `json:"facility_id"`
 	Country     pgtype.Text   `json:"country"`
 	State       pgtype.Text   `json:"state"`
 	SubState    pgtype.Text   `json:"sub_state"`
@@ -186,10 +173,6 @@ func (q *Queries) GetFacility(ctx context.Context, arg GetFacilityParams) (GetFa
 		&i.Description,
 		&i.OpenTime,
 		&i.CloseTime,
-		&i.AccountID,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-		&i.FacilityID,
 		&i.Country,
 		&i.State,
 		&i.SubState,
@@ -209,19 +192,21 @@ SET
     name = COALESCE($1, name),
     description = COALESCE($2, description),
     open_time = COALESCE($3, open_time),
-    close_time = COALESCE($4, close_time)
+    close_time = COALESCE($4, close_time),
+    updated_at = COALESCE($5, updated_at)
 WHERE
-    account_id = $5 AND id = $6
+    account_id = $6 AND id = $7
 RETURNING id, name, description, open_time, close_time, account_id, created_at, updated_at
 `
 
 type UpdateFacilityParams struct {
-	Name        pgtype.Text `json:"name"`
-	Description pgtype.Text `json:"description"`
-	OpenTime    pgtype.Time `json:"open_time"`
-	CloseTime   pgtype.Time `json:"close_time"`
-	AccountID   int64       `json:"account_id"`
-	ID          int64       `json:"id"`
+	Name        pgtype.Text        `json:"name"`
+	Description pgtype.Text        `json:"description"`
+	OpenTime    pgtype.Time        `json:"open_time"`
+	CloseTime   pgtype.Time        `json:"close_time"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
+	AccountID   int64              `json:"account_id"`
+	ID          int64              `json:"id"`
 }
 
 func (q *Queries) UpdateFacility(ctx context.Context, arg UpdateFacilityParams) (Facility, error) {
@@ -230,6 +215,7 @@ func (q *Queries) UpdateFacility(ctx context.Context, arg UpdateFacilityParams) 
 		arg.Description,
 		arg.OpenTime,
 		arg.CloseTime,
+		arg.UpdatedAt,
 		arg.AccountID,
 		arg.ID,
 	)

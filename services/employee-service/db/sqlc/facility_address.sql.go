@@ -71,6 +71,28 @@ func (q *Queries) DeleteFacilityAddress(ctx context.Context, facilityID int64) e
 	return err
 }
 
+const getFacilityAddressByFacilityID = `-- name: GetFacilityAddressByFacilityID :one
+SELECT facility_id, country, state, sub_state, street, number, unit, postal_code, lat, lng FROM "facility_address" WHERE facility_id = $1
+`
+
+func (q *Queries) GetFacilityAddressByFacilityID(ctx context.Context, facilityID int64) (FacilityAddress, error) {
+	row := q.db.QueryRow(ctx, getFacilityAddressByFacilityID, facilityID)
+	var i FacilityAddress
+	err := row.Scan(
+		&i.FacilityID,
+		&i.Country,
+		&i.State,
+		&i.SubState,
+		&i.Street,
+		&i.Number,
+		&i.Unit,
+		&i.PostalCode,
+		&i.Lat,
+		&i.Lng,
+	)
+	return i, err
+}
+
 const updateFacilityAddress = `-- name: UpdateFacilityAddress :one
 UPDATE "facility_address"
 SET

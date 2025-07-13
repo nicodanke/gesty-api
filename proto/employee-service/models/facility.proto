@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package employee_service.models.facility;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/models";
+
+message Facility {
+    int64 id = 1;
+    string name = 2;
+    string description = 3;
+    google.protobuf.Duration openTime = 4;
+    google.protobuf.Duration closeTime = 5;
+    string addressCountry = 6;
+    string addressState = 7;
+    string addressSubState = 8;
+    string addressStreet = 9;
+    string addressNumber = 10;
+    string addressUnit = 11;
+    string addressPostalcode = 12;
+    double addressLat = 13;
+    double addressLng = 14;
+}

@@ -7,6 +7,11 @@ import "employee-service/requests/action/rpc_get_action.proto";
 import "employee-service/requests/action/rpc_create_action.proto";
 import "employee-service/requests/action/rpc_update_action.proto";
 import "employee-service/requests/action/rpc_delete_action.proto";
+import "employee-service/requests/facility/rpc_get_facilities.proto";
+import "employee-service/requests/facility/rpc_get_facility.proto";
+import "employee-service/requests/facility/rpc_create_facility.proto";
+import "employee-service/requests/facility/rpc_update_facility.proto";
+import "employee-service/requests/facility/rpc_delete_facility.proto";
 import "google/protobuf/empty.proto";
 
 option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service";
@@ -23,4 +28,16 @@ service EmployeeService {
     rpc UpdateAction (employee_service.requests.action.update_action.UpdateActionRequest) returns (employee_service.requests.action.update_action.UpdateActionResponse);
 
     rpc DeleteAction (employee_service.requests.action.delete_action.DeleteActionRequest) returns (google.protobuf.Empty);
+
+
+    // FACILITY
+    rpc GetFacility (employee_service.requests.facility.get_facility.GetFacilityRequest) returns (employee_service.requests.facility.get_facility.GetFacilityResponse);
+
+    rpc GetFacilities (employee_service.requests.facility.get_facilities.GetFacilitiesRequest) returns (employee_service.requests.facility.get_facilities.GetFacilitiesResponse);
+
+    rpc CreateFacility (employee_service.requests.facility.create_facility.CreateFacilityRequest) returns (employee_service.requests.facility.create_facility.CreateFacilityResponse);
+
+    rpc UpdateFacility (employee_service.requests.facility.update_facility.UpdateFacilityRequest) returns (employee_service.requests.facility.update_facility.UpdateFacilityResponse);
+
+    rpc DeleteFacility (employee_service.requests.facility.delete_facility.DeleteFacilityRequest) returns (google.protobuf.Empty);
 }

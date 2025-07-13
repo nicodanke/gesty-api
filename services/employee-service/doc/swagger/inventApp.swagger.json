@@ -46,6 +46,64 @@
         }
       }
     },
+    "create_facilityCreateFacilityResponse": {
+      "type": "object",
+      "properties": {
+        "facility": {
+          "$ref": "#/definitions/facilityFacility"
+        }
+      }
+    },
+    "facilityFacility": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "openTime": {
+          "type": "string"
+        },
+        "closeTime": {
+          "type": "string"
+        },
+        "addressCountry": {
+          "type": "string"
+        },
+        "addressState": {
+          "type": "string"
+        },
+        "addressSubState": {
+          "type": "string"
+        },
+        "addressStreet": {
+          "type": "string"
+        },
+        "addressNumber": {
+          "type": "string"
+        },
+        "addressUnit": {
+          "type": "string"
+        },
+        "addressPostalcode": {
+          "type": "string"
+        },
+        "addressLat": {
+          "type": "number",
+          "format": "double"
+        },
+        "addressLng": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
     "get_actionGetActionResponse": {
       "type": "object",
       "properties": {
@@ -63,6 +121,26 @@
             "type": "object",
             "$ref": "#/definitions/actionAction"
           }
+        }
+      }
+    },
+    "get_facilitiesGetFacilitiesResponse": {
+      "type": "object",
+      "properties": {
+        "facilities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/facilityFacility"
+          }
+        }
+      }
+    },
+    "get_facilityGetFacilityResponse": {
+      "type": "object",
+      "properties": {
+        "facility": {
+          "$ref": "#/definitions/facilityFacility"
         }
       }
     },
@@ -99,6 +177,14 @@
       "properties": {
         "action": {
           "$ref": "#/definitions/actionAction"
+        }
+      }
+    },
+    "update_facilityUpdateFacilityResponse": {
+      "type": "object",
+      "properties": {
+        "facility": {
+          "$ref": "#/definitions/facilityFacility"
         }
       }
     }

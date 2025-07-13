@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package employee_service.requests.facility.update_facility;
+
+import "employee-service/models/facility.proto";
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/facility";
+
+message UpdateFacilityRequest {
+    int64 id = 1;
+    optional string name = 2;
+    optional string description = 3;
+    optional google.protobuf.Duration openTime = 4;
+    optional google.protobuf.Duration closeTime = 5;
+    optional string addressCountry = 6;
+    optional string addressState = 7;
+    optional string addressSubState = 8;
+    optional string addressStreet = 9;
+    optional string addressNumber = 10;
+    optional string addressPostalcode = 11;
+    optional string addressUnit = 12;
+    optional double addressLat = 13;
+    optional double addressLng = 14;
+}
+
+message UpdateFacilityResponse {
+    employee_service.models.facility.Facility facility = 1;
+}

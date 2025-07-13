@@ -59,7 +59,8 @@ services:
     labels:
       - "traefik.http.routers.employee.entrypoints=api"
       - "traefik.http.routers.employee.rule=
-          PathPrefix(`/v1/actions`)
+          PathPrefix(`/v1/actions`) ||
+          PathPrefix(`/v1/facilities`)
           "
       - "traefik.http.routers.employee.service=employee-service"
       - "traefik.http.services.employee-service.loadbalancer.server.port=8081"

@@ -15,3 +15,15 @@ http:
       body: "*"
     - selector: employee_service.EmployeeService.DeleteAction
       delete: /v1/actions/{id}
+    - selector: employee_service.EmployeeService.GetFacilities
+      get: /v1/facilities
+    - selector: employee_service.EmployeeService.GetFacility
+      get: /v1/facilities/{id}
+    - selector: employee_service.EmployeeService.CreateFacility
+      post: /v1/facilities
+      body: "*"
+    - selector: employee_service.EmployeeService.UpdateFacility
+      patch: /v1/facilities/{id}
+      body: "*"
+    - selector: employee_service.EmployeeService.DeleteFacility
+      delete: /v1/facilities/{id}

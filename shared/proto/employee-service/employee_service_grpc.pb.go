@@ -9,6 +9,7 @@ package employee_service
 import (
 	context "context"
 	action "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action"
+	facility "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/facility"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -21,11 +22,16 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	EmployeeService_GetAction_FullMethodName    = "/employee_service.EmployeeService/GetAction"
-	EmployeeService_GetActions_FullMethodName   = "/employee_service.EmployeeService/GetActions"
-	EmployeeService_CreateAction_FullMethodName = "/employee_service.EmployeeService/CreateAction"
-	EmployeeService_UpdateAction_FullMethodName = "/employee_service.EmployeeService/UpdateAction"
-	EmployeeService_DeleteAction_FullMethodName = "/employee_service.EmployeeService/DeleteAction"
+	EmployeeService_GetAction_FullMethodName      = "/employee_service.EmployeeService/GetAction"
+	EmployeeService_GetActions_FullMethodName     = "/employee_service.EmployeeService/GetActions"
+	EmployeeService_CreateAction_FullMethodName   = "/employee_service.EmployeeService/CreateAction"
+	EmployeeService_UpdateAction_FullMethodName   = "/employee_service.EmployeeService/UpdateAction"
+	EmployeeService_DeleteAction_FullMethodName   = "/employee_service.EmployeeService/DeleteAction"
+	EmployeeService_GetFacility_FullMethodName    = "/employee_service.EmployeeService/GetFacility"
+	EmployeeService_GetFacilities_FullMethodName  = "/employee_service.EmployeeService/GetFacilities"
+	EmployeeService_CreateFacility_FullMethodName = "/employee_service.EmployeeService/CreateFacility"
+	EmployeeService_UpdateFacility_FullMethodName = "/employee_service.EmployeeService/UpdateFacility"
+	EmployeeService_DeleteFacility_FullMethodName = "/employee_service.EmployeeService/DeleteFacility"
 )
 
 // EmployeeServiceClient is the client API for EmployeeService service.
@@ -38,6 +44,12 @@ type EmployeeServiceClient interface {
 	CreateAction(ctx context.Context, in *action.CreateActionRequest, opts ...grpc.CallOption) (*action.CreateActionResponse, error)
 	UpdateAction(ctx context.Context, in *action.UpdateActionRequest, opts ...grpc.CallOption) (*action.UpdateActionResponse, error)
 	DeleteAction(ctx context.Context, in *action.DeleteActionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// FACILITY
+	GetFacility(ctx context.Context, in *facility.GetFacilityRequest, opts ...grpc.CallOption) (*facility.GetFacilityResponse, error)
+	GetFacilities(ctx context.Context, in *facility.GetFacilitiesRequest, opts ...grpc.CallOption) (*facility.GetFacilitiesResponse, error)
+	CreateFacility(ctx context.Context, in *facility.CreateFacilityRequest, opts ...grpc.CallOption) (*facility.CreateFacilityResponse, error)
+	UpdateFacility(ctx context.Context, in *facility.UpdateFacilityRequest, opts ...grpc.CallOption) (*facility.UpdateFacilityResponse, error)
+	DeleteFacility(ctx context.Context, in *facility.DeleteFacilityRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type employeeServiceClient struct {
@@ -98,6 +110,56 @@ func (c *employeeServiceClient) DeleteAction(ctx context.Context, in *action.Del
 	return out, nil
 }
 
+func (c *employeeServiceClient) GetFacility(ctx context.Context, in *facility.GetFacilityRequest, opts ...grpc.CallOption) (*facility.GetFacilityResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(facility.GetFacilityResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_GetFacility_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) GetFacilities(ctx context.Context, in *facility.GetFacilitiesRequest, opts ...grpc.CallOption) (*facility.GetFacilitiesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(facility.GetFacilitiesResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_GetFacilities_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) CreateFacility(ctx context.Context, in *facility.CreateFacilityRequest, opts ...grpc.CallOption) (*facility.CreateFacilityResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(facility.CreateFacilityResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_CreateFacility_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) UpdateFacility(ctx context.Context, in *facility.UpdateFacilityRequest, opts ...grpc.CallOption) (*facility.UpdateFacilityResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(facility.UpdateFacilityResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_UpdateFacility_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) DeleteFacility(ctx context.Context, in *facility.DeleteFacilityRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, EmployeeService_DeleteFacility_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EmployeeServiceServer is the server API for EmployeeService service.
 // All implementations must embed UnimplementedEmployeeServiceServer
 // for forward compatibility.
@@ -108,6 +170,12 @@ type EmployeeServiceServer interface {
 	CreateAction(context.Context, *action.CreateActionRequest) (*action.CreateActionResponse, error)
 	UpdateAction(context.Context, *action.UpdateActionRequest) (*action.UpdateActionResponse, error)
 	DeleteAction(context.Context, *action.DeleteActionRequest) (*emptypb.Empty, error)
+	// FACILITY
+	GetFacility(context.Context, *facility.GetFacilityRequest) (*facility.GetFacilityResponse, error)
+	GetFacilities(context.Context, *facility.GetFacilitiesRequest) (*facility.GetFacilitiesResponse, error)
+	CreateFacility(context.Context, *facility.CreateFacilityRequest) (*facility.CreateFacilityResponse, error)
+	UpdateFacility(context.Context, *facility.UpdateFacilityRequest) (*facility.UpdateFacilityResponse, error)
+	DeleteFacility(context.Context, *facility.DeleteFacilityRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedEmployeeServiceServer()
 }
 
@@ -132,6 +200,21 @@ func (UnimplementedEmployeeServiceServer) UpdateAction(context.Context, *action.
 }
 func (UnimplementedEmployeeServiceServer) DeleteAction(context.Context, *action.DeleteActionRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAction not implemented")
+}
+func (UnimplementedEmployeeServiceServer) GetFacility(context.Context, *facility.GetFacilityRequest) (*facility.GetFacilityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFacility not implemented")
+}
+func (UnimplementedEmployeeServiceServer) GetFacilities(context.Context, *facility.GetFacilitiesRequest) (*facility.GetFacilitiesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFacilities not implemented")
+}
+func (UnimplementedEmployeeServiceServer) CreateFacility(context.Context, *facility.CreateFacilityRequest) (*facility.CreateFacilityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateFacility not implemented")
+}
+func (UnimplementedEmployeeServiceServer) UpdateFacility(context.Context, *facility.UpdateFacilityRequest) (*facility.UpdateFacilityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFacility not implemented")
+}
+func (UnimplementedEmployeeServiceServer) DeleteFacility(context.Context, *facility.DeleteFacilityRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteFacility not implemented")
 }
 func (UnimplementedEmployeeServiceServer) mustEmbedUnimplementedEmployeeServiceServer() {}
 func (UnimplementedEmployeeServiceServer) testEmbeddedByValue()                         {}
@@ -244,6 +327,96 @@ func _EmployeeService_DeleteAction_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmployeeService_GetFacility_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(facility.GetFacilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).GetFacility(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_GetFacility_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).GetFacility(ctx, req.(*facility.GetFacilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_GetFacilities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(facility.GetFacilitiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).GetFacilities(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_GetFacilities_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).GetFacilities(ctx, req.(*facility.GetFacilitiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_CreateFacility_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(facility.CreateFacilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).CreateFacility(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_CreateFacility_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).CreateFacility(ctx, req.(*facility.CreateFacilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_UpdateFacility_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(facility.UpdateFacilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).UpdateFacility(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_UpdateFacility_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).UpdateFacility(ctx, req.(*facility.UpdateFacilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_DeleteFacility_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(facility.DeleteFacilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).DeleteFacility(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_DeleteFacility_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).DeleteFacility(ctx, req.(*facility.DeleteFacilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EmployeeService_ServiceDesc is the grpc.ServiceDesc for EmployeeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -270,6 +443,26 @@ var EmployeeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteAction",
 			Handler:    _EmployeeService_DeleteAction_Handler,
+		},
+		{
+			MethodName: "GetFacility",
+			Handler:    _EmployeeService_GetFacility_Handler,
+		},
+		{
+			MethodName: "GetFacilities",
+			Handler:    _EmployeeService_GetFacilities_Handler,
+		},
+		{
+			MethodName: "CreateFacility",
+			Handler:    _EmployeeService_CreateFacility_Handler,
+		},
+		{
+			MethodName: "UpdateFacility",
+			Handler:    _EmployeeService_UpdateFacility_Handler,
+		},
+		{
+			MethodName: "DeleteFacility",
+			Handler:    _EmployeeService_DeleteFacility_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

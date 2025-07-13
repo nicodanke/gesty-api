@@ -47,6 +47,7 @@ type Querier interface {
 	GetEmployees(ctx context.Context, arg GetEmployeesParams) ([]GetEmployeesRow, error)
 	GetFacilities(ctx context.Context, arg GetFacilitiesParams) ([]GetFacilitiesRow, error)
 	GetFacility(ctx context.Context, arg GetFacilityParams) (GetFacilityRow, error)
+	GetFacilityAddressByFacilityID(ctx context.Context, facilityID int64) (FacilityAddress, error)
 	UpdateAction(ctx context.Context, arg UpdateActionParams) (Action, error)
 	UpdateDevice(ctx context.Context, arg UpdateDeviceParams) (Device, error)
 	UpdateEmployee(ctx context.Context, arg UpdateEmployeeParams) (Employee, error)

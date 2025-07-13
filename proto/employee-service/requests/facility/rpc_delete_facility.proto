@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package employee_service.requests.facility.delete_facility;
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/facility";
+
+message DeleteFacilityRequest {
+    int64 id = 1;
+}
