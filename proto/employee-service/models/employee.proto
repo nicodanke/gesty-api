@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package employee_service.models.employee;
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/models";
+
+message Employee {
+    int64 id = 1;
+    string name = 2;
+    string lastname = 3;
+    string email = 4;
+    string phone = 5;
+    string gender = 6;
+    string realId = 7;
+    string fiscalId = 8;
+    string addressCountry = 9;
+    string addressState = 10;
+    string addressSubState = 11;
+    string addressStreet = 12;
+    string addressNumber = 13;
+    string addressUnit = 14;
+    string addressPostalcode = 15;
+    double addressLat = 16;
+    double addressLng = 17;
+    repeated int64 facilityIds = 18;
+}

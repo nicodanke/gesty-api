@@ -5,6 +5,9 @@ INSERT INTO "employee_address" (
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 ) RETURNING *;
 
+-- name: GetEmployeeAddressByEmployeeId :one
+SELECT * FROM "employee_address" WHERE employee_id = $1;
+
 -- name: DeleteEmployeeAddress :exec
 DELETE FROM "employee_address"
 WHERE employee_id = $1;

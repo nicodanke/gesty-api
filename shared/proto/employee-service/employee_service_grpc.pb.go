@@ -9,6 +9,7 @@ package employee_service
 import (
 	context "context"
 	action "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action"
+	employee "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee"
 	facility "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/facility"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -32,6 +33,11 @@ const (
 	EmployeeService_CreateFacility_FullMethodName = "/employee_service.EmployeeService/CreateFacility"
 	EmployeeService_UpdateFacility_FullMethodName = "/employee_service.EmployeeService/UpdateFacility"
 	EmployeeService_DeleteFacility_FullMethodName = "/employee_service.EmployeeService/DeleteFacility"
+	EmployeeService_GetEmployee_FullMethodName    = "/employee_service.EmployeeService/GetEmployee"
+	EmployeeService_GetEmployees_FullMethodName   = "/employee_service.EmployeeService/GetEmployees"
+	EmployeeService_CreateEmployee_FullMethodName = "/employee_service.EmployeeService/CreateEmployee"
+	EmployeeService_UpdateEmployee_FullMethodName = "/employee_service.EmployeeService/UpdateEmployee"
+	EmployeeService_DeleteEmployee_FullMethodName = "/employee_service.EmployeeService/DeleteEmployee"
 )
 
 // EmployeeServiceClient is the client API for EmployeeService service.
@@ -50,6 +56,12 @@ type EmployeeServiceClient interface {
 	CreateFacility(ctx context.Context, in *facility.CreateFacilityRequest, opts ...grpc.CallOption) (*facility.CreateFacilityResponse, error)
 	UpdateFacility(ctx context.Context, in *facility.UpdateFacilityRequest, opts ...grpc.CallOption) (*facility.UpdateFacilityResponse, error)
 	DeleteFacility(ctx context.Context, in *facility.DeleteFacilityRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// EMPLOYEE
+	GetEmployee(ctx context.Context, in *employee.GetEmployeeRequest, opts ...grpc.CallOption) (*employee.GetEmployeeResponse, error)
+	GetEmployees(ctx context.Context, in *employee.GetEmployeesRequest, opts ...grpc.CallOption) (*employee.GetEmployeesResponse, error)
+	CreateEmployee(ctx context.Context, in *employee.CreateEmployeeRequest, opts ...grpc.CallOption) (*employee.CreateEmployeeResponse, error)
+	UpdateEmployee(ctx context.Context, in *employee.UpdateEmployeeRequest, opts ...grpc.CallOption) (*employee.UpdateEmployeeResponse, error)
+	DeleteEmployee(ctx context.Context, in *employee.DeleteEmployeeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type employeeServiceClient struct {
@@ -160,6 +172,56 @@ func (c *employeeServiceClient) DeleteFacility(ctx context.Context, in *facility
 	return out, nil
 }
 
+func (c *employeeServiceClient) GetEmployee(ctx context.Context, in *employee.GetEmployeeRequest, opts ...grpc.CallOption) (*employee.GetEmployeeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(employee.GetEmployeeResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_GetEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) GetEmployees(ctx context.Context, in *employee.GetEmployeesRequest, opts ...grpc.CallOption) (*employee.GetEmployeesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(employee.GetEmployeesResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_GetEmployees_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) CreateEmployee(ctx context.Context, in *employee.CreateEmployeeRequest, opts ...grpc.CallOption) (*employee.CreateEmployeeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(employee.CreateEmployeeResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_CreateEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) UpdateEmployee(ctx context.Context, in *employee.UpdateEmployeeRequest, opts ...grpc.CallOption) (*employee.UpdateEmployeeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(employee.UpdateEmployeeResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_UpdateEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) DeleteEmployee(ctx context.Context, in *employee.DeleteEmployeeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, EmployeeService_DeleteEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EmployeeServiceServer is the server API for EmployeeService service.
 // All implementations must embed UnimplementedEmployeeServiceServer
 // for forward compatibility.
@@ -176,6 +238,12 @@ type EmployeeServiceServer interface {
 	CreateFacility(context.Context, *facility.CreateFacilityRequest) (*facility.CreateFacilityResponse, error)
 	UpdateFacility(context.Context, *facility.UpdateFacilityRequest) (*facility.UpdateFacilityResponse, error)
 	DeleteFacility(context.Context, *facility.DeleteFacilityRequest) (*emptypb.Empty, error)
+	// EMPLOYEE
+	GetEmployee(context.Context, *employee.GetEmployeeRequest) (*employee.GetEmployeeResponse, error)
+	GetEmployees(context.Context, *employee.GetEmployeesRequest) (*employee.GetEmployeesResponse, error)
+	CreateEmployee(context.Context, *employee.CreateEmployeeRequest) (*employee.CreateEmployeeResponse, error)
+	UpdateEmployee(context.Context, *employee.UpdateEmployeeRequest) (*employee.UpdateEmployeeResponse, error)
+	DeleteEmployee(context.Context, *employee.DeleteEmployeeRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedEmployeeServiceServer()
 }
 
@@ -215,6 +283,21 @@ func (UnimplementedEmployeeServiceServer) UpdateFacility(context.Context, *facil
 }
 func (UnimplementedEmployeeServiceServer) DeleteFacility(context.Context, *facility.DeleteFacilityRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteFacility not implemented")
+}
+func (UnimplementedEmployeeServiceServer) GetEmployee(context.Context, *employee.GetEmployeeRequest) (*employee.GetEmployeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEmployee not implemented")
+}
+func (UnimplementedEmployeeServiceServer) GetEmployees(context.Context, *employee.GetEmployeesRequest) (*employee.GetEmployeesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEmployees not implemented")
+}
+func (UnimplementedEmployeeServiceServer) CreateEmployee(context.Context, *employee.CreateEmployeeRequest) (*employee.CreateEmployeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateEmployee not implemented")
+}
+func (UnimplementedEmployeeServiceServer) UpdateEmployee(context.Context, *employee.UpdateEmployeeRequest) (*employee.UpdateEmployeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateEmployee not implemented")
+}
+func (UnimplementedEmployeeServiceServer) DeleteEmployee(context.Context, *employee.DeleteEmployeeRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteEmployee not implemented")
 }
 func (UnimplementedEmployeeServiceServer) mustEmbedUnimplementedEmployeeServiceServer() {}
 func (UnimplementedEmployeeServiceServer) testEmbeddedByValue()                         {}
@@ -417,6 +500,96 @@ func _EmployeeService_DeleteFacility_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmployeeService_GetEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(employee.GetEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).GetEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_GetEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).GetEmployee(ctx, req.(*employee.GetEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_GetEmployees_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(employee.GetEmployeesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).GetEmployees(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_GetEmployees_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).GetEmployees(ctx, req.(*employee.GetEmployeesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_CreateEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(employee.CreateEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).CreateEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_CreateEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).CreateEmployee(ctx, req.(*employee.CreateEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_UpdateEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(employee.UpdateEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).UpdateEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_UpdateEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).UpdateEmployee(ctx, req.(*employee.UpdateEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_DeleteEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(employee.DeleteEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).DeleteEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_DeleteEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).DeleteEmployee(ctx, req.(*employee.DeleteEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EmployeeService_ServiceDesc is the grpc.ServiceDesc for EmployeeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -463,6 +636,26 @@ var EmployeeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteFacility",
 			Handler:    _EmployeeService_DeleteFacility_Handler,
+		},
+		{
+			MethodName: "GetEmployee",
+			Handler:    _EmployeeService_GetEmployee_Handler,
+		},
+		{
+			MethodName: "GetEmployees",
+			Handler:    _EmployeeService_GetEmployees_Handler,
+		},
+		{
+			MethodName: "CreateEmployee",
+			Handler:    _EmployeeService_CreateEmployee_Handler,
+		},
+		{
+			MethodName: "UpdateEmployee",
+			Handler:    _EmployeeService_UpdateEmployee_Handler,
+		},
+		{
+			MethodName: "DeleteEmployee",
+			Handler:    _EmployeeService_DeleteEmployee_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

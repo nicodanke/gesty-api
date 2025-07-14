@@ -7,6 +7,11 @@ import "employee-service/requests/action/rpc_get_action.proto";
 import "employee-service/requests/action/rpc_create_action.proto";
 import "employee-service/requests/action/rpc_update_action.proto";
 import "employee-service/requests/action/rpc_delete_action.proto";
+import "employee-service/requests/employee/rpc_get_employees.proto";
+import "employee-service/requests/employee/rpc_get_employee.proto";
+import "employee-service/requests/employee/rpc_create_employee.proto";
+import "employee-service/requests/employee/rpc_update_employee.proto";
+import "employee-service/requests/employee/rpc_delete_employee.proto";
 import "employee-service/requests/facility/rpc_get_facilities.proto";
 import "employee-service/requests/facility/rpc_get_facility.proto";
 import "employee-service/requests/facility/rpc_create_facility.proto";
@@ -40,4 +45,16 @@ service EmployeeService {
     rpc UpdateFacility (employee_service.requests.facility.update_facility.UpdateFacilityRequest) returns (employee_service.requests.facility.update_facility.UpdateFacilityResponse);
 
     rpc DeleteFacility (employee_service.requests.facility.delete_facility.DeleteFacilityRequest) returns (google.protobuf.Empty);
+
+
+    // EMPLOYEE
+    rpc GetEmployee (employee_service.requests.employee.get_employee.GetEmployeeRequest) returns (employee_service.requests.employee.get_employee.GetEmployeeResponse);
+
+    rpc GetEmployees (employee_service.requests.employee.get_employees.GetEmployeesRequest) returns (employee_service.requests.employee.get_employees.GetEmployeesResponse);
+
+    rpc CreateEmployee (employee_service.requests.employee.create_employee.CreateEmployeeRequest) returns (employee_service.requests.employee.create_employee.CreateEmployeeResponse);
+
+    rpc UpdateEmployee (employee_service.requests.employee.update_employee.UpdateEmployeeRequest) returns (employee_service.requests.employee.update_employee.UpdateEmployeeResponse);
+
+    rpc DeleteEmployee (employee_service.requests.employee.delete_employee.DeleteEmployeeRequest) returns (google.protobuf.Empty);
 }

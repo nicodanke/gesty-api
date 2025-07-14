@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package employee_service.requests.employee.get_employee;
+
+import "employee-service/models/employee.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee";
+
+message GetEmployeeRequest {
+    int64 id = 1;
+}
+
+message GetEmployeeResponse {
+    employee_service.models.employee.Employee employee = 1;
+}

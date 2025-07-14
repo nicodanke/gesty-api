@@ -8,6 +8,7 @@ package employee_service
 
 import (
 	action "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action"
+	employee "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee"
 	facility "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/facility"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -27,7 +28,7 @@ var File_employee_service_employee_service_proto protoreflect.FileDescriptor
 
 const file_employee_service_employee_service_proto_rawDesc = "" +
 	"\n" +
-	"'employee-service/employee_service.proto\x12\x10employee_service\x1a6employee-service/requests/action/rpc_get_actions.proto\x1a5employee-service/requests/action/rpc_get_action.proto\x1a8employee-service/requests/action/rpc_create_action.proto\x1a8employee-service/requests/action/rpc_update_action.proto\x1a8employee-service/requests/action/rpc_delete_action.proto\x1a;employee-service/requests/facility/rpc_get_facilities.proto\x1a9employee-service/requests/facility/rpc_get_facility.proto\x1a<employee-service/requests/facility/rpc_create_facility.proto\x1a<employee-service/requests/facility/rpc_update_facility.proto\x1a<employee-service/requests/facility/rpc_delete_facility.proto\x1a\x1bgoogle/protobuf/empty.proto2\xde\v\n" +
+	"'employee-service/employee_service.proto\x12\x10employee_service\x1a6employee-service/requests/action/rpc_get_actions.proto\x1a5employee-service/requests/action/rpc_get_action.proto\x1a8employee-service/requests/action/rpc_create_action.proto\x1a8employee-service/requests/action/rpc_update_action.proto\x1a8employee-service/requests/action/rpc_delete_action.proto\x1a:employee-service/requests/employee/rpc_get_employees.proto\x1a9employee-service/requests/employee/rpc_get_employee.proto\x1a<employee-service/requests/employee/rpc_create_employee.proto\x1a<employee-service/requests/employee/rpc_update_employee.proto\x1a<employee-service/requests/employee/rpc_delete_employee.proto\x1a;employee-service/requests/facility/rpc_get_facilities.proto\x1a9employee-service/requests/facility/rpc_get_facility.proto\x1a<employee-service/requests/facility/rpc_create_facility.proto\x1a<employee-service/requests/facility/rpc_update_facility.proto\x1a<employee-service/requests/facility/rpc_delete_facility.proto\x1a\x1bgoogle/protobuf/empty.proto2\xe2\x11\n" +
 	"\x0fEmployeeService\x12\x8a\x01\n" +
 	"\tGetAction\x12=.employee_service.requests.action.get_action.GetActionRequest\x1a>.employee_service.requests.action.get_action.GetActionResponse\x12\x8f\x01\n" +
 	"\n" +
@@ -39,7 +40,12 @@ const file_employee_service_employee_service_proto_rawDesc = "" +
 	"\rGetFacilities\x12G.employee_service.requests.facility.get_facilities.GetFacilitiesRequest\x1aH.employee_service.requests.facility.get_facilities.GetFacilitiesResponse\x12\xa7\x01\n" +
 	"\x0eCreateFacility\x12I.employee_service.requests.facility.create_facility.CreateFacilityRequest\x1aJ.employee_service.requests.facility.create_facility.CreateFacilityResponse\x12\xa7\x01\n" +
 	"\x0eUpdateFacility\x12I.employee_service.requests.facility.update_facility.UpdateFacilityRequest\x1aJ.employee_service.requests.facility.update_facility.UpdateFacilityResponse\x12s\n" +
-	"\x0eDeleteFacility\x12I.employee_service.requests.facility.delete_facility.DeleteFacilityRequest\x1a\x16.google.protobuf.EmptyB>Z<github.com/nicodanke/gesty-api/shared/proto/employee-serviceb\x06proto3"
+	"\x0eDeleteFacility\x12I.employee_service.requests.facility.delete_facility.DeleteFacilityRequest\x1a\x16.google.protobuf.Empty\x12\x98\x01\n" +
+	"\vGetEmployee\x12C.employee_service.requests.employee.get_employee.GetEmployeeRequest\x1aD.employee_service.requests.employee.get_employee.GetEmployeeResponse\x12\x9d\x01\n" +
+	"\fGetEmployees\x12E.employee_service.requests.employee.get_employees.GetEmployeesRequest\x1aF.employee_service.requests.employee.get_employees.GetEmployeesResponse\x12\xa7\x01\n" +
+	"\x0eCreateEmployee\x12I.employee_service.requests.employee.create_employee.CreateEmployeeRequest\x1aJ.employee_service.requests.employee.create_employee.CreateEmployeeResponse\x12\xa7\x01\n" +
+	"\x0eUpdateEmployee\x12I.employee_service.requests.employee.update_employee.UpdateEmployeeRequest\x1aJ.employee_service.requests.employee.update_employee.UpdateEmployeeResponse\x12s\n" +
+	"\x0eDeleteEmployee\x12I.employee_service.requests.employee.delete_employee.DeleteEmployeeRequest\x1a\x16.google.protobuf.EmptyB>Z<github.com/nicodanke/gesty-api/shared/proto/employee-serviceb\x06proto3"
 
 var file_employee_service_employee_service_proto_goTypes = []any{
 	(*action.GetActionRequest)(nil),         // 0: employee_service.requests.action.get_action.GetActionRequest
@@ -52,15 +58,24 @@ var file_employee_service_employee_service_proto_goTypes = []any{
 	(*facility.CreateFacilityRequest)(nil),  // 7: employee_service.requests.facility.create_facility.CreateFacilityRequest
 	(*facility.UpdateFacilityRequest)(nil),  // 8: employee_service.requests.facility.update_facility.UpdateFacilityRequest
 	(*facility.DeleteFacilityRequest)(nil),  // 9: employee_service.requests.facility.delete_facility.DeleteFacilityRequest
-	(*action.GetActionResponse)(nil),        // 10: employee_service.requests.action.get_action.GetActionResponse
-	(*action.GetActionsResponse)(nil),       // 11: employee_service.requests.action.get_actions.GetActionsResponse
-	(*action.CreateActionResponse)(nil),     // 12: employee_service.requests.action.create_action.CreateActionResponse
-	(*action.UpdateActionResponse)(nil),     // 13: employee_service.requests.action.update_action.UpdateActionResponse
-	(*emptypb.Empty)(nil),                   // 14: google.protobuf.Empty
-	(*facility.GetFacilityResponse)(nil),    // 15: employee_service.requests.facility.get_facility.GetFacilityResponse
-	(*facility.GetFacilitiesResponse)(nil),  // 16: employee_service.requests.facility.get_facilities.GetFacilitiesResponse
-	(*facility.CreateFacilityResponse)(nil), // 17: employee_service.requests.facility.create_facility.CreateFacilityResponse
-	(*facility.UpdateFacilityResponse)(nil), // 18: employee_service.requests.facility.update_facility.UpdateFacilityResponse
+	(*employee.GetEmployeeRequest)(nil),     // 10: employee_service.requests.employee.get_employee.GetEmployeeRequest
+	(*employee.GetEmployeesRequest)(nil),    // 11: employee_service.requests.employee.get_employees.GetEmployeesRequest
+	(*employee.CreateEmployeeRequest)(nil),  // 12: employee_service.requests.employee.create_employee.CreateEmployeeRequest
+	(*employee.UpdateEmployeeRequest)(nil),  // 13: employee_service.requests.employee.update_employee.UpdateEmployeeRequest
+	(*employee.DeleteEmployeeRequest)(nil),  // 14: employee_service.requests.employee.delete_employee.DeleteEmployeeRequest
+	(*action.GetActionResponse)(nil),        // 15: employee_service.requests.action.get_action.GetActionResponse
+	(*action.GetActionsResponse)(nil),       // 16: employee_service.requests.action.get_actions.GetActionsResponse
+	(*action.CreateActionResponse)(nil),     // 17: employee_service.requests.action.create_action.CreateActionResponse
+	(*action.UpdateActionResponse)(nil),     // 18: employee_service.requests.action.update_action.UpdateActionResponse
+	(*emptypb.Empty)(nil),                   // 19: google.protobuf.Empty
+	(*facility.GetFacilityResponse)(nil),    // 20: employee_service.requests.facility.get_facility.GetFacilityResponse
+	(*facility.GetFacilitiesResponse)(nil),  // 21: employee_service.requests.facility.get_facilities.GetFacilitiesResponse
+	(*facility.CreateFacilityResponse)(nil), // 22: employee_service.requests.facility.create_facility.CreateFacilityResponse
+	(*facility.UpdateFacilityResponse)(nil), // 23: employee_service.requests.facility.update_facility.UpdateFacilityResponse
+	(*employee.GetEmployeeResponse)(nil),    // 24: employee_service.requests.employee.get_employee.GetEmployeeResponse
+	(*employee.GetEmployeesResponse)(nil),   // 25: employee_service.requests.employee.get_employees.GetEmployeesResponse
+	(*employee.CreateEmployeeResponse)(nil), // 26: employee_service.requests.employee.create_employee.CreateEmployeeResponse
+	(*employee.UpdateEmployeeResponse)(nil), // 27: employee_service.requests.employee.update_employee.UpdateEmployeeResponse
 }
 var file_employee_service_employee_service_proto_depIdxs = []int32{
 	0,  // 0: employee_service.EmployeeService.GetAction:input_type -> employee_service.requests.action.get_action.GetActionRequest
@@ -73,18 +88,28 @@ var file_employee_service_employee_service_proto_depIdxs = []int32{
 	7,  // 7: employee_service.EmployeeService.CreateFacility:input_type -> employee_service.requests.facility.create_facility.CreateFacilityRequest
 	8,  // 8: employee_service.EmployeeService.UpdateFacility:input_type -> employee_service.requests.facility.update_facility.UpdateFacilityRequest
 	9,  // 9: employee_service.EmployeeService.DeleteFacility:input_type -> employee_service.requests.facility.delete_facility.DeleteFacilityRequest
-	10, // 10: employee_service.EmployeeService.GetAction:output_type -> employee_service.requests.action.get_action.GetActionResponse
-	11, // 11: employee_service.EmployeeService.GetActions:output_type -> employee_service.requests.action.get_actions.GetActionsResponse
-	12, // 12: employee_service.EmployeeService.CreateAction:output_type -> employee_service.requests.action.create_action.CreateActionResponse
-	13, // 13: employee_service.EmployeeService.UpdateAction:output_type -> employee_service.requests.action.update_action.UpdateActionResponse
-	14, // 14: employee_service.EmployeeService.DeleteAction:output_type -> google.protobuf.Empty
-	15, // 15: employee_service.EmployeeService.GetFacility:output_type -> employee_service.requests.facility.get_facility.GetFacilityResponse
-	16, // 16: employee_service.EmployeeService.GetFacilities:output_type -> employee_service.requests.facility.get_facilities.GetFacilitiesResponse
-	17, // 17: employee_service.EmployeeService.CreateFacility:output_type -> employee_service.requests.facility.create_facility.CreateFacilityResponse
-	18, // 18: employee_service.EmployeeService.UpdateFacility:output_type -> employee_service.requests.facility.update_facility.UpdateFacilityResponse
-	14, // 19: employee_service.EmployeeService.DeleteFacility:output_type -> google.protobuf.Empty
-	10, // [10:20] is the sub-list for method output_type
-	0,  // [0:10] is the sub-list for method input_type
+	10, // 10: employee_service.EmployeeService.GetEmployee:input_type -> employee_service.requests.employee.get_employee.GetEmployeeRequest
+	11, // 11: employee_service.EmployeeService.GetEmployees:input_type -> employee_service.requests.employee.get_employees.GetEmployeesRequest
+	12, // 12: employee_service.EmployeeService.CreateEmployee:input_type -> employee_service.requests.employee.create_employee.CreateEmployeeRequest
+	13, // 13: employee_service.EmployeeService.UpdateEmployee:input_type -> employee_service.requests.employee.update_employee.UpdateEmployeeRequest
+	14, // 14: employee_service.EmployeeService.DeleteEmployee:input_type -> employee_service.requests.employee.delete_employee.DeleteEmployeeRequest
+	15, // 15: employee_service.EmployeeService.GetAction:output_type -> employee_service.requests.action.get_action.GetActionResponse
+	16, // 16: employee_service.EmployeeService.GetActions:output_type -> employee_service.requests.action.get_actions.GetActionsResponse
+	17, // 17: employee_service.EmployeeService.CreateAction:output_type -> employee_service.requests.action.create_action.CreateActionResponse
+	18, // 18: employee_service.EmployeeService.UpdateAction:output_type -> employee_service.requests.action.update_action.UpdateActionResponse
+	19, // 19: employee_service.EmployeeService.DeleteAction:output_type -> google.protobuf.Empty
+	20, // 20: employee_service.EmployeeService.GetFacility:output_type -> employee_service.requests.facility.get_facility.GetFacilityResponse
+	21, // 21: employee_service.EmployeeService.GetFacilities:output_type -> employee_service.requests.facility.get_facilities.GetFacilitiesResponse
+	22, // 22: employee_service.EmployeeService.CreateFacility:output_type -> employee_service.requests.facility.create_facility.CreateFacilityResponse
+	23, // 23: employee_service.EmployeeService.UpdateFacility:output_type -> employee_service.requests.facility.update_facility.UpdateFacilityResponse
+	19, // 24: employee_service.EmployeeService.DeleteFacility:output_type -> google.protobuf.Empty
+	24, // 25: employee_service.EmployeeService.GetEmployee:output_type -> employee_service.requests.employee.get_employee.GetEmployeeResponse
+	25, // 26: employee_service.EmployeeService.GetEmployees:output_type -> employee_service.requests.employee.get_employees.GetEmployeesResponse
+	26, // 27: employee_service.EmployeeService.CreateEmployee:output_type -> employee_service.requests.employee.create_employee.CreateEmployeeResponse
+	27, // 28: employee_service.EmployeeService.UpdateEmployee:output_type -> employee_service.requests.employee.update_employee.UpdateEmployeeResponse
+	19, // 29: employee_service.EmployeeService.DeleteEmployee:output_type -> google.protobuf.Empty
+	15, // [15:30] is the sub-list for method output_type
+	0,  // [0:15] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

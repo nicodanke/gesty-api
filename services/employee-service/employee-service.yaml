@@ -27,3 +27,15 @@ http:
       body: "*"
     - selector: employee_service.EmployeeService.DeleteFacility
       delete: /v1/facilities/{id}
+    - selector: employee_service.EmployeeService.GetEmployees
+      get: /v1/employees
+    - selector: employee_service.EmployeeService.GetEmployee
+      get: /v1/employees/{id}
+    - selector: employee_service.EmployeeService.CreateEmployee
+      post: /v1/employees
+      body: "*"
+    - selector: employee_service.EmployeeService.UpdateEmployee
+      patch: /v1/employees/{id}
+      body: "*"
+    - selector: employee_service.EmployeeService.DeleteEmployee
+      delete: /v1/employees/{id}

@@ -71,6 +71,28 @@ func (q *Queries) DeleteEmployeeAddress(ctx context.Context, employeeID int64) e
 	return err
 }
 
+const getEmployeeAddressByEmployeeId = `-- name: GetEmployeeAddressByEmployeeId :one
+SELECT employee_id, country, state, sub_state, street, number, unit, postal_code, lat, lng FROM "employee_address" WHERE employee_id = $1
+`
+
+func (q *Queries) GetEmployeeAddressByEmployeeId(ctx context.Context, employeeID int64) (EmployeeAddress, error) {
+	row := q.db.QueryRow(ctx, getEmployeeAddressByEmployeeId, employeeID)
+	var i EmployeeAddress
+	err := row.Scan(
+		&i.EmployeeID,
+		&i.Country,
+		&i.State,
+		&i.SubState,
+		&i.Street,
+		&i.Number,
+		&i.Unit,
+		&i.PostalCode,
+		&i.Lat,
+		&i.Lng,
+	)
+	return i, err
+}
+
 const updateEmployeeAddress = `-- name: UpdateEmployeeAddress :one
 UPDATE "employee_address"
 SET

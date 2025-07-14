@@ -163,3 +163,171 @@ func convertUpdateFacilityTxResultEvent(facility db.UpdateFacilityTxResult) *eve
 		AddressLng:        facility.FacilityAddress.Lng.Float64,
 	}
 }
+
+func convertEmployeeCreateTxResult(employee db.CreateEmployeeTxResult) *models.Employee {
+	return &models.Employee{
+		Id:                employee.Employee.ID,
+		Name:              employee.Employee.Name,
+		Lastname:          employee.Employee.Lastname,
+		Email:             employee.Employee.Email,
+		Phone:             employee.Employee.Phone,
+		Gender:            employee.Employee.Gender,
+		RealId:            employee.Employee.RealID,
+		FiscalId:          employee.Employee.FiscalID,
+		AddressCountry:    employee.EmployeeAddress.Country,
+		AddressState:      employee.EmployeeAddress.State,
+		AddressSubState:   employee.EmployeeAddress.SubState.String,
+		AddressStreet:     employee.EmployeeAddress.Street,
+		AddressNumber:     employee.EmployeeAddress.Number,
+		AddressUnit:       employee.EmployeeAddress.Unit.String,
+		AddressPostalcode: employee.EmployeeAddress.PostalCode,
+		AddressLat:        employee.EmployeeAddress.Lat.Float64,
+		AddressLng:        employee.EmployeeAddress.Lng.Float64,
+		FacilityIds:       employee.FacilityIDs,
+	}
+}
+
+func convertEmployeeCreateTxResultEvent(employee db.CreateEmployeeTxResult) *eventdata.Employee {
+	facilityIds := make([]string, len(employee.FacilityIDs))
+	for i, id := range employee.FacilityIDs {
+		facilityIds[i] = strconv.FormatInt(id, 10)
+	}
+
+	return &eventdata.Employee{
+		Id:                strconv.FormatInt(employee.Employee.ID, 10),
+		Name:              employee.Employee.Name,
+		Lastname:          employee.Employee.Lastname,
+		Email:             employee.Employee.Email,
+		Phone:             employee.Employee.Phone,
+		Gender:            employee.Employee.Gender,
+		RealId:            employee.Employee.RealID,
+		FiscalId:          employee.Employee.FiscalID,
+		AddressCountry:    employee.EmployeeAddress.Country,
+		AddressState:      employee.EmployeeAddress.State,
+		AddressSubState:   employee.EmployeeAddress.SubState.String,
+		AddressStreet:     employee.EmployeeAddress.Street,
+		AddressNumber:     employee.EmployeeAddress.Number,
+		AddressUnit:       employee.EmployeeAddress.Unit.String,
+		AddressPostalcode: employee.EmployeeAddress.PostalCode,
+		AddressLat:        employee.EmployeeAddress.Lat.Float64,
+		AddressLng:        employee.EmployeeAddress.Lng.Float64,
+		FacilityIds:       facilityIds,
+	}
+}
+
+func convertEmployeesGetRows(employees []db.GetEmployeesRow) []*models.Employee {
+	result := make([]*models.Employee, len(employees))
+
+	for i, v := range employees {
+		result[i] = convertEmployeesGetRow(v)
+	}
+
+	return result
+}
+
+func convertEmployeesGetRow(employee db.GetEmployeesRow) *models.Employee {
+	facilityIds := make([]int64, 0)
+	for _, v := range employee.FacilityIds.([]interface{}) {
+		facilityIds = append(facilityIds, v.(int64))
+	}
+
+	return &models.Employee{
+		Id:                employee.ID,
+		Name:              employee.Name,
+		Lastname:          employee.Lastname,
+		Email:             employee.Email,
+		Phone:             employee.Phone,
+		Gender:            employee.Gender,
+		RealId:            employee.RealID,
+		FiscalId:          employee.FiscalID,
+		AddressCountry:    employee.Country.String,
+		AddressState:      employee.State.String,
+		AddressSubState:   employee.SubState.String,
+		AddressStreet:     employee.Street.String,
+		AddressNumber:     employee.Number.String,
+		AddressUnit:       employee.Unit.String,
+		AddressPostalcode: employee.PostalCode.String,
+		AddressLat:        employee.Lat.Float64,
+		AddressLng:        employee.Lng.Float64,
+		FacilityIds:       facilityIds,
+	}
+}
+
+func convertEmployeeGetRow(employee db.GetEmployeeRow) *models.Employee {
+	facilityIds := make([]int64, 0)
+	for _, v := range employee.FacilityIds.([]interface{}) {
+		facilityIds = append(facilityIds, v.(int64))
+	}
+
+	return &models.Employee{
+		Id:                employee.ID,
+		Name:              employee.Name,
+		Lastname:          employee.Lastname,
+		Email:             employee.Email,
+		Phone:             employee.Phone,
+		Gender:            employee.Gender,
+		RealId:            employee.RealID,
+		FiscalId:          employee.FiscalID,
+		AddressCountry:    employee.Country.String,
+		AddressState:      employee.State.String,
+		AddressSubState:   employee.SubState.String,
+		AddressStreet:     employee.Street.String,
+		AddressNumber:     employee.Number.String,
+		AddressUnit:       employee.Unit.String,
+		AddressPostalcode: employee.PostalCode.String,
+		AddressLat:        employee.Lat.Float64,
+		AddressLng:        employee.Lng.Float64,
+		FacilityIds:       facilityIds,
+	}
+}
+
+func convertEmployeeUpdateTxResult(employee db.UpdateEmployeeTxResult) *models.Employee {
+	return &models.Employee{
+		Id:                employee.Employee.ID,
+		Name:              employee.Employee.Name,
+		Lastname:          employee.Employee.Lastname,
+		Email:             employee.Employee.Email,
+		Phone:             employee.Employee.Phone,
+		Gender:            employee.Employee.Gender,
+		RealId:            employee.Employee.RealID,
+		FiscalId:          employee.Employee.FiscalID,
+		AddressCountry:    employee.EmployeeAddress.Country,
+		AddressState:      employee.EmployeeAddress.State,
+		AddressSubState:   employee.EmployeeAddress.SubState.String,
+		AddressStreet:     employee.EmployeeAddress.Street,
+		AddressNumber:     employee.EmployeeAddress.Number,
+		AddressUnit:       employee.EmployeeAddress.Unit.String,
+		AddressPostalcode: employee.EmployeeAddress.PostalCode,
+		AddressLat:        employee.EmployeeAddress.Lat.Float64,
+		AddressLng:        employee.EmployeeAddress.Lng.Float64,
+		FacilityIds:       employee.FacilityIds,
+	}
+}
+
+func convertEmployeeUpdateTxResultEvent(employee db.UpdateEmployeeTxResult) *eventdata.Employee {
+	facilityIds := make([]string, len(employee.FacilityIds))
+	for i, id := range employee.FacilityIds {
+		facilityIds[i] = strconv.FormatInt(id, 10)
+	}
+
+	return &eventdata.Employee{
+		Id:                strconv.FormatInt(employee.Employee.ID, 10),
+		Name:              employee.Employee.Name,
+		Lastname:          employee.Employee.Lastname,
+		Email:             employee.Employee.Email,
+		Phone:             employee.Employee.Phone,
+		Gender:            employee.Employee.Gender,
+		RealId:            employee.Employee.RealID,
+		FiscalId:          employee.Employee.FiscalID,
+		AddressCountry:    employee.EmployeeAddress.Country,
+		AddressState:      employee.EmployeeAddress.State,
+		AddressSubState:   employee.EmployeeAddress.SubState.String,
+		AddressStreet:     employee.EmployeeAddress.Street,
+		AddressNumber:     employee.EmployeeAddress.Number,
+		AddressUnit:       employee.EmployeeAddress.Unit.String,
+		AddressPostalcode: employee.EmployeeAddress.PostalCode,
+		AddressLat:        employee.EmployeeAddress.Lat.Float64,
+		AddressLng:        employee.EmployeeAddress.Lng.Float64,
+		FacilityIds:       facilityIds,
+	}
+}

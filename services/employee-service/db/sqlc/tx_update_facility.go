@@ -8,7 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-// UpdateRoleTxParams contains the input parameters to update a role
+// UpdateFacilityTxParams contains the input parameters to update a facility
 type UpdateFacilityTxParams struct {
 	AccountID         int64         `json:"account_id"`
 	ID                int64         `json:"id"`

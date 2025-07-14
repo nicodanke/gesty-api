@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"time"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -75,7 +74,7 @@ func (q *Queries) DeleteEmployee(ctx context.Context, arg DeleteEmployeeParams) 
 }
 
 const getEmployee = `-- name: GetEmployee :one
-SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, e.account_id, e.created_at, e.updated_at, ea.employee_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng,
+SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng,
     COALESCE(
         ARRAY_AGG(ef.facility_id) FILTER (WHERE ef.facility_id IS NOT NULL),
         '{}'::int8[]
@@ -102,10 +101,6 @@ type GetEmployeeRow struct {
 	Gender      string        `json:"gender"`
 	RealID      string        `json:"real_id"`
 	FiscalID    string        `json:"fiscal_id"`
-	AccountID   int64         `json:"account_id"`
-	CreatedAt   time.Time     `json:"created_at"`
-	UpdatedAt   time.Time     `json:"updated_at"`
-	EmployeeID  pgtype.Int8   `json:"employee_id"`
 	Country     pgtype.Text   `json:"country"`
 	State       pgtype.Text   `json:"state"`
 	SubState    pgtype.Text   `json:"sub_state"`
@@ -130,10 +125,6 @@ func (q *Queries) GetEmployee(ctx context.Context, arg GetEmployeeParams) (GetEm
 		&i.Gender,
 		&i.RealID,
 		&i.FiscalID,
-		&i.AccountID,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-		&i.EmployeeID,
 		&i.Country,
 		&i.State,
 		&i.SubState,
@@ -149,7 +140,7 @@ func (q *Queries) GetEmployee(ctx context.Context, arg GetEmployeeParams) (GetEm
 }
 
 const getEmployees = `-- name: GetEmployees :many
-SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, e.account_id, e.created_at, e.updated_at, ea.employee_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng,
+SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng,
     COALESCE(
         ARRAY_AGG(ef.facility_id) FILTER (WHERE ef.facility_id IS NOT NULL),
         '{}'::int8[]
@@ -179,10 +170,6 @@ type GetEmployeesRow struct {
 	Gender      string        `json:"gender"`
 	RealID      string        `json:"real_id"`
 	FiscalID    string        `json:"fiscal_id"`
-	AccountID   int64         `json:"account_id"`
-	CreatedAt   time.Time     `json:"created_at"`
-	UpdatedAt   time.Time     `json:"updated_at"`
-	EmployeeID  pgtype.Int8   `json:"employee_id"`
 	Country     pgtype.Text   `json:"country"`
 	State       pgtype.Text   `json:"state"`
 	SubState    pgtype.Text   `json:"sub_state"`
@@ -213,10 +200,6 @@ func (q *Queries) GetEmployees(ctx context.Context, arg GetEmployeesParams) ([]G
 			&i.Gender,
 			&i.RealID,
 			&i.FiscalID,
-			&i.AccountID,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-			&i.EmployeeID,
 			&i.Country,
 			&i.State,
 			&i.SubState,
@@ -247,22 +230,24 @@ SET
     phone = COALESCE($4, phone),
     gender = COALESCE($5, gender),
     real_id = COALESCE($6, real_id),
-    fiscal_id = COALESCE($7, fiscal_id)
+    fiscal_id = COALESCE($7, fiscal_id),
+    updated_at = COALESCE($8, updated_at)
 WHERE
-    account_id = $8 AND id = $9
+    account_id = $9 AND id = $10
 RETURNING id, name, lastname, email, phone, gender, real_id, fiscal_id, account_id, created_at, updated_at
 `
 
 type UpdateEmployeeParams struct {
-	Name      pgtype.Text `json:"name"`
-	Lastname  pgtype.Text `json:"lastname"`
-	Email     pgtype.Text `json:"email"`
-	Phone     pgtype.Text `json:"phone"`
-	Gender    pgtype.Text `json:"gender"`
-	RealID    pgtype.Text `json:"real_id"`
-	FiscalID  pgtype.Text `json:"fiscal_id"`
-	AccountID int64       `json:"account_id"`
-	ID        int64       `json:"id"`
+	Name      pgtype.Text        `json:"name"`
+	Lastname  pgtype.Text        `json:"lastname"`
+	Email     pgtype.Text        `json:"email"`
+	Phone     pgtype.Text        `json:"phone"`
+	Gender    pgtype.Text        `json:"gender"`
+	RealID    pgtype.Text        `json:"real_id"`
+	FiscalID  pgtype.Text        `json:"fiscal_id"`
+	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+	AccountID int64              `json:"account_id"`
+	ID        int64              `json:"id"`
 }
 
 func (q *Queries) UpdateEmployee(ctx context.Context, arg UpdateEmployeeParams) (Employee, error) {
@@ -274,6 +259,7 @@ func (q *Queries) UpdateEmployee(ctx context.Context, arg UpdateEmployeeParams) 
 		arg.Gender,
 		arg.RealID,
 		arg.FiscalID,
+		arg.UpdatedAt,
 		arg.AccountID,
 		arg.ID,
 	)

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package employee_service.requests.employee.create_employee;
+
+import "employee-service/models/employee.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee";
+
+message CreateEmployeeRequest {
+    string name = 1;
+    string lastname = 2;
+    string email = 3;
+    string phone = 4;
+    string gender = 5;
+    string realId = 6;
+    string fiscalId = 7;
+    string addressCountry = 8;
+    string addressState = 9;
+    optional string addressSubState = 10;
+    string addressStreet = 11;
+    string addressNumber = 12;
+    string addressPostalcode = 13;
+    optional string addressUnit = 14;
+    optional double addressLat = 15;
+    optional double addressLng = 16;
+    repeated int64 facilityIds = 17;
+}
+
+message CreateEmployeeResponse {
+    employee_service.models.employee.Employee employee = 1;
+}

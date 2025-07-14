@@ -24,6 +24,13 @@ func (store *SQLStore) DeleteFacilityTx(ctx context.Context, arg DeleteFacilityT
 			return err
 		}
 
+		// Deletes Employee Facility
+		err = q.DeleteEmployeeFacilityByFacilityId(ctx, arg.ID)
+		if err != nil {
+			fmt.Println("error deleting employee-facility", err)
+			return err
+		}
+
 		// Deletes Facility
 		err = q.DeleteFacility(ctx, DeleteFacilityParams(arg))
 

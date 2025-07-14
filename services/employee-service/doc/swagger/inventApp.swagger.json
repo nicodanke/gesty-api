@@ -46,11 +46,85 @@
         }
       }
     },
+    "create_employeeCreateEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "employee": {
+          "$ref": "#/definitions/employeeEmployee"
+        }
+      }
+    },
     "create_facilityCreateFacilityResponse": {
       "type": "object",
       "properties": {
         "facility": {
           "$ref": "#/definitions/facilityFacility"
+        }
+      }
+    },
+    "employeeEmployee": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "realId": {
+          "type": "string"
+        },
+        "fiscalId": {
+          "type": "string"
+        },
+        "addressCountry": {
+          "type": "string"
+        },
+        "addressState": {
+          "type": "string"
+        },
+        "addressSubState": {
+          "type": "string"
+        },
+        "addressStreet": {
+          "type": "string"
+        },
+        "addressNumber": {
+          "type": "string"
+        },
+        "addressUnit": {
+          "type": "string"
+        },
+        "addressPostalcode": {
+          "type": "string"
+        },
+        "addressLat": {
+          "type": "number",
+          "format": "double"
+        },
+        "addressLng": {
+          "type": "number",
+          "format": "double"
+        },
+        "facilityIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         }
       }
     },
@@ -124,6 +198,26 @@
         }
       }
     },
+    "get_employeeGetEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "employee": {
+          "$ref": "#/definitions/employeeEmployee"
+        }
+      }
+    },
+    "get_employeesGetEmployeesResponse": {
+      "type": "object",
+      "properties": {
+        "employees": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/employeeEmployee"
+          }
+        }
+      }
+    },
     "get_facilitiesGetFacilitiesResponse": {
       "type": "object",
       "properties": {
@@ -177,6 +271,14 @@
       "properties": {
         "action": {
           "$ref": "#/definitions/actionAction"
+        }
+      }
+    },
+    "update_employeeUpdateEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "employee": {
+          "$ref": "#/definitions/employeeEmployee"
         }
       }
     },
