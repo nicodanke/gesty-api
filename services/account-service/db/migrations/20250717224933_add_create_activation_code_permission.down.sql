@@ -1,0 +1,1 @@
+DELETE FROM permission WHERE id IN (36);

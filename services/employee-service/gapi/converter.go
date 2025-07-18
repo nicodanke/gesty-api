@@ -8,6 +8,7 @@ import (
 	"github.com/nicodanke/gesty-api/services/employee-service/sse/eventdata"
 	"github.com/nicodanke/gesty-api/shared/proto/employee-service/models"
 	"google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func convertAction(action db.Action) *models.Action {
@@ -127,25 +128,6 @@ func convertFacilityUpdateTxResult(facility db.UpdateFacilityTxResult) *models.F
 }
 
 func convertCreateFacilityTxResultEvent(facility db.CreateFacilityTxResult) *eventdata.Facility {
-	return &eventdata.Facility{
-		Id:                strconv.FormatInt(facility.Facility.ID, 10),
-		Name:              facility.Facility.Name,
-		Description:       facility.Facility.Description.String,
-		OpenTime:          durationpb.New(time.Duration(facility.Facility.OpenTime.Microseconds)),
-		CloseTime:         durationpb.New(time.Duration(facility.Facility.CloseTime.Microseconds)),
-		AddressCountry:    facility.FacilityAddress.Country,
-		AddressState:      facility.FacilityAddress.State,
-		AddressSubState:   facility.FacilityAddress.SubState.String,
-		AddressStreet:     facility.FacilityAddress.Street,
-		AddressNumber:     facility.FacilityAddress.Number,
-		AddressUnit:       facility.FacilityAddress.Unit.String,
-		AddressPostalcode: facility.FacilityAddress.PostalCode,
-		AddressLat:        facility.FacilityAddress.Lat.Float64,
-		AddressLng:        facility.FacilityAddress.Lng.Float64,
-	}
-}
-
-func convertUpdateFacilityTxResultEvent(facility db.UpdateFacilityTxResult) *eventdata.Facility {
 	return &eventdata.Facility{
 		Id:                strconv.FormatInt(facility.Facility.ID, 10),
 		Name:              facility.Facility.Name,
@@ -329,5 +311,137 @@ func convertEmployeeUpdateTxResultEvent(employee db.UpdateEmployeeTxResult) *eve
 		AddressLat:        employee.EmployeeAddress.Lat.Float64,
 		AddressLng:        employee.EmployeeAddress.Lng.Float64,
 		FacilityIds:       facilityIds,
+	}
+}
+
+func convertDeviceCreateTxResult(device db.CreateDeviceTxResult) *models.Device {
+	return &models.Device{
+		Id:        device.Device.ID,
+		Name:      device.Device.Name,
+		Enabled:   device.Device.Enabled,
+		ActionIds: device.ActionIDs,
+	}
+}
+
+func convertDeviceCreateTxResultEvent(device db.CreateDeviceTxResult) *eventdata.Device {
+	actionIds := make([]string, len(device.ActionIDs))
+	for i, id := range device.ActionIDs {
+		actionIds[i] = strconv.FormatInt(id, 10)
+	}
+
+	return &eventdata.Device{
+		Id:        strconv.FormatInt(device.Device.ID, 10),
+		Name:      device.Device.Name,
+		Enabled:   device.Device.Enabled,
+		ActionIds: actionIds,
+	}
+}
+
+func convertGetDeviceRow(device db.GetDeviceRow) *models.Device {
+	actionIds := make([]int64, 0)
+	for _, v := range device.ActionIds.([]interface{}) {
+		actionIds = append(actionIds, v.(int64))
+	}
+
+	return &models.Device{
+		Id:                      device.ID,
+		Name:                    device.Name,
+		Enabled:                 device.Enabled,
+		FacilityId:              device.FacilityID,
+		Password:                device.Password,
+		ActionIds:               actionIds,
+		DeviceName:              device.DeviceName.String,
+		DeviceModel:             device.DeviceModel.String,
+		DeviceBrand:             device.DeviceBrand.String,
+		DeviceSerialNumber:      device.DeviceSerialNumber.String,
+		DeviceOs:                device.DeviceOs.String,
+		DeviceRam:               strconv.FormatFloat(device.DeviceRam.Float64, 'f', -1, 64),
+		DeviceStorage:           strconv.FormatFloat(device.DeviceStorage.Float64, 'f', -1, 64),
+		DeviceOsVersion:         device.DeviceOsVersion.String,
+		ActivationCode:          device.ActivationCode.String,
+		ActivationCodeExpiresAt: timestamppb.New(device.ActivationCodeExpiresAt),
+	}
+}
+
+func convertGetDevicesRows(devices []db.GetDevicesRow) []*models.Device {
+	result := make([]*models.Device, len(devices))
+
+	for i, v := range devices {
+		result[i] = convertGetDevicesRow(v)
+	}
+
+	return result
+}
+
+func convertGetDevicesRow(device db.GetDevicesRow) *models.Device {
+	actionIds := make([]int64, 0)
+	for _, v := range device.ActionIds.([]interface{}) {
+		actionIds = append(actionIds, v.(int64))
+	}
+
+	return &models.Device{
+		Id:                      device.ID,
+		Name:                    device.Name,
+		Enabled:                 device.Enabled,
+		FacilityId:              device.FacilityID,
+		Password:                device.Password,
+		ActionIds:               actionIds,
+		DeviceName:              device.DeviceName.String,
+		DeviceModel:             device.DeviceModel.String,
+		DeviceBrand:             device.DeviceBrand.String,
+		DeviceSerialNumber:      device.DeviceSerialNumber.String,
+		DeviceOs:                device.DeviceOs.String,
+		DeviceRam:               strconv.FormatFloat(device.DeviceRam.Float64, 'f', -1, 64),
+		DeviceStorage:           strconv.FormatFloat(device.DeviceStorage.Float64, 'f', -1, 64),
+		DeviceOsVersion:         device.DeviceOsVersion.String,
+		ActivationCode:          device.ActivationCode.String,
+		ActivationCodeExpiresAt: timestamppb.New(device.ActivationCodeExpiresAt),
+	}
+}
+
+func convertDeviceUpdateTxResult(device db.UpdateDeviceTxResult) *models.Device {
+	return &models.Device{
+		Id:                      device.Device.ID,
+		Name:                    device.Device.Name,
+		Enabled:                 device.Device.Enabled,
+		ActionIds:               device.ActionIDs,
+		FacilityId:              device.Device.FacilityID,
+		Password:                device.Device.Password,
+		DeviceName:              device.Device.DeviceName.String,
+		DeviceModel:             device.Device.DeviceModel.String,
+		DeviceBrand:             device.Device.DeviceBrand.String,
+		DeviceSerialNumber:      device.Device.DeviceSerialNumber.String,
+		DeviceOs:                device.Device.DeviceOs.String,
+		DeviceRam:               strconv.FormatFloat(device.Device.DeviceRam.Float64, 'f', -1, 64),
+		DeviceStorage:           strconv.FormatFloat(device.Device.DeviceStorage.Float64, 'f', -1, 64),
+		DeviceOsVersion:         device.Device.DeviceOsVersion.String,
+		ActivationCode:          device.Device.ActivationCode.String,
+		ActivationCodeExpiresAt: timestamppb.New(device.Device.ActivationCodeExpiresAt),
+	}
+}
+
+func convertDeviceUpdateTxResultEvent(device db.UpdateDeviceTxResult) *eventdata.Device {
+	actionIds := make([]string, len(device.ActionIDs))
+	for i, id := range device.ActionIDs {
+		actionIds[i] = strconv.FormatInt(id, 10)
+	}
+
+	return &eventdata.Device{
+		Id:                      strconv.FormatInt(device.Device.ID, 10),
+		Name:                    device.Device.Name,
+		Enabled:                 device.Device.Enabled,
+		ActionIds:               actionIds,
+		FacilityId:              strconv.FormatInt(device.Device.FacilityID, 10),
+		Password:                device.Device.Password,
+		DeviceName:              device.Device.DeviceName.String,
+		DeviceModel:             device.Device.DeviceModel.String,
+		DeviceBrand:             device.Device.DeviceBrand.String,
+		DeviceSerialNumber:      device.Device.DeviceSerialNumber.String,
+		DeviceOs:                device.Device.DeviceOs.String,
+		DeviceRam:               strconv.FormatFloat(device.Device.DeviceRam.Float64, 'f', -1, 64),
+		DeviceStorage:           strconv.FormatFloat(device.Device.DeviceStorage.Float64, 'f', -1, 64),
+		DeviceOsVersion:         device.Device.DeviceOsVersion.String,
+		ActivationCode:          device.Device.ActivationCode.String,
+		ActivationCodeExpiresAt: timestamppb.New(device.Device.ActivationCodeExpiresAt),
 	}
 }

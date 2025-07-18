@@ -7,6 +7,14 @@ import "employee-service/requests/action/rpc_get_action.proto";
 import "employee-service/requests/action/rpc_create_action.proto";
 import "employee-service/requests/action/rpc_update_action.proto";
 import "employee-service/requests/action/rpc_delete_action.proto";
+import "employee-service/requests/device/rpc_get_devices.proto";
+import "employee-service/requests/device/rpc_get_device.proto";
+import "employee-service/requests/device/rpc_create_device.proto";
+import "employee-service/requests/device/rpc_update_device.proto";
+import "employee-service/requests/device/rpc_delete_device.proto";
+import "employee-service/requests/device/rpc_generate_activation_code.proto";
+import "employee-service/requests/device/rpc_activate_device.proto";
+import "employee-service/requests/device/rpc_refresh_device_token.proto";
 import "employee-service/requests/employee/rpc_get_employees.proto";
 import "employee-service/requests/employee/rpc_get_employee.proto";
 import "employee-service/requests/employee/rpc_create_employee.proto";
@@ -57,4 +65,22 @@ service EmployeeService {
     rpc UpdateEmployee (employee_service.requests.employee.update_employee.UpdateEmployeeRequest) returns (employee_service.requests.employee.update_employee.UpdateEmployeeResponse);
 
     rpc DeleteEmployee (employee_service.requests.employee.delete_employee.DeleteEmployeeRequest) returns (google.protobuf.Empty);
+
+
+    // DEVICE
+    rpc GetDevice (employee_service.requests.device.get_device.GetDeviceRequest) returns (employee_service.requests.device.get_device.GetDeviceResponse);
+
+    rpc GetDevices (employee_service.requests.device.get_devices.GetDevicesRequest) returns (employee_service.requests.device.get_devices.GetDevicesResponse);
+
+    rpc CreateDevice (employee_service.requests.device.create_device.CreateDeviceRequest) returns (employee_service.requests.device.create_device.CreateDeviceResponse);
+
+    rpc UpdateDevice (employee_service.requests.device.update_device.UpdateDeviceRequest) returns (employee_service.requests.device.update_device.UpdateDeviceResponse);
+
+    rpc DeleteDevice (employee_service.requests.device.delete_device.DeleteDeviceRequest) returns (google.protobuf.Empty);
+
+    rpc GenerateActivationCode (employee_service.requests.device.generate_activation_code.GenerateActivationCodeRequest) returns (employee_service.requests.device.generate_activation_code.GenerateActivationCodeResponse);
+
+    rpc ActivateDevice (employee_service.requests.device.activate_device.ActivateDeviceRequest) returns (employee_service.requests.device.activate_device.ActivateDeviceResponse);
+
+    rpc RefreshDeviceToken (employee_service.requests.device.refresh_device_token.RefreshDeviceTokenRequest) returns (employee_service.requests.device.refresh_device_token.RefreshDeviceTokenResponse);
 }

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package employee_service.requests.device.generate_activation_code;
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device";
+
+message GenerateActivationCodeRequest {
+    int64 id = 1;
+}
+
+message GenerateActivationCodeResponse {
+    string code = 1;
+}

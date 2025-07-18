@@ -36,8 +36,34 @@ func (maker *PasetoMaker) CreateToken(userId int64, accountId int64, accountCode
 	return token, payload, err
 }
 
+func (maker *PasetoMaker) CreateTokenDevice(deviceId int64, accountId int64, duration time.Duration) (string, *PayloadDevice, error) {
+	payload, err := NewPayloadDevice(deviceId, accountId, duration)
+	if err != nil {
+		return "", payload, err
+	}
+
+	token, err := maker.paseto.Encrypt(maker.symentricKey, payload, nil)
+	return token, payload, err
+}
+
 func (maker *PasetoMaker) VerifyToken(token string) (*Payload, error) {
 	payload := &Payload{}
+
+	err := maker.paseto.Decrypt(token, maker.symentricKey, payload, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	err = payload.Valid()
+	if err != nil {
+		return nil, err
+	}
+
+	return payload, nil
+}
+
+func (maker *PasetoMaker) VerifyTokenDevice(token string) (*PayloadDevice, error) {
+	payload := &PayloadDevice{}
 
 	err := maker.paseto.Decrypt(token, maker.symentricKey, payload, nil)
 	if err != nil {

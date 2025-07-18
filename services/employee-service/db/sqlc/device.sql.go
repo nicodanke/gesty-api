@@ -14,9 +14,9 @@ import (
 
 const createDevice = `-- name: CreateDevice :one
 INSERT INTO "device" (
-    account_id, name, enabled, facility_id
+    account_id, name, enabled, password, facility_id
 ) VALUES (
-    $1, $2, $3, $4
+    $1, $2, $3, $4, $5
 ) RETURNING id, name, password, enabled, active, activation_code, activation_code_expires_at, device_name, device_model, device_brand, device_serial_number, device_os, device_ram, device_storage, device_os_version, facility_id, account_id, created_at, updated_at
 `
 
@@ -24,6 +24,7 @@ type CreateDeviceParams struct {
 	AccountID  int64  `json:"account_id"`
 	Name       string `json:"name"`
 	Enabled    bool   `json:"enabled"`
+	Password   string `json:"password"`
 	FacilityID int64  `json:"facility_id"`
 }
 
@@ -32,6 +33,7 @@ func (q *Queries) CreateDevice(ctx context.Context, arg CreateDeviceParams) (Dev
 		arg.AccountID,
 		arg.Name,
 		arg.Enabled,
+		arg.Password,
 		arg.FacilityID,
 	)
 	var i Device
@@ -144,8 +146,15 @@ func (q *Queries) GetDevice(ctx context.Context, arg GetDeviceParams) (GetDevice
 }
 
 const getDevices = `-- name: GetDevices :many
-SELECT id, name, password, enabled, active, activation_code, activation_code_expires_at, device_name, device_model, device_brand, device_serial_number, device_os, device_ram, device_storage, device_os_version, facility_id, account_id, created_at, updated_at FROM "device"
+SELECT d.id, d.name, d.enabled, d.facility_id, d.password, d.created_at, d.updated_at, d.activation_code, d.activation_code_expires_at, d.device_name, d.device_brand, d.device_model, d.device_serial_number, d.device_os, d.device_ram, d.device_storage, d.device_os_version,
+    COALESCE(
+        ARRAY_AGG(da.action_id) FILTER (WHERE da.action_id IS NOT NULL),
+        '{}'::int8[]
+    ) as action_ids
+FROM "device" d
+LEFT JOIN device_action da ON d.id = da.device_id
 WHERE account_id = $1
+GROUP BY d.id, d.name, d.enabled, d.facility_id, d.password, d.created_at, d.updated_at, d.activation_code, d.activation_code_expires_at, d.device_name, d.device_brand, d.device_model, d.device_serial_number, d.device_os, d.device_ram, d.device_storage, d.device_os_version
 ORDER BY LOWER(name)
 LIMIT $2
 OFFSET $3
@@ -157,35 +166,55 @@ type GetDevicesParams struct {
 	Offset    int32 `json:"offset"`
 }
 
-func (q *Queries) GetDevices(ctx context.Context, arg GetDevicesParams) ([]Device, error) {
+type GetDevicesRow struct {
+	ID                      int64         `json:"id"`
+	Name                    string        `json:"name"`
+	Enabled                 bool          `json:"enabled"`
+	FacilityID              int64         `json:"facility_id"`
+	Password                string        `json:"password"`
+	CreatedAt               time.Time     `json:"created_at"`
+	UpdatedAt               time.Time     `json:"updated_at"`
+	ActivationCode          pgtype.Text   `json:"activation_code"`
+	ActivationCodeExpiresAt time.Time     `json:"activation_code_expires_at"`
+	DeviceName              pgtype.Text   `json:"device_name"`
+	DeviceBrand             pgtype.Text   `json:"device_brand"`
+	DeviceModel             pgtype.Text   `json:"device_model"`
+	DeviceSerialNumber      pgtype.Text   `json:"device_serial_number"`
+	DeviceOs                pgtype.Text   `json:"device_os"`
+	DeviceRam               pgtype.Float8 `json:"device_ram"`
+	DeviceStorage           pgtype.Float8 `json:"device_storage"`
+	DeviceOsVersion         pgtype.Text   `json:"device_os_version"`
+	ActionIds               interface{}   `json:"action_ids"`
+}
+
+func (q *Queries) GetDevices(ctx context.Context, arg GetDevicesParams) ([]GetDevicesRow, error) {
 	rows, err := q.db.Query(ctx, getDevices, arg.AccountID, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Device{}
+	items := []GetDevicesRow{}
 	for rows.Next() {
-		var i Device
+		var i GetDevicesRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
-			&i.Password,
 			&i.Enabled,
-			&i.Active,
+			&i.FacilityID,
+			&i.Password,
+			&i.CreatedAt,
+			&i.UpdatedAt,
 			&i.ActivationCode,
 			&i.ActivationCodeExpiresAt,
 			&i.DeviceName,
-			&i.DeviceModel,
 			&i.DeviceBrand,
+			&i.DeviceModel,
 			&i.DeviceSerialNumber,
 			&i.DeviceOs,
 			&i.DeviceRam,
 			&i.DeviceStorage,
 			&i.DeviceOsVersion,
-			&i.FacilityID,
-			&i.AccountID,
-			&i.CreatedAt,
-			&i.UpdatedAt,
+			&i.ActionIds,
 		); err != nil {
 			return nil, err
 		}

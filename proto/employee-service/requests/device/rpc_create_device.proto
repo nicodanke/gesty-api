@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package employee_service.requests.device.create_device;
+
+import "employee-service/models/device.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device";
+
+message CreateDeviceRequest {
+    string name = 1;
+    bool enabled = 2;
+    int64 facilityId = 3;
+    repeated int64 actionIds = 4;
+}
+
+message CreateDeviceResponse {
+    employee_service.models.device.Device device = 1;
+}

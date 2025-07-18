@@ -38,11 +38,45 @@
         }
       }
     },
+    "activate_deviceActivateDeviceResponse": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        },
+        "refreshToken": {
+          "type": "string"
+        },
+        "accessTokenExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "refreshTokenExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      }
+    },
     "create_actionCreateActionResponse": {
       "type": "object",
       "properties": {
         "action": {
           "$ref": "#/definitions/actionAction"
+        }
+      }
+    },
+    "create_deviceCreateDeviceResponse": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "$ref": "#/definitions/deviceDevice"
         }
       }
     },
@@ -59,6 +93,69 @@
       "properties": {
         "facility": {
           "$ref": "#/definitions/facilityFacility"
+        }
+      }
+    },
+    "deviceDevice": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "activationCode": {
+          "type": "string"
+        },
+        "activationCodeExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deviceName": {
+          "type": "string"
+        },
+        "deviceModel": {
+          "type": "string"
+        },
+        "deviceBrand": {
+          "type": "string"
+        },
+        "deviceSerialNumber": {
+          "type": "string"
+        },
+        "deviceOs": {
+          "type": "string"
+        },
+        "deviceRam": {
+          "type": "string"
+        },
+        "deviceStorage": {
+          "type": "string"
+        },
+        "deviceOsVersion": {
+          "type": "string"
+        },
+        "facilityId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "actionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         }
       }
     },
@@ -178,6 +275,14 @@
         }
       }
     },
+    "generate_activation_codeGenerateActivationCodeResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      }
+    },
     "get_actionGetActionResponse": {
       "type": "object",
       "properties": {
@@ -194,6 +299,26 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/actionAction"
+          }
+        }
+      }
+    },
+    "get_deviceGetDeviceResponse": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "$ref": "#/definitions/deviceDevice"
+        }
+      }
+    },
+    "get_devicesGetDevicesResponse": {
+      "type": "object",
+      "properties": {
+        "devices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/deviceDevice"
           }
         }
       }
@@ -247,6 +372,32 @@
       },
       "additionalProperties": {}
     },
+    "refresh_device_tokenRefreshDeviceTokenResponse": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        },
+        "refreshToken": {
+          "type": "string"
+        },
+        "accessTokenExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "refreshTokenExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      }
+    },
     "rpcStatus": {
       "type": "object",
       "properties": {
@@ -271,6 +422,14 @@
       "properties": {
         "action": {
           "$ref": "#/definitions/actionAction"
+        }
+      }
+    },
+    "update_deviceUpdateDeviceResponse": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "$ref": "#/definitions/deviceDevice"
         }
       }
     },

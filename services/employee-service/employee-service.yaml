@@ -39,3 +39,24 @@ http:
       body: "*"
     - selector: employee_service.EmployeeService.DeleteEmployee
       delete: /v1/employees/{id}
+    - selector: employee_service.EmployeeService.GetDevices
+      get: /v1/devices
+    - selector: employee_service.EmployeeService.GetDevice
+      get: /v1/devices/{id}
+    - selector: employee_service.EmployeeService.CreateDevice
+      post: /v1/devices
+      body: "*"
+    - selector: employee_service.EmployeeService.UpdateDevice
+      patch: /v1/devices/{id}
+      body: "*"
+    - selector: employee_service.EmployeeService.DeleteDevice
+      delete: /v1/devices/{id}
+    - selector: employee_service.EmployeeService.GenerateActivationCode
+      post: /v1/devices/{id}/generate-activation-code
+      body: "*"
+    - selector: employee_service.EmployeeService.ActivateDevice
+      post: /v1/devices/{id}/activate
+      body: "*"
+    - selector: employee_service.EmployeeService.RefreshDeviceToken
+      post: /v1/devices/{id}/refresh-token
+      body: "*"

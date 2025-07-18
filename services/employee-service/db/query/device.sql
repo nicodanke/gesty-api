@@ -1,8 +1,8 @@
 -- name: CreateDevice :one
 INSERT INTO "device" (
-    account_id, name, enabled, facility_id
+    account_id, name, enabled, password, facility_id
 ) VALUES (
-    $1, $2, $3, $4
+    $1, $2, $3, $4, $5
 ) RETURNING *;
 
 -- name: GetDevice :one
@@ -18,8 +18,15 @@ GROUP BY d.id, d.name, d.enabled, d.facility_id
 LIMIT 1;
 
 -- name: GetDevices :many
-SELECT * FROM "device"
+SELECT d.id, d.name, d.enabled, d.facility_id, d.password, d.created_at, d.updated_at, d.activation_code, d.activation_code_expires_at, d.device_name, d.device_brand, d.device_model, d.device_serial_number, d.device_os, d.device_ram, d.device_storage, d.device_os_version,
+    COALESCE(
+        ARRAY_AGG(da.action_id) FILTER (WHERE da.action_id IS NOT NULL),
+        '{}'::int8[]
+    ) as action_ids
+FROM "device" d
+LEFT JOIN device_action da ON d.id = da.device_id
 WHERE account_id = $1
+GROUP BY d.id, d.name, d.enabled, d.facility_id, d.password, d.created_at, d.updated_at, d.activation_code, d.activation_code_expires_at, d.device_name, d.device_brand, d.device_model, d.device_serial_number, d.device_os, d.device_ram, d.device_storage, d.device_os_version
 ORDER BY LOWER(name)
 LIMIT $2
 OFFSET $3;

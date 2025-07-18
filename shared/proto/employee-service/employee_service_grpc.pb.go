@@ -9,6 +9,7 @@ package employee_service
 import (
 	context "context"
 	action "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action"
+	device "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device"
 	employee "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee"
 	facility "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/facility"
 	grpc "google.golang.org/grpc"
@@ -23,21 +24,29 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	EmployeeService_GetAction_FullMethodName      = "/employee_service.EmployeeService/GetAction"
-	EmployeeService_GetActions_FullMethodName     = "/employee_service.EmployeeService/GetActions"
-	EmployeeService_CreateAction_FullMethodName   = "/employee_service.EmployeeService/CreateAction"
-	EmployeeService_UpdateAction_FullMethodName   = "/employee_service.EmployeeService/UpdateAction"
-	EmployeeService_DeleteAction_FullMethodName   = "/employee_service.EmployeeService/DeleteAction"
-	EmployeeService_GetFacility_FullMethodName    = "/employee_service.EmployeeService/GetFacility"
-	EmployeeService_GetFacilities_FullMethodName  = "/employee_service.EmployeeService/GetFacilities"
-	EmployeeService_CreateFacility_FullMethodName = "/employee_service.EmployeeService/CreateFacility"
-	EmployeeService_UpdateFacility_FullMethodName = "/employee_service.EmployeeService/UpdateFacility"
-	EmployeeService_DeleteFacility_FullMethodName = "/employee_service.EmployeeService/DeleteFacility"
-	EmployeeService_GetEmployee_FullMethodName    = "/employee_service.EmployeeService/GetEmployee"
-	EmployeeService_GetEmployees_FullMethodName   = "/employee_service.EmployeeService/GetEmployees"
-	EmployeeService_CreateEmployee_FullMethodName = "/employee_service.EmployeeService/CreateEmployee"
-	EmployeeService_UpdateEmployee_FullMethodName = "/employee_service.EmployeeService/UpdateEmployee"
-	EmployeeService_DeleteEmployee_FullMethodName = "/employee_service.EmployeeService/DeleteEmployee"
+	EmployeeService_GetAction_FullMethodName              = "/employee_service.EmployeeService/GetAction"
+	EmployeeService_GetActions_FullMethodName             = "/employee_service.EmployeeService/GetActions"
+	EmployeeService_CreateAction_FullMethodName           = "/employee_service.EmployeeService/CreateAction"
+	EmployeeService_UpdateAction_FullMethodName           = "/employee_service.EmployeeService/UpdateAction"
+	EmployeeService_DeleteAction_FullMethodName           = "/employee_service.EmployeeService/DeleteAction"
+	EmployeeService_GetFacility_FullMethodName            = "/employee_service.EmployeeService/GetFacility"
+	EmployeeService_GetFacilities_FullMethodName          = "/employee_service.EmployeeService/GetFacilities"
+	EmployeeService_CreateFacility_FullMethodName         = "/employee_service.EmployeeService/CreateFacility"
+	EmployeeService_UpdateFacility_FullMethodName         = "/employee_service.EmployeeService/UpdateFacility"
+	EmployeeService_DeleteFacility_FullMethodName         = "/employee_service.EmployeeService/DeleteFacility"
+	EmployeeService_GetEmployee_FullMethodName            = "/employee_service.EmployeeService/GetEmployee"
+	EmployeeService_GetEmployees_FullMethodName           = "/employee_service.EmployeeService/GetEmployees"
+	EmployeeService_CreateEmployee_FullMethodName         = "/employee_service.EmployeeService/CreateEmployee"
+	EmployeeService_UpdateEmployee_FullMethodName         = "/employee_service.EmployeeService/UpdateEmployee"
+	EmployeeService_DeleteEmployee_FullMethodName         = "/employee_service.EmployeeService/DeleteEmployee"
+	EmployeeService_GetDevice_FullMethodName              = "/employee_service.EmployeeService/GetDevice"
+	EmployeeService_GetDevices_FullMethodName             = "/employee_service.EmployeeService/GetDevices"
+	EmployeeService_CreateDevice_FullMethodName           = "/employee_service.EmployeeService/CreateDevice"
+	EmployeeService_UpdateDevice_FullMethodName           = "/employee_service.EmployeeService/UpdateDevice"
+	EmployeeService_DeleteDevice_FullMethodName           = "/employee_service.EmployeeService/DeleteDevice"
+	EmployeeService_GenerateActivationCode_FullMethodName = "/employee_service.EmployeeService/GenerateActivationCode"
+	EmployeeService_ActivateDevice_FullMethodName         = "/employee_service.EmployeeService/ActivateDevice"
+	EmployeeService_RefreshDeviceToken_FullMethodName     = "/employee_service.EmployeeService/RefreshDeviceToken"
 )
 
 // EmployeeServiceClient is the client API for EmployeeService service.
@@ -62,6 +71,15 @@ type EmployeeServiceClient interface {
 	CreateEmployee(ctx context.Context, in *employee.CreateEmployeeRequest, opts ...grpc.CallOption) (*employee.CreateEmployeeResponse, error)
 	UpdateEmployee(ctx context.Context, in *employee.UpdateEmployeeRequest, opts ...grpc.CallOption) (*employee.UpdateEmployeeResponse, error)
 	DeleteEmployee(ctx context.Context, in *employee.DeleteEmployeeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// DEVICE
+	GetDevice(ctx context.Context, in *device.GetDeviceRequest, opts ...grpc.CallOption) (*device.GetDeviceResponse, error)
+	GetDevices(ctx context.Context, in *device.GetDevicesRequest, opts ...grpc.CallOption) (*device.GetDevicesResponse, error)
+	CreateDevice(ctx context.Context, in *device.CreateDeviceRequest, opts ...grpc.CallOption) (*device.CreateDeviceResponse, error)
+	UpdateDevice(ctx context.Context, in *device.UpdateDeviceRequest, opts ...grpc.CallOption) (*device.UpdateDeviceResponse, error)
+	DeleteDevice(ctx context.Context, in *device.DeleteDeviceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GenerateActivationCode(ctx context.Context, in *device.GenerateActivationCodeRequest, opts ...grpc.CallOption) (*device.GenerateActivationCodeResponse, error)
+	ActivateDevice(ctx context.Context, in *device.ActivateDeviceRequest, opts ...grpc.CallOption) (*device.ActivateDeviceResponse, error)
+	RefreshDeviceToken(ctx context.Context, in *device.RefreshDeviceTokenRequest, opts ...grpc.CallOption) (*device.RefreshDeviceTokenResponse, error)
 }
 
 type employeeServiceClient struct {
@@ -222,6 +240,86 @@ func (c *employeeServiceClient) DeleteEmployee(ctx context.Context, in *employee
 	return out, nil
 }
 
+func (c *employeeServiceClient) GetDevice(ctx context.Context, in *device.GetDeviceRequest, opts ...grpc.CallOption) (*device.GetDeviceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(device.GetDeviceResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_GetDevice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) GetDevices(ctx context.Context, in *device.GetDevicesRequest, opts ...grpc.CallOption) (*device.GetDevicesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(device.GetDevicesResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_GetDevices_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) CreateDevice(ctx context.Context, in *device.CreateDeviceRequest, opts ...grpc.CallOption) (*device.CreateDeviceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(device.CreateDeviceResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_CreateDevice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) UpdateDevice(ctx context.Context, in *device.UpdateDeviceRequest, opts ...grpc.CallOption) (*device.UpdateDeviceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(device.UpdateDeviceResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_UpdateDevice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) DeleteDevice(ctx context.Context, in *device.DeleteDeviceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, EmployeeService_DeleteDevice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) GenerateActivationCode(ctx context.Context, in *device.GenerateActivationCodeRequest, opts ...grpc.CallOption) (*device.GenerateActivationCodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(device.GenerateActivationCodeResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_GenerateActivationCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) ActivateDevice(ctx context.Context, in *device.ActivateDeviceRequest, opts ...grpc.CallOption) (*device.ActivateDeviceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(device.ActivateDeviceResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_ActivateDevice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) RefreshDeviceToken(ctx context.Context, in *device.RefreshDeviceTokenRequest, opts ...grpc.CallOption) (*device.RefreshDeviceTokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(device.RefreshDeviceTokenResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_RefreshDeviceToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EmployeeServiceServer is the server API for EmployeeService service.
 // All implementations must embed UnimplementedEmployeeServiceServer
 // for forward compatibility.
@@ -244,6 +342,15 @@ type EmployeeServiceServer interface {
 	CreateEmployee(context.Context, *employee.CreateEmployeeRequest) (*employee.CreateEmployeeResponse, error)
 	UpdateEmployee(context.Context, *employee.UpdateEmployeeRequest) (*employee.UpdateEmployeeResponse, error)
 	DeleteEmployee(context.Context, *employee.DeleteEmployeeRequest) (*emptypb.Empty, error)
+	// DEVICE
+	GetDevice(context.Context, *device.GetDeviceRequest) (*device.GetDeviceResponse, error)
+	GetDevices(context.Context, *device.GetDevicesRequest) (*device.GetDevicesResponse, error)
+	CreateDevice(context.Context, *device.CreateDeviceRequest) (*device.CreateDeviceResponse, error)
+	UpdateDevice(context.Context, *device.UpdateDeviceRequest) (*device.UpdateDeviceResponse, error)
+	DeleteDevice(context.Context, *device.DeleteDeviceRequest) (*emptypb.Empty, error)
+	GenerateActivationCode(context.Context, *device.GenerateActivationCodeRequest) (*device.GenerateActivationCodeResponse, error)
+	ActivateDevice(context.Context, *device.ActivateDeviceRequest) (*device.ActivateDeviceResponse, error)
+	RefreshDeviceToken(context.Context, *device.RefreshDeviceTokenRequest) (*device.RefreshDeviceTokenResponse, error)
 	mustEmbedUnimplementedEmployeeServiceServer()
 }
 
@@ -298,6 +405,30 @@ func (UnimplementedEmployeeServiceServer) UpdateEmployee(context.Context, *emplo
 }
 func (UnimplementedEmployeeServiceServer) DeleteEmployee(context.Context, *employee.DeleteEmployeeRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteEmployee not implemented")
+}
+func (UnimplementedEmployeeServiceServer) GetDevice(context.Context, *device.GetDeviceRequest) (*device.GetDeviceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDevice not implemented")
+}
+func (UnimplementedEmployeeServiceServer) GetDevices(context.Context, *device.GetDevicesRequest) (*device.GetDevicesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDevices not implemented")
+}
+func (UnimplementedEmployeeServiceServer) CreateDevice(context.Context, *device.CreateDeviceRequest) (*device.CreateDeviceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDevice not implemented")
+}
+func (UnimplementedEmployeeServiceServer) UpdateDevice(context.Context, *device.UpdateDeviceRequest) (*device.UpdateDeviceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDevice not implemented")
+}
+func (UnimplementedEmployeeServiceServer) DeleteDevice(context.Context, *device.DeleteDeviceRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDevice not implemented")
+}
+func (UnimplementedEmployeeServiceServer) GenerateActivationCode(context.Context, *device.GenerateActivationCodeRequest) (*device.GenerateActivationCodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateActivationCode not implemented")
+}
+func (UnimplementedEmployeeServiceServer) ActivateDevice(context.Context, *device.ActivateDeviceRequest) (*device.ActivateDeviceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActivateDevice not implemented")
+}
+func (UnimplementedEmployeeServiceServer) RefreshDeviceToken(context.Context, *device.RefreshDeviceTokenRequest) (*device.RefreshDeviceTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshDeviceToken not implemented")
 }
 func (UnimplementedEmployeeServiceServer) mustEmbedUnimplementedEmployeeServiceServer() {}
 func (UnimplementedEmployeeServiceServer) testEmbeddedByValue()                         {}
@@ -590,6 +721,150 @@ func _EmployeeService_DeleteEmployee_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmployeeService_GetDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(device.GetDeviceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).GetDevice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_GetDevice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).GetDevice(ctx, req.(*device.GetDeviceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_GetDevices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(device.GetDevicesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).GetDevices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_GetDevices_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).GetDevices(ctx, req.(*device.GetDevicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_CreateDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(device.CreateDeviceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).CreateDevice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_CreateDevice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).CreateDevice(ctx, req.(*device.CreateDeviceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_UpdateDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(device.UpdateDeviceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).UpdateDevice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_UpdateDevice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).UpdateDevice(ctx, req.(*device.UpdateDeviceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_DeleteDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(device.DeleteDeviceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).DeleteDevice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_DeleteDevice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).DeleteDevice(ctx, req.(*device.DeleteDeviceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_GenerateActivationCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(device.GenerateActivationCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).GenerateActivationCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_GenerateActivationCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).GenerateActivationCode(ctx, req.(*device.GenerateActivationCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_ActivateDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(device.ActivateDeviceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).ActivateDevice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_ActivateDevice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).ActivateDevice(ctx, req.(*device.ActivateDeviceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_RefreshDeviceToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(device.RefreshDeviceTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).RefreshDeviceToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_RefreshDeviceToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).RefreshDeviceToken(ctx, req.(*device.RefreshDeviceTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EmployeeService_ServiceDesc is the grpc.ServiceDesc for EmployeeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -656,6 +931,38 @@ var EmployeeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteEmployee",
 			Handler:    _EmployeeService_DeleteEmployee_Handler,
+		},
+		{
+			MethodName: "GetDevice",
+			Handler:    _EmployeeService_GetDevice_Handler,
+		},
+		{
+			MethodName: "GetDevices",
+			Handler:    _EmployeeService_GetDevices_Handler,
+		},
+		{
+			MethodName: "CreateDevice",
+			Handler:    _EmployeeService_CreateDevice_Handler,
+		},
+		{
+			MethodName: "UpdateDevice",
+			Handler:    _EmployeeService_UpdateDevice_Handler,
+		},
+		{
+			MethodName: "DeleteDevice",
+			Handler:    _EmployeeService_DeleteDevice_Handler,
+		},
+		{
+			MethodName: "GenerateActivationCode",
+			Handler:    _EmployeeService_GenerateActivationCode_Handler,
+		},
+		{
+			MethodName: "ActivateDevice",
+			Handler:    _EmployeeService_ActivateDevice_Handler,
+		},
+		{
+			MethodName: "RefreshDeviceToken",
+			Handler:    _EmployeeService_RefreshDeviceToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

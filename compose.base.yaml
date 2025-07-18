@@ -61,6 +61,7 @@ services:
       - "traefik.http.routers.employee.rule=
           PathPrefix(`/v1/actions`) ||
           PathPrefix(`/v1/employees`) ||
+          PathPrefix(`/v1/devices`) ||
           PathPrefix(`/v1/facilities`)
           "
       - "traefik.http.routers.employee.service=employee-service"

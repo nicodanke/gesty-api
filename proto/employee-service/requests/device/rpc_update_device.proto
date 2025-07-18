@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package employee_service.requests.device.update_device;
+
+import "employee-service/models/device.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device";
+
+message UpdateDeviceRequest {
+    int64 id = 1;
+    optional string name = 2;
+    optional bool enabled = 3;
+    int64 facilityId = 4;
+    repeated int64 actionIds = 5;
+    optional bool removeAllActions = 6;
+}
+
+message UpdateDeviceResponse {
+    employee_service.models.device.Device device = 1;
+}

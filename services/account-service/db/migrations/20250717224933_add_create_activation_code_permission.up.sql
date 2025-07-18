@@ -1,0 +1,1 @@
+INSERT INTO permission (id, code, parent_id) VALUES (36, 'CACD', 17);

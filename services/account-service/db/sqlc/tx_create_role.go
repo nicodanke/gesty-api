@@ -9,15 +9,15 @@ import (
 
 // CreateRoleTxParams contains the input parameters to create a role
 type CreateRoleTxParams struct {
-	AccountID      int64   `json:"account_id"`
-	Name           string  `json:"name"`
-	Description    string  `json:"description"`
-	PermissionIDs  []int64 `json:"permission_ids"`
+	AccountID     int64   `json:"account_id"`
+	Name          string  `json:"name"`
+	Description   string  `json:"description"`
+	PermissionIDs []int64 `json:"permission_ids"`
 }
 
 // CreateRoleTxResult is the result of the role creation
 type CreateRoleTxResult struct {
-	Role Role `json:"role"`
+	Role          Role    `json:"role"`
 	PermissionIDs []int64 `json:"permissions_ids"`
 }
 
@@ -30,9 +30,9 @@ func (store *SQLStore) CreateRoleTx(ctx context.Context, arg CreateRoleTxParams)
 
 		// Creates Role
 		result.Role, err = q.CreateRole(ctx, CreateRoleParams{
-			AccountID: 		arg.AccountID,
-			Name:      		arg.Name,
-			Description: 	pgtype.Text{
+			AccountID: arg.AccountID,
+			Name:      arg.Name,
+			Description: pgtype.Text{
 				String: arg.Description,
 				Valid:  arg.Description != "",
 			},

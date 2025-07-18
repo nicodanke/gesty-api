@@ -15,6 +15,9 @@ type Store interface {
 	CreateEmployeeTx(ctx context.Context, arg CreateEmployeeTxParams) (CreateEmployeeTxResult, error)
 	UpdateEmployeeTx(ctx context.Context, arg UpdateEmployeeTxParams) (UpdateEmployeeTxResult, error)
 	DeleteEmployeeTx(ctx context.Context, arg DeleteEmployeeTxParams) error
+	CreateDeviceTx(ctx context.Context, arg CreateDeviceTxParams) (CreateDeviceTxResult, error)
+	UpdateDeviceTx(ctx context.Context, arg UpdateDeviceTxParams) (UpdateDeviceTxResult, error)
+	DeleteDeviceTx(ctx context.Context, arg DeleteDeviceTxParams) error
 }
 
 // SQLStore provides all functions to execute SQL queries and transactions

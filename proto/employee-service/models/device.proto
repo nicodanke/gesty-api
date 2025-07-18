@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package employee_service.models.device;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/models";
+
+message Device {
+    int64 id = 1;
+    string name = 2;
+    string password = 3;
+    bool enabled = 4;
+    bool active = 5;
+    string activationCode = 6;
+    google.protobuf.Timestamp activationCodeExpiresAt = 7;
+    string deviceName = 8;
+    string deviceModel = 9;
+    string deviceBrand = 10;
+    string deviceSerialNumber = 11;
+    string deviceOs = 12;
+    string deviceRam = 13;
+    string deviceStorage = 14;
+    string deviceOsVersion = 15;
+    int64 facilityId = 16;
+    repeated int64 actionIds = 17;
+}
