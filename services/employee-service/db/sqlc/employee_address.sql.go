@@ -13,10 +13,10 @@ import (
 
 const createEmployeeAddress = `-- name: CreateEmployeeAddress :one
 INSERT INTO "employee_address" (
-    employee_id, country, state, sub_state, street, number, unit, postal_code, lat, lng
+    employee_id, country, state, sub_state, street, number, unit, zip_code, lat, lng
 ) VALUES (
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
-) RETURNING employee_id, country, state, sub_state, street, number, unit, postal_code, lat, lng
+) RETURNING employee_id, country, state, sub_state, street, number, unit, zip_code, lat, lng
 `
 
 type CreateEmployeeAddressParams struct {
@@ -27,7 +27,7 @@ type CreateEmployeeAddressParams struct {
 	Street     string        `json:"street"`
 	Number     string        `json:"number"`
 	Unit       pgtype.Text   `json:"unit"`
-	PostalCode string        `json:"postal_code"`
+	ZipCode    string        `json:"zip_code"`
 	Lat        pgtype.Float8 `json:"lat"`
 	Lng        pgtype.Float8 `json:"lng"`
 }
@@ -41,7 +41,7 @@ func (q *Queries) CreateEmployeeAddress(ctx context.Context, arg CreateEmployeeA
 		arg.Street,
 		arg.Number,
 		arg.Unit,
-		arg.PostalCode,
+		arg.ZipCode,
 		arg.Lat,
 		arg.Lng,
 	)
@@ -54,7 +54,7 @@ func (q *Queries) CreateEmployeeAddress(ctx context.Context, arg CreateEmployeeA
 		&i.Street,
 		&i.Number,
 		&i.Unit,
-		&i.PostalCode,
+		&i.ZipCode,
 		&i.Lat,
 		&i.Lng,
 	)
@@ -72,7 +72,7 @@ func (q *Queries) DeleteEmployeeAddress(ctx context.Context, employeeID int64) e
 }
 
 const getEmployeeAddressByEmployeeId = `-- name: GetEmployeeAddressByEmployeeId :one
-SELECT employee_id, country, state, sub_state, street, number, unit, postal_code, lat, lng FROM "employee_address" WHERE employee_id = $1
+SELECT employee_id, country, state, sub_state, street, number, unit, zip_code, lat, lng FROM "employee_address" WHERE employee_id = $1
 `
 
 func (q *Queries) GetEmployeeAddressByEmployeeId(ctx context.Context, employeeID int64) (EmployeeAddress, error) {
@@ -86,7 +86,7 @@ func (q *Queries) GetEmployeeAddressByEmployeeId(ctx context.Context, employeeID
 		&i.Street,
 		&i.Number,
 		&i.Unit,
-		&i.PostalCode,
+		&i.ZipCode,
 		&i.Lat,
 		&i.Lng,
 	)
@@ -102,12 +102,12 @@ SET
     street = COALESCE($4, street),
     number = COALESCE($5, number),
     unit = COALESCE($6, unit),
-    postal_code = COALESCE($7, postal_code),
+    zip_code = COALESCE($7, zip_code),
     lat = COALESCE($8, lat),
     lng = COALESCE($9, lng)
 WHERE
     employee_id = $10
-RETURNING employee_id, country, state, sub_state, street, number, unit, postal_code, lat, lng
+RETURNING employee_id, country, state, sub_state, street, number, unit, zip_code, lat, lng
 `
 
 type UpdateEmployeeAddressParams struct {
@@ -117,7 +117,7 @@ type UpdateEmployeeAddressParams struct {
 	Street     pgtype.Text   `json:"street"`
 	Number     pgtype.Text   `json:"number"`
 	Unit       pgtype.Text   `json:"unit"`
-	PostalCode pgtype.Text   `json:"postal_code"`
+	ZipCode    pgtype.Text   `json:"zip_code"`
 	Lat        pgtype.Float8 `json:"lat"`
 	Lng        pgtype.Float8 `json:"lng"`
 	EmployeeID int64         `json:"employee_id"`
@@ -131,7 +131,7 @@ func (q *Queries) UpdateEmployeeAddress(ctx context.Context, arg UpdateEmployeeA
 		arg.Street,
 		arg.Number,
 		arg.Unit,
-		arg.PostalCode,
+		arg.ZipCode,
 		arg.Lat,
 		arg.Lng,
 		arg.EmployeeID,
@@ -145,7 +145,7 @@ func (q *Queries) UpdateEmployeeAddress(ctx context.Context, arg UpdateEmployeeA
 		&i.Street,
 		&i.Number,
 		&i.Unit,
-		&i.PostalCode,
+		&i.ZipCode,
 		&i.Lat,
 		&i.Lng,
 	)

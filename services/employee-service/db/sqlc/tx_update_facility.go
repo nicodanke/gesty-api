@@ -10,21 +10,21 @@ import (
 
 // UpdateFacilityTxParams contains the input parameters to update a facility
 type UpdateFacilityTxParams struct {
-	AccountID         int64         `json:"account_id"`
-	ID                int64         `json:"id"`
-	Name              pgtype.Text   `json:"name"`
-	Description       pgtype.Text   `json:"description"`
-	OpenTime          pgtype.Time   `json:"open_time"`
-	CloseTime         pgtype.Time   `json:"close_time"`
-	AddressCountry    pgtype.Text   `json:"address_country"`
-	AddressState      pgtype.Text   `json:"address_state"`
-	AddressSubState   pgtype.Text   `json:"address_sub_state"`
-	AddressStreet     pgtype.Text   `json:"address_street"`
-	AddressNumber     pgtype.Text   `json:"address_number"`
-	AddressUnit       pgtype.Text   `json:"address_unit"`
-	AddressPostalcode pgtype.Text   `json:"address_postalcode"`
-	AddressLat        pgtype.Float8 `json:"address_lat"`
-	AddressLng        pgtype.Float8 `json:"address_lng"`
+	AccountID       int64         `json:"account_id"`
+	ID              int64         `json:"id"`
+	Name            pgtype.Text   `json:"name"`
+	Description     pgtype.Text   `json:"description"`
+	OpenTime        pgtype.Time   `json:"open_time"`
+	CloseTime       pgtype.Time   `json:"close_time"`
+	AddressCountry  pgtype.Text   `json:"address_country"`
+	AddressState    pgtype.Text   `json:"address_state"`
+	AddressSubState pgtype.Text   `json:"address_sub_state"`
+	AddressStreet   pgtype.Text   `json:"address_street"`
+	AddressNumber   pgtype.Text   `json:"address_number"`
+	AddressUnit     pgtype.Text   `json:"address_unit"`
+	AddressZipCode  pgtype.Text   `json:"address_ZipCode"`
+	AddressLat      pgtype.Float8 `json:"address_lat"`
+	AddressLng      pgtype.Float8 `json:"address_lng"`
 }
 
 // UpdateFacilityTxResult is the result of the facility update
@@ -59,7 +59,7 @@ func (store *SQLStore) UpdateFacilityTx(ctx context.Context, arg UpdateFacilityT
 			return err
 		}
 
-		if arg.AddressCountry.Valid || arg.AddressState.Valid || arg.AddressSubState.Valid || arg.AddressStreet.Valid || arg.AddressNumber.Valid || arg.AddressUnit.Valid || arg.AddressPostalcode.Valid || arg.AddressLat.Valid || arg.AddressLng.Valid {
+		if arg.AddressCountry.Valid || arg.AddressState.Valid || arg.AddressSubState.Valid || arg.AddressStreet.Valid || arg.AddressNumber.Valid || arg.AddressUnit.Valid || arg.AddressZipCode.Valid || arg.AddressLat.Valid || arg.AddressLng.Valid {
 			result.FacilityAddress, err = q.UpdateFacilityAddress(ctx, UpdateFacilityAddressParams{
 				FacilityID: arg.ID,
 				Country:    arg.AddressCountry,
@@ -68,7 +68,7 @@ func (store *SQLStore) UpdateFacilityTx(ctx context.Context, arg UpdateFacilityT
 				Street:     arg.AddressStreet,
 				Number:     arg.AddressNumber,
 				Unit:       arg.AddressUnit,
-				PostalCode: arg.AddressPostalcode,
+				ZipCode:    arg.AddressZipCode,
 				Lat:        arg.AddressLat,
 				Lng:        arg.AddressLng,
 			})

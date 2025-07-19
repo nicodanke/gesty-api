@@ -19,7 +19,7 @@ message CreateEmployeeRequest {
     optional string addressSubState = 10;
     string addressStreet = 11;
     string addressNumber = 12;
-    string addressPostalcode = 13;
+    string addressZipCode = 13;
     optional string addressUnit = 14;
     optional double addressLat = 15;
     optional double addressLng = 16;

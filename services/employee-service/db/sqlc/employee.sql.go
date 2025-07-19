@@ -74,7 +74,7 @@ func (q *Queries) DeleteEmployee(ctx context.Context, arg DeleteEmployeeParams) 
 }
 
 const getEmployee = `-- name: GetEmployee :one
-SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng,
+SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.zip_code, ea.lat, ea.lng,
     COALESCE(
         ARRAY_AGG(ef.facility_id) FILTER (WHERE ef.facility_id IS NOT NULL),
         '{}'::int8[]
@@ -83,7 +83,7 @@ FROM "employee" e
 LEFT JOIN employee_address ea ON e.id = ea.employee_id
 LEFT JOIN employee_facility ef ON e.id = ef.employee_id
 WHERE e.account_id = $1 AND e.id = $2
-GROUP BY e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng
+GROUP BY e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.zip_code, ea.lat, ea.lng
 LIMIT 1
 `
 
@@ -107,7 +107,7 @@ type GetEmployeeRow struct {
 	Street      pgtype.Text   `json:"street"`
 	Number      pgtype.Text   `json:"number"`
 	Unit        pgtype.Text   `json:"unit"`
-	PostalCode  pgtype.Text   `json:"postal_code"`
+	ZipCode     pgtype.Text   `json:"zip_code"`
 	Lat         pgtype.Float8 `json:"lat"`
 	Lng         pgtype.Float8 `json:"lng"`
 	FacilityIds interface{}   `json:"facility_ids"`
@@ -131,7 +131,7 @@ func (q *Queries) GetEmployee(ctx context.Context, arg GetEmployeeParams) (GetEm
 		&i.Street,
 		&i.Number,
 		&i.Unit,
-		&i.PostalCode,
+		&i.ZipCode,
 		&i.Lat,
 		&i.Lng,
 		&i.FacilityIds,
@@ -140,7 +140,7 @@ func (q *Queries) GetEmployee(ctx context.Context, arg GetEmployeeParams) (GetEm
 }
 
 const getEmployees = `-- name: GetEmployees :many
-SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng,
+SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.zip_code, ea.lat, ea.lng,
     COALESCE(
         ARRAY_AGG(ef.facility_id) FILTER (WHERE ef.facility_id IS NOT NULL),
         '{}'::int8[]
@@ -149,7 +149,7 @@ FROM "employee" e
 LEFT JOIN employee_address ea ON e.id = ea.employee_id
 LEFT JOIN employee_facility ef ON e.id = ef.employee_id
 WHERE e.account_id = $1
-GROUP BY e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng
+GROUP BY e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.zip_code, ea.lat, ea.lng
 ORDER BY LOWER(e.name)
 LIMIT $2
 OFFSET $3
@@ -176,7 +176,7 @@ type GetEmployeesRow struct {
 	Street      pgtype.Text   `json:"street"`
 	Number      pgtype.Text   `json:"number"`
 	Unit        pgtype.Text   `json:"unit"`
-	PostalCode  pgtype.Text   `json:"postal_code"`
+	ZipCode     pgtype.Text   `json:"zip_code"`
 	Lat         pgtype.Float8 `json:"lat"`
 	Lng         pgtype.Float8 `json:"lng"`
 	FacilityIds interface{}   `json:"facility_ids"`
@@ -206,7 +206,7 @@ func (q *Queries) GetEmployees(ctx context.Context, arg GetEmployeesParams) ([]G
 			&i.Street,
 			&i.Number,
 			&i.Unit,
-			&i.PostalCode,
+			&i.ZipCode,
 			&i.Lat,
 			&i.Lng,
 			&i.FacilityIds,

@@ -9,11 +9,11 @@ import (
 )
 
 var (
-	isValidName         = regexp.MustCompile(`^[a-zA-Z\s]+$`).MatchString
-	isValidLastname     = regexp.MustCompile(`^[a-zA-Z\s]+$`).MatchString
-	isValidEmail        = regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`).MatchString
-	isValidPhone        = regexp.MustCompile(`^[+\-0-9\s]+$`).MatchString
-	isValidGender       = regexp.MustCompile(`^[MFX]$`).MatchString
+	isValidName     = regexp.MustCompile(`^[a-zA-Z\s]+$`).MatchString
+	isValidLastname = regexp.MustCompile(`^[a-zA-Z\s]+$`).MatchString
+	isValidEmail    = regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`).MatchString
+	isValidPhone    = regexp.MustCompile(`^[+\-0-9\s]+$`).MatchString
+	isValidGender   = regexp.MustCompile(`^[MFX]$`).MatchString
 )
 
 func ValidateName(value string) error {
@@ -117,7 +117,7 @@ func ValidateAddressUnit(value string) error {
 	return v.ValidString(value, 3, 100)
 }
 
-func ValidateAddressPostalcode(value string) error {
+func ValidateAddressZipCode(value string) error {
 	return v.ValidString(value, 3, 100)
 }
 

@@ -89,7 +89,7 @@ type EmployeeAddress struct {
 	Street     string        `json:"street"`
 	Number     string        `json:"number"`
 	Unit       pgtype.Text   `json:"unit"`
-	PostalCode string        `json:"postal_code"`
+	ZipCode    string        `json:"zip_code"`
 	Lat        pgtype.Float8 `json:"lat"`
 	Lng        pgtype.Float8 `json:"lng"`
 }
@@ -118,7 +118,7 @@ type FacilityAddress struct {
 	Street     string        `json:"street"`
 	Number     string        `json:"number"`
 	Unit       pgtype.Text   `json:"unit"`
-	PostalCode string        `json:"postal_code"`
+	ZipCode    string        `json:"zip_code"`
 	Lat        pgtype.Float8 `json:"lat"`
 	Lng        pgtype.Float8 `json:"lng"`
 }

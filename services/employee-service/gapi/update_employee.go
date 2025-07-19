@@ -91,9 +91,9 @@ func (server *Server) UpdateEmployee(ctx context.Context, req *employee.UpdateEm
 			String: req.GetAddressUnit(),
 			Valid:  req.AddressUnit != nil,
 		},
-		AddressPostalcode: pgtype.Text{
-			String: req.GetAddressPostalcode(),
-			Valid:  req.AddressPostalcode != nil,
+		AddressZipCode: pgtype.Text{
+			String: req.GetAddressZipCode(),
+			Valid:  req.AddressZipCode != nil,
 		},
 		AddressLat: pgtype.Float8{
 			Float64: req.GetAddressLat(),
@@ -214,9 +214,9 @@ func validateUpdateEmployeeRequest(req *employee.UpdateEmployeeRequest) (violati
 		}
 	}
 
-	if req.AddressPostalcode != nil {
-		if err := employeeValidator.ValidateAddressPostalcode(req.GetAddressPostalcode()); err != nil {
-			violations = append(violations, fieldViolation("addressPostalcode", err))
+	if req.AddressZipCode != nil {
+		if err := employeeValidator.ValidateAddressZipCode(req.GetAddressZipCode()); err != nil {
+			violations = append(violations, fieldViolation("addressZipCode", err))
 		}
 	}
 

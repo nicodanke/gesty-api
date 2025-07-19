@@ -10,20 +10,20 @@ import (
 
 // CreateFacilityTxParams contains the input parameters to create a facility
 type CreateFacilityTxParams struct {
-	AccountID         int64                `json:"account_id"`
-	Name              string               `json:"name"`
-	Description       string               `json:"description"`
-	OpenTime          *durationpb.Duration `json:"open_time"`
-	CloseTime         *durationpb.Duration `json:"close_time"`
-	AddressCountry    string               `json:"address_country"`
-	AddressState      string               `json:"address_state"`
-	AddressSubState   string               `json:"address_sub_state"`
-	AddressStreet     string               `json:"address_street"`
-	AddressNumber     string               `json:"address_number"`
-	AddressUnit       string               `json:"address_unit"`
-	AddressPostalcode string               `json:"address_postalcode"`
-	AddressLat        float64              `json:"address_lat"`
-	AddressLng        float64              `json:"address_lng"`
+	AccountID       int64                `json:"account_id"`
+	Name            string               `json:"name"`
+	Description     string               `json:"description"`
+	OpenTime        *durationpb.Duration `json:"open_time"`
+	CloseTime       *durationpb.Duration `json:"close_time"`
+	AddressCountry  string               `json:"address_country"`
+	AddressState    string               `json:"address_state"`
+	AddressSubState string               `json:"address_sub_state"`
+	AddressStreet   string               `json:"address_street"`
+	AddressNumber   string               `json:"address_number"`
+	AddressUnit     string               `json:"address_unit"`
+	AddressZipCode  string               `json:"address_ZipCode"`
+	AddressLat      float64              `json:"address_lat"`
+	AddressLng      float64              `json:"address_lng"`
 }
 
 // CreateFacilityTxResult is the result of the facility creation
@@ -77,7 +77,7 @@ func (store *SQLStore) CreateFacilityTx(ctx context.Context, arg CreateFacilityT
 				String: arg.AddressUnit,
 				Valid:  arg.AddressUnit != "",
 			},
-			PostalCode: arg.AddressPostalcode,
+			ZipCode: arg.AddressZipCode,
 			Lat: pgtype.Float8{
 				Float64: arg.AddressLat,
 				Valid:   true,

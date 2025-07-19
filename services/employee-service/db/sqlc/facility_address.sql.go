@@ -13,10 +13,10 @@ import (
 
 const createFacilityAddress = `-- name: CreateFacilityAddress :one
 INSERT INTO "facility_address" (
-    facility_id, country, state, sub_state, street, number, unit, postal_code, lat, lng
+    facility_id, country, state, sub_state, street, number, unit, zip_code, lat, lng
 ) VALUES (
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
-) RETURNING facility_id, country, state, sub_state, street, number, unit, postal_code, lat, lng
+) RETURNING facility_id, country, state, sub_state, street, number, unit, zip_code, lat, lng
 `
 
 type CreateFacilityAddressParams struct {
@@ -27,7 +27,7 @@ type CreateFacilityAddressParams struct {
 	Street     string        `json:"street"`
 	Number     string        `json:"number"`
 	Unit       pgtype.Text   `json:"unit"`
-	PostalCode string        `json:"postal_code"`
+	ZipCode    string        `json:"zip_code"`
 	Lat        pgtype.Float8 `json:"lat"`
 	Lng        pgtype.Float8 `json:"lng"`
 }
@@ -41,7 +41,7 @@ func (q *Queries) CreateFacilityAddress(ctx context.Context, arg CreateFacilityA
 		arg.Street,
 		arg.Number,
 		arg.Unit,
-		arg.PostalCode,
+		arg.ZipCode,
 		arg.Lat,
 		arg.Lng,
 	)
@@ -54,7 +54,7 @@ func (q *Queries) CreateFacilityAddress(ctx context.Context, arg CreateFacilityA
 		&i.Street,
 		&i.Number,
 		&i.Unit,
-		&i.PostalCode,
+		&i.ZipCode,
 		&i.Lat,
 		&i.Lng,
 	)
@@ -72,7 +72,7 @@ func (q *Queries) DeleteFacilityAddress(ctx context.Context, facilityID int64) e
 }
 
 const getFacilityAddressByFacilityID = `-- name: GetFacilityAddressByFacilityID :one
-SELECT facility_id, country, state, sub_state, street, number, unit, postal_code, lat, lng FROM "facility_address" WHERE facility_id = $1
+SELECT facility_id, country, state, sub_state, street, number, unit, zip_code, lat, lng FROM "facility_address" WHERE facility_id = $1
 `
 
 func (q *Queries) GetFacilityAddressByFacilityID(ctx context.Context, facilityID int64) (FacilityAddress, error) {
@@ -86,7 +86,7 @@ func (q *Queries) GetFacilityAddressByFacilityID(ctx context.Context, facilityID
 		&i.Street,
 		&i.Number,
 		&i.Unit,
-		&i.PostalCode,
+		&i.ZipCode,
 		&i.Lat,
 		&i.Lng,
 	)
@@ -102,12 +102,12 @@ SET
     street = COALESCE($4, street),
     number = COALESCE($5, number),
     unit = COALESCE($6, unit),
-    postal_code = COALESCE($7, postal_code),
+    zip_code = COALESCE($7, zip_code),
     lat = COALESCE($8, lat),
     lng = COALESCE($9, lng)
 WHERE
     facility_id = $10
-RETURNING facility_id, country, state, sub_state, street, number, unit, postal_code, lat, lng
+RETURNING facility_id, country, state, sub_state, street, number, unit, zip_code, lat, lng
 `
 
 type UpdateFacilityAddressParams struct {
@@ -117,7 +117,7 @@ type UpdateFacilityAddressParams struct {
 	Street     pgtype.Text   `json:"street"`
 	Number     pgtype.Text   `json:"number"`
 	Unit       pgtype.Text   `json:"unit"`
-	PostalCode pgtype.Text   `json:"postal_code"`
+	ZipCode    pgtype.Text   `json:"zip_code"`
 	Lat        pgtype.Float8 `json:"lat"`
 	Lng        pgtype.Float8 `json:"lng"`
 	FacilityID int64         `json:"facility_id"`
@@ -131,7 +131,7 @@ func (q *Queries) UpdateFacilityAddress(ctx context.Context, arg UpdateFacilityA
 		arg.Street,
 		arg.Number,
 		arg.Unit,
-		arg.PostalCode,
+		arg.ZipCode,
 		arg.Lat,
 		arg.Lng,
 		arg.FacilityID,
@@ -145,7 +145,7 @@ func (q *Queries) UpdateFacilityAddress(ctx context.Context, arg UpdateFacilityA
 		&i.Street,
 		&i.Number,
 		&i.Unit,
-		&i.PostalCode,
+		&i.ZipCode,
 		&i.Lat,
 		&i.Lng,
 	)

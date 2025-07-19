@@ -6,19 +6,19 @@ INSERT INTO "facility" (
 ) RETURNING *;
 
 -- name: GetFacility :one
-SELECT f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng
+SELECT f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.zip_code, fa.lat, fa.lng
 FROM "facility" f
 LEFT JOIN facility_address fa ON f.id = fa.facility_id
 WHERE f.account_id = $1 AND f.id = $2
-GROUP BY f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng
+GROUP BY f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.zip_code, fa.lat, fa.lng
 LIMIT 1;
 
 -- name: GetFacilities :many
-SELECT f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng
+SELECT f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.zip_code, fa.lat, fa.lng
 FROM "facility" f
 LEFT JOIN facility_address fa ON f.id = fa.facility_id
 WHERE f.account_id = $1
-GROUP BY f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng
+GROUP BY f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.zip_code, fa.lat, fa.lng
 ORDER BY LOWER(f.name)
 LIMIT $2
 OFFSET $3;

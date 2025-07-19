@@ -6,7 +6,7 @@ INSERT INTO "employee" (
 ) RETURNING *;
 
 -- name: GetEmployee :one
-SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng,
+SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.zip_code, ea.lat, ea.lng,
     COALESCE(
         ARRAY_AGG(ef.facility_id) FILTER (WHERE ef.facility_id IS NOT NULL),
         '{}'::int8[]
@@ -15,11 +15,11 @@ FROM "employee" e
 LEFT JOIN employee_address ea ON e.id = ea.employee_id
 LEFT JOIN employee_facility ef ON e.id = ef.employee_id
 WHERE e.account_id = $1 AND e.id = $2
-GROUP BY e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng
+GROUP BY e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.zip_code, ea.lat, ea.lng
 LIMIT 1;
 
 -- name: GetEmployees :many
-SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng,
+SELECT e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.zip_code, ea.lat, ea.lng,
     COALESCE(
         ARRAY_AGG(ef.facility_id) FILTER (WHERE ef.facility_id IS NOT NULL),
         '{}'::int8[]
@@ -28,7 +28,7 @@ FROM "employee" e
 LEFT JOIN employee_address ea ON e.id = ea.employee_id
 LEFT JOIN employee_facility ef ON e.id = ef.employee_id
 WHERE e.account_id = $1
-GROUP BY e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.postal_code, ea.lat, ea.lng
+GROUP BY e.id, e.name, e.lastname, e.email, e.phone, e.gender, e.real_id, e.fiscal_id, ea.country, ea.state, ea.sub_state, ea.street, ea.number, ea.unit, ea.zip_code, ea.lat, ea.lng
 ORDER BY LOWER(e.name)
 LIMIT $2
 OFFSET $3;

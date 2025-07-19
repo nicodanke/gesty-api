@@ -18,7 +18,7 @@ message Facility {
     string addressStreet = 9;
     string addressNumber = 10;
     string addressUnit = 11;
-    string addressPostalcode = 12;
+    string addressZipCode = 12;
     double addressLat = 13;
     double addressLng = 14;
 }

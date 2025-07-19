@@ -24,16 +24,16 @@ type Account struct {
 }
 
 type AccountAddress struct {
-	AccountID  int64         `json:"account_id"`
-	Country    string        `json:"country"`
-	State      string        `json:"state"`
-	SubState   pgtype.Text   `json:"sub_state"`
-	Street     string        `json:"street"`
-	Number     string        `json:"number"`
-	Unit       pgtype.Text   `json:"unit"`
-	PostalCode string        `json:"postal_code"`
-	Lat        pgtype.Float8 `json:"lat"`
-	Lng        pgtype.Float8 `json:"lng"`
+	AccountID int64         `json:"account_id"`
+	Country   string        `json:"country"`
+	State     string        `json:"state"`
+	SubState  pgtype.Text   `json:"sub_state"`
+	Street    string        `json:"street"`
+	Number    string        `json:"number"`
+	Unit      pgtype.Text   `json:"unit"`
+	ZipCode   string        `json:"zip_code"`
+	Lat       pgtype.Float8 `json:"lat"`
+	Lng       pgtype.Float8 `json:"lng"`
 }
 
 type AccountModule struct {

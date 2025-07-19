@@ -20,7 +20,7 @@ message UpdateEmployeeRequest {
     optional string addressSubState = 11;
     optional string addressStreet = 12;
     optional string addressNumber = 13;
-    optional string addressPostalcode = 14;
+    optional string addressZipCode = 14;
     optional string addressUnit = 15;
     optional double addressLat = 16;
     optional double addressLng = 17;

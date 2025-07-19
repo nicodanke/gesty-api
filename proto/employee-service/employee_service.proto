@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package employee_service;
 
+import "employee-service/requests/account/rpc_create_account.proto";
 import "employee-service/requests/action/rpc_get_actions.proto";
 import "employee-service/requests/action/rpc_get_action.proto";
 import "employee-service/requests/action/rpc_create_action.proto";
@@ -30,6 +31,9 @@ import "google/protobuf/empty.proto";
 option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service";
 
 service EmployeeService {
+
+    // account
+    rpc CreateAccount (employee_service.requests.account.create_account.CreateAccountRequest) returns (google.protobuf.Empty);
 
     // ACTION
     rpc GetAction (employee_service.requests.action.get_action.GetActionRequest) returns (employee_service.requests.action.get_action.GetActionResponse);

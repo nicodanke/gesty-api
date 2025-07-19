@@ -1,6 +1,6 @@
 -- name: CreateFacilityAddress :one
 INSERT INTO "facility_address" (
-    facility_id, country, state, sub_state, street, number, unit, postal_code, lat, lng
+    facility_id, country, state, sub_state, street, number, unit, zip_code, lat, lng
 ) VALUES (
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 ) RETURNING *;
@@ -21,7 +21,7 @@ SET
     street = COALESCE(sqlc.narg(street), street),
     number = COALESCE(sqlc.narg(number), number),
     unit = COALESCE(sqlc.narg(unit), unit),
-    postal_code = COALESCE(sqlc.narg(postal_code), postal_code),
+    zip_code = COALESCE(sqlc.narg(zip_code), zip_code),
     lat = COALESCE(sqlc.narg(lat), lat),
     lng = COALESCE(sqlc.narg(lng), lng)
 WHERE

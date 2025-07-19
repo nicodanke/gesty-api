@@ -35,24 +35,24 @@ func (server *Server) CreateEmployee(ctx context.Context, req *employee.CreateEm
 	}
 
 	arg := db.CreateEmployeeTxParams{
-		AccountID:         authPayload.AccountID,
-		Name:              req.GetName(),
-		Lastname:          req.GetLastname(),
-		Email:             req.GetEmail(),
-		Phone:             req.GetPhone(),
-		Gender:            req.GetGender(),
-		RealID:            req.GetRealId(),
-		FiscalID:          req.GetFiscalId(),
-		AddressCountry:    req.GetAddressCountry(),
-		AddressState:      req.GetAddressState(),
-		AddressSubState:   req.GetAddressSubState(),
-		AddressStreet:     req.GetAddressStreet(),
-		AddressNumber:     req.GetAddressNumber(),
-		AddressUnit:       req.GetAddressUnit(),
-		AddressPostalcode: req.GetAddressPostalcode(),
-		AddressLat:        req.GetAddressLat(),
-		AddressLng:        req.GetAddressLng(),
-		FacilityIDs:       req.GetFacilityIds(),
+		AccountID:       authPayload.AccountID,
+		Name:            req.GetName(),
+		Lastname:        req.GetLastname(),
+		Email:           req.GetEmail(),
+		Phone:           req.GetPhone(),
+		Gender:          req.GetGender(),
+		RealID:          req.GetRealId(),
+		FiscalID:        req.GetFiscalId(),
+		AddressCountry:  req.GetAddressCountry(),
+		AddressState:    req.GetAddressState(),
+		AddressSubState: req.GetAddressSubState(),
+		AddressStreet:   req.GetAddressStreet(),
+		AddressNumber:   req.GetAddressNumber(),
+		AddressUnit:     req.GetAddressUnit(),
+		AddressZipCode:  req.GetAddressZipCode(),
+		AddressLat:      req.GetAddressLat(),
+		AddressLng:      req.GetAddressLng(),
+		FacilityIDs:     req.GetFacilityIds(),
 	}
 
 	result, err := server.store.CreateEmployeeTx(ctx, arg)
@@ -136,8 +136,8 @@ func validateCreateEmployeeRequest(req *employee.CreateEmployeeRequest) (violati
 		violations = append(violations, fieldViolation("addressUnit", err))
 	}
 
-	if err := employeeValidator.ValidateAddressPostalcode(req.GetAddressPostalcode()); err != nil {
-		violations = append(violations, fieldViolation("addressPostalcode", err))
+	if err := employeeValidator.ValidateAddressZipCode(req.GetAddressZipCode()); err != nil {
+		violations = append(violations, fieldViolation("addressZipCode", err))
 	}
 
 	if req.GetAddressLat() != 0 {

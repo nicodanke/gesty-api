@@ -18,7 +18,7 @@ message UpdateFacilityRequest {
     optional string addressSubState = 8;
     optional string addressStreet = 9;
     optional string addressNumber = 10;
-    optional string addressPostalcode = 11;
+    optional string addressZipCode = 11;
     optional string addressUnit = 12;
     optional double addressLat = 13;
     optional double addressLng = 14;

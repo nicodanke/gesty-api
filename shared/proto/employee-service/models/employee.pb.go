@@ -22,27 +22,27 @@ const (
 )
 
 type Employee struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	Id                int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name              string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Lastname          string                 `protobuf:"bytes,3,opt,name=lastname,proto3" json:"lastname,omitempty"`
-	Email             string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
-	Phone             string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
-	Gender            string                 `protobuf:"bytes,6,opt,name=gender,proto3" json:"gender,omitempty"`
-	RealId            string                 `protobuf:"bytes,7,opt,name=realId,proto3" json:"realId,omitempty"`
-	FiscalId          string                 `protobuf:"bytes,8,opt,name=fiscalId,proto3" json:"fiscalId,omitempty"`
-	AddressCountry    string                 `protobuf:"bytes,9,opt,name=addressCountry,proto3" json:"addressCountry,omitempty"`
-	AddressState      string                 `protobuf:"bytes,10,opt,name=addressState,proto3" json:"addressState,omitempty"`
-	AddressSubState   string                 `protobuf:"bytes,11,opt,name=addressSubState,proto3" json:"addressSubState,omitempty"`
-	AddressStreet     string                 `protobuf:"bytes,12,opt,name=addressStreet,proto3" json:"addressStreet,omitempty"`
-	AddressNumber     string                 `protobuf:"bytes,13,opt,name=addressNumber,proto3" json:"addressNumber,omitempty"`
-	AddressUnit       string                 `protobuf:"bytes,14,opt,name=addressUnit,proto3" json:"addressUnit,omitempty"`
-	AddressPostalcode string                 `protobuf:"bytes,15,opt,name=addressPostalcode,proto3" json:"addressPostalcode,omitempty"`
-	AddressLat        float64                `protobuf:"fixed64,16,opt,name=addressLat,proto3" json:"addressLat,omitempty"`
-	AddressLng        float64                `protobuf:"fixed64,17,opt,name=addressLng,proto3" json:"addressLng,omitempty"`
-	FacilityIds       []int64                `protobuf:"varint,18,rep,packed,name=facilityIds,proto3" json:"facilityIds,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Id              int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name            string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Lastname        string                 `protobuf:"bytes,3,opt,name=lastname,proto3" json:"lastname,omitempty"`
+	Email           string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
+	Phone           string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
+	Gender          string                 `protobuf:"bytes,6,opt,name=gender,proto3" json:"gender,omitempty"`
+	RealId          string                 `protobuf:"bytes,7,opt,name=realId,proto3" json:"realId,omitempty"`
+	FiscalId        string                 `protobuf:"bytes,8,opt,name=fiscalId,proto3" json:"fiscalId,omitempty"`
+	AddressCountry  string                 `protobuf:"bytes,9,opt,name=addressCountry,proto3" json:"addressCountry,omitempty"`
+	AddressState    string                 `protobuf:"bytes,10,opt,name=addressState,proto3" json:"addressState,omitempty"`
+	AddressSubState string                 `protobuf:"bytes,11,opt,name=addressSubState,proto3" json:"addressSubState,omitempty"`
+	AddressStreet   string                 `protobuf:"bytes,12,opt,name=addressStreet,proto3" json:"addressStreet,omitempty"`
+	AddressNumber   string                 `protobuf:"bytes,13,opt,name=addressNumber,proto3" json:"addressNumber,omitempty"`
+	AddressUnit     string                 `protobuf:"bytes,14,opt,name=addressUnit,proto3" json:"addressUnit,omitempty"`
+	AddressZipCode  string                 `protobuf:"bytes,15,opt,name=addressZipCode,proto3" json:"addressZipCode,omitempty"`
+	AddressLat      float64                `protobuf:"fixed64,16,opt,name=addressLat,proto3" json:"addressLat,omitempty"`
+	AddressLng      float64                `protobuf:"fixed64,17,opt,name=addressLng,proto3" json:"addressLng,omitempty"`
+	FacilityIds     []int64                `protobuf:"varint,18,rep,packed,name=facilityIds,proto3" json:"facilityIds,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Employee) Reset() {
@@ -173,9 +173,9 @@ func (x *Employee) GetAddressUnit() string {
 	return ""
 }
 
-func (x *Employee) GetAddressPostalcode() string {
+func (x *Employee) GetAddressZipCode() string {
 	if x != nil {
-		return x.AddressPostalcode
+		return x.AddressZipCode
 	}
 	return ""
 }
@@ -205,7 +205,7 @@ var File_employee_service_models_employee_proto protoreflect.FileDescriptor
 
 const file_employee_service_models_employee_proto_rawDesc = "" +
 	"\n" +
-	"&employee-service/models/employee.proto\x12 employee_service.models.employee\"\xb6\x04\n" +
+	"&employee-service/models/employee.proto\x12 employee_service.models.employee\"\xb0\x04\n" +
 	"\bEmployee\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +
@@ -221,8 +221,8 @@ const file_employee_service_models_employee_proto_rawDesc = "" +
 	"\x0faddressSubState\x18\v \x01(\tR\x0faddressSubState\x12$\n" +
 	"\raddressStreet\x18\f \x01(\tR\raddressStreet\x12$\n" +
 	"\raddressNumber\x18\r \x01(\tR\raddressNumber\x12 \n" +
-	"\vaddressUnit\x18\x0e \x01(\tR\vaddressUnit\x12,\n" +
-	"\x11addressPostalcode\x18\x0f \x01(\tR\x11addressPostalcode\x12\x1e\n" +
+	"\vaddressUnit\x18\x0e \x01(\tR\vaddressUnit\x12&\n" +
+	"\x0eaddressZipCode\x18\x0f \x01(\tR\x0eaddressZipCode\x12\x1e\n" +
 	"\n" +
 	"addressLat\x18\x10 \x01(\x01R\n" +
 	"addressLat\x12\x1e\n" +

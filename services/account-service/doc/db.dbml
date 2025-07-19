@@ -25,7 +25,7 @@ Table "account_address" {
   "street" varchar [not null]
   "number" varchar [not null]
   "unit" varchar
-  "postal_code" varchar [not null]
+  "zip_code" varchar [not null]
   "lat" float8
   "lng" float8
 }

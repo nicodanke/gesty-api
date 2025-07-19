@@ -19,7 +19,7 @@ message Employee {
     string addressStreet = 12;
     string addressNumber = 13;
     string addressUnit = 14;
-    string addressPostalcode = 15;
+    string addressZipCode = 15;
     double addressLat = 16;
     double addressLng = 17;
     repeated int64 facilityIds = 18;

@@ -10,25 +10,25 @@ import (
 
 // UpdateEmployeeTxParams contains the input parameters to update an employee
 type UpdateEmployeeTxParams struct {
-	AccountID         int64         `json:"account_id"`
-	ID                int64         `json:"id"`
-	Name              pgtype.Text   `json:"name"`
-	Lastname          pgtype.Text   `json:"lastname"`
-	Email             pgtype.Text   `json:"email"`
-	Phone             pgtype.Text   `json:"phone"`
-	Gender            pgtype.Text   `json:"gender"`
-	RealId            pgtype.Text   `json:"real_id"`
-	FiscalId          pgtype.Text   `json:"fiscal_id"`
-	AddressCountry    pgtype.Text   `json:"address_country"`
-	AddressState      pgtype.Text   `json:"address_state"`
-	AddressSubState   pgtype.Text   `json:"address_sub_state"`
-	AddressStreet     pgtype.Text   `json:"address_street"`
-	AddressNumber     pgtype.Text   `json:"address_number"`
-	AddressUnit       pgtype.Text   `json:"address_unit"`
-	AddressPostalcode pgtype.Text   `json:"address_postalcode"`
-	AddressLat        pgtype.Float8 `json:"address_lat"`
-	AddressLng        pgtype.Float8 `json:"address_lng"`
-	FacilityIds       []int64       `json:"facility_ids"`
+	AccountID       int64         `json:"account_id"`
+	ID              int64         `json:"id"`
+	Name            pgtype.Text   `json:"name"`
+	Lastname        pgtype.Text   `json:"lastname"`
+	Email           pgtype.Text   `json:"email"`
+	Phone           pgtype.Text   `json:"phone"`
+	Gender          pgtype.Text   `json:"gender"`
+	RealId          pgtype.Text   `json:"real_id"`
+	FiscalId        pgtype.Text   `json:"fiscal_id"`
+	AddressCountry  pgtype.Text   `json:"address_country"`
+	AddressState    pgtype.Text   `json:"address_state"`
+	AddressSubState pgtype.Text   `json:"address_sub_state"`
+	AddressStreet   pgtype.Text   `json:"address_street"`
+	AddressNumber   pgtype.Text   `json:"address_number"`
+	AddressUnit     pgtype.Text   `json:"address_unit"`
+	AddressZipCode  pgtype.Text   `json:"address_ZipCode"`
+	AddressLat      pgtype.Float8 `json:"address_lat"`
+	AddressLng      pgtype.Float8 `json:"address_lng"`
+	FacilityIds     []int64       `json:"facility_ids"`
 }
 
 // UpdateEmployeeTxResult is the result of the employee update
@@ -67,7 +67,7 @@ func (store *SQLStore) UpdateEmployeeTx(ctx context.Context, arg UpdateEmployeeT
 			return err
 		}
 
-		if arg.AddressCountry.Valid || arg.AddressState.Valid || arg.AddressSubState.Valid || arg.AddressStreet.Valid || arg.AddressNumber.Valid || arg.AddressUnit.Valid || arg.AddressPostalcode.Valid || arg.AddressLat.Valid || arg.AddressLng.Valid {
+		if arg.AddressCountry.Valid || arg.AddressState.Valid || arg.AddressSubState.Valid || arg.AddressStreet.Valid || arg.AddressNumber.Valid || arg.AddressUnit.Valid || arg.AddressZipCode.Valid || arg.AddressLat.Valid || arg.AddressLng.Valid {
 			result.EmployeeAddress, err = q.UpdateEmployeeAddress(ctx, UpdateEmployeeAddressParams{
 				EmployeeID: arg.ID,
 				Country:    arg.AddressCountry,
@@ -76,7 +76,7 @@ func (store *SQLStore) UpdateEmployeeTx(ctx context.Context, arg UpdateEmployeeT
 				Street:     arg.AddressStreet,
 				Number:     arg.AddressNumber,
 				Unit:       arg.AddressUnit,
-				PostalCode: arg.AddressPostalcode,
+				ZipCode:    arg.AddressZipCode,
 				Lat:        arg.AddressLat,
 				Lng:        arg.AddressLng,
 			})

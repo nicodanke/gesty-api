@@ -78,9 +78,9 @@ func (server *Server) UpdateFacility(ctx context.Context, req *facility.UpdateFa
 			String: req.GetAddressUnit(),
 			Valid:  req.AddressUnit != nil,
 		},
-		AddressPostalcode: pgtype.Text{
-			String: req.GetAddressPostalcode(),
-			Valid:  req.AddressPostalcode != nil,
+		AddressZipCode: pgtype.Text{
+			String: req.GetAddressZipCode(),
+			Valid:  req.AddressZipCode != nil,
 		},
 		AddressLat: pgtype.Float8{
 			Float64: req.GetAddressLat(),
@@ -182,9 +182,9 @@ func validateUpdateFacilityRequest(req *facility.UpdateFacilityRequest) (violati
 		}
 	}
 
-	if req.AddressPostalcode != nil {
-		if err := facilityValidator.ValidateAddressPostalcode(req.GetAddressPostalcode()); err != nil {
-			violations = append(violations, fieldViolation("addressPostalcode", err))
+	if req.AddressZipCode != nil {
+		if err := facilityValidator.ValidateAddressZipCode(req.GetAddressZipCode()); err != nil {
+			violations = append(violations, fieldViolation("addressZipCode", err))
 		}
 	}
 

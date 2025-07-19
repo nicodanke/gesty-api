@@ -22,7 +22,7 @@ CREATE TABLE "account_address" (
   "street" varchar NOT NULL,
   "number" varchar NOT NULL,
   "unit" varchar,
-  "postal_code" varchar NOT NULL,
+  "zip_code" varchar NOT NULL,
   "lat" float8,
   "lng" float8
 );

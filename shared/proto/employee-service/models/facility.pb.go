@@ -23,23 +23,23 @@ const (
 )
 
 type Facility struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	Id                int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name              string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description       string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	OpenTime          *durationpb.Duration   `protobuf:"bytes,4,opt,name=openTime,proto3" json:"openTime,omitempty"`
-	CloseTime         *durationpb.Duration   `protobuf:"bytes,5,opt,name=closeTime,proto3" json:"closeTime,omitempty"`
-	AddressCountry    string                 `protobuf:"bytes,6,opt,name=addressCountry,proto3" json:"addressCountry,omitempty"`
-	AddressState      string                 `protobuf:"bytes,7,opt,name=addressState,proto3" json:"addressState,omitempty"`
-	AddressSubState   string                 `protobuf:"bytes,8,opt,name=addressSubState,proto3" json:"addressSubState,omitempty"`
-	AddressStreet     string                 `protobuf:"bytes,9,opt,name=addressStreet,proto3" json:"addressStreet,omitempty"`
-	AddressNumber     string                 `protobuf:"bytes,10,opt,name=addressNumber,proto3" json:"addressNumber,omitempty"`
-	AddressUnit       string                 `protobuf:"bytes,11,opt,name=addressUnit,proto3" json:"addressUnit,omitempty"`
-	AddressPostalcode string                 `protobuf:"bytes,12,opt,name=addressPostalcode,proto3" json:"addressPostalcode,omitempty"`
-	AddressLat        float64                `protobuf:"fixed64,13,opt,name=addressLat,proto3" json:"addressLat,omitempty"`
-	AddressLng        float64                `protobuf:"fixed64,14,opt,name=addressLng,proto3" json:"addressLng,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Id              int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name            string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description     string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	OpenTime        *durationpb.Duration   `protobuf:"bytes,4,opt,name=openTime,proto3" json:"openTime,omitempty"`
+	CloseTime       *durationpb.Duration   `protobuf:"bytes,5,opt,name=closeTime,proto3" json:"closeTime,omitempty"`
+	AddressCountry  string                 `protobuf:"bytes,6,opt,name=addressCountry,proto3" json:"addressCountry,omitempty"`
+	AddressState    string                 `protobuf:"bytes,7,opt,name=addressState,proto3" json:"addressState,omitempty"`
+	AddressSubState string                 `protobuf:"bytes,8,opt,name=addressSubState,proto3" json:"addressSubState,omitempty"`
+	AddressStreet   string                 `protobuf:"bytes,9,opt,name=addressStreet,proto3" json:"addressStreet,omitempty"`
+	AddressNumber   string                 `protobuf:"bytes,10,opt,name=addressNumber,proto3" json:"addressNumber,omitempty"`
+	AddressUnit     string                 `protobuf:"bytes,11,opt,name=addressUnit,proto3" json:"addressUnit,omitempty"`
+	AddressZipCode  string                 `protobuf:"bytes,12,opt,name=addressZipCode,proto3" json:"addressZipCode,omitempty"`
+	AddressLat      float64                `protobuf:"fixed64,13,opt,name=addressLat,proto3" json:"addressLat,omitempty"`
+	AddressLng      float64                `protobuf:"fixed64,14,opt,name=addressLng,proto3" json:"addressLng,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Facility) Reset() {
@@ -149,9 +149,9 @@ func (x *Facility) GetAddressUnit() string {
 	return ""
 }
 
-func (x *Facility) GetAddressPostalcode() string {
+func (x *Facility) GetAddressZipCode() string {
 	if x != nil {
-		return x.AddressPostalcode
+		return x.AddressZipCode
 	}
 	return ""
 }
@@ -174,7 +174,7 @@ var File_employee_service_models_facility_proto protoreflect.FileDescriptor
 
 const file_employee_service_models_facility_proto_rawDesc = "" +
 	"\n" +
-	"&employee-service/models/facility.proto\x12 employee_service.models.facility\x1a\x1egoogle/protobuf/duration.proto\"\x92\x04\n" +
+	"&employee-service/models/facility.proto\x12 employee_service.models.facility\x1a\x1egoogle/protobuf/duration.proto\"\x8c\x04\n" +
 	"\bFacility\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -187,8 +187,8 @@ const file_employee_service_models_facility_proto_rawDesc = "" +
 	"\raddressStreet\x18\t \x01(\tR\raddressStreet\x12$\n" +
 	"\raddressNumber\x18\n" +
 	" \x01(\tR\raddressNumber\x12 \n" +
-	"\vaddressUnit\x18\v \x01(\tR\vaddressUnit\x12,\n" +
-	"\x11addressPostalcode\x18\f \x01(\tR\x11addressPostalcode\x12\x1e\n" +
+	"\vaddressUnit\x18\v \x01(\tR\vaddressUnit\x12&\n" +
+	"\x0eaddressZipCode\x18\f \x01(\tR\x0eaddressZipCode\x12\x1e\n" +
 	"\n" +
 	"addressLat\x18\r \x01(\x01R\n" +
 	"addressLat\x12\x1e\n" +

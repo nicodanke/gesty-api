@@ -24,23 +24,23 @@ const (
 )
 
 type UpdateFacilityRequest struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	Id                int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name              *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	Description       *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	OpenTime          *durationpb.Duration   `protobuf:"bytes,4,opt,name=openTime,proto3,oneof" json:"openTime,omitempty"`
-	CloseTime         *durationpb.Duration   `protobuf:"bytes,5,opt,name=closeTime,proto3,oneof" json:"closeTime,omitempty"`
-	AddressCountry    *string                `protobuf:"bytes,6,opt,name=addressCountry,proto3,oneof" json:"addressCountry,omitempty"`
-	AddressState      *string                `protobuf:"bytes,7,opt,name=addressState,proto3,oneof" json:"addressState,omitempty"`
-	AddressSubState   *string                `protobuf:"bytes,8,opt,name=addressSubState,proto3,oneof" json:"addressSubState,omitempty"`
-	AddressStreet     *string                `protobuf:"bytes,9,opt,name=addressStreet,proto3,oneof" json:"addressStreet,omitempty"`
-	AddressNumber     *string                `protobuf:"bytes,10,opt,name=addressNumber,proto3,oneof" json:"addressNumber,omitempty"`
-	AddressPostalcode *string                `protobuf:"bytes,11,opt,name=addressPostalcode,proto3,oneof" json:"addressPostalcode,omitempty"`
-	AddressUnit       *string                `protobuf:"bytes,12,opt,name=addressUnit,proto3,oneof" json:"addressUnit,omitempty"`
-	AddressLat        *float64               `protobuf:"fixed64,13,opt,name=addressLat,proto3,oneof" json:"addressLat,omitempty"`
-	AddressLng        *float64               `protobuf:"fixed64,14,opt,name=addressLng,proto3,oneof" json:"addressLng,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Id              int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name            *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Description     *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	OpenTime        *durationpb.Duration   `protobuf:"bytes,4,opt,name=openTime,proto3,oneof" json:"openTime,omitempty"`
+	CloseTime       *durationpb.Duration   `protobuf:"bytes,5,opt,name=closeTime,proto3,oneof" json:"closeTime,omitempty"`
+	AddressCountry  *string                `protobuf:"bytes,6,opt,name=addressCountry,proto3,oneof" json:"addressCountry,omitempty"`
+	AddressState    *string                `protobuf:"bytes,7,opt,name=addressState,proto3,oneof" json:"addressState,omitempty"`
+	AddressSubState *string                `protobuf:"bytes,8,opt,name=addressSubState,proto3,oneof" json:"addressSubState,omitempty"`
+	AddressStreet   *string                `protobuf:"bytes,9,opt,name=addressStreet,proto3,oneof" json:"addressStreet,omitempty"`
+	AddressNumber   *string                `protobuf:"bytes,10,opt,name=addressNumber,proto3,oneof" json:"addressNumber,omitempty"`
+	AddressZipCode  *string                `protobuf:"bytes,11,opt,name=addressZipCode,proto3,oneof" json:"addressZipCode,omitempty"`
+	AddressUnit     *string                `protobuf:"bytes,12,opt,name=addressUnit,proto3,oneof" json:"addressUnit,omitempty"`
+	AddressLat      *float64               `protobuf:"fixed64,13,opt,name=addressLat,proto3,oneof" json:"addressLat,omitempty"`
+	AddressLng      *float64               `protobuf:"fixed64,14,opt,name=addressLng,proto3,oneof" json:"addressLng,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *UpdateFacilityRequest) Reset() {
@@ -143,9 +143,9 @@ func (x *UpdateFacilityRequest) GetAddressNumber() string {
 	return ""
 }
 
-func (x *UpdateFacilityRequest) GetAddressPostalcode() string {
-	if x != nil && x.AddressPostalcode != nil {
-		return *x.AddressPostalcode
+func (x *UpdateFacilityRequest) GetAddressZipCode() string {
+	if x != nil && x.AddressZipCode != nil {
+		return *x.AddressZipCode
 	}
 	return ""
 }
@@ -219,7 +219,7 @@ var File_employee_service_requests_facility_rpc_update_facility_proto protorefle
 
 const file_employee_service_requests_facility_rpc_update_facility_proto_rawDesc = "" +
 	"\n" +
-	"<employee-service/requests/facility/rpc_update_facility.proto\x122employee_service.requests.facility.update_facility\x1a&employee-service/models/facility.proto\x1a\x1egoogle/protobuf/duration.proto\"\xb4\x06\n" +
+	"<employee-service/requests/facility/rpc_update_facility.proto\x122employee_service.requests.facility.update_facility\x1a&employee-service/models/facility.proto\x1a\x1egoogle/protobuf/duration.proto\"\xab\x06\n" +
 	"\x15UpdateFacilityRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
@@ -231,8 +231,8 @@ const file_employee_service_requests_facility_rpc_update_facility_proto_rawDesc 
 	"\x0faddressSubState\x18\b \x01(\tH\x06R\x0faddressSubState\x88\x01\x01\x12)\n" +
 	"\raddressStreet\x18\t \x01(\tH\aR\raddressStreet\x88\x01\x01\x12)\n" +
 	"\raddressNumber\x18\n" +
-	" \x01(\tH\bR\raddressNumber\x88\x01\x01\x121\n" +
-	"\x11addressPostalcode\x18\v \x01(\tH\tR\x11addressPostalcode\x88\x01\x01\x12%\n" +
+	" \x01(\tH\bR\raddressNumber\x88\x01\x01\x12+\n" +
+	"\x0eaddressZipCode\x18\v \x01(\tH\tR\x0eaddressZipCode\x88\x01\x01\x12%\n" +
 	"\vaddressUnit\x18\f \x01(\tH\n" +
 	"R\vaddressUnit\x88\x01\x01\x12#\n" +
 	"\n" +
@@ -250,8 +250,8 @@ const file_employee_service_requests_facility_rpc_update_facility_proto_rawDesc 
 	"\r_addressStateB\x12\n" +
 	"\x10_addressSubStateB\x10\n" +
 	"\x0e_addressStreetB\x10\n" +
-	"\x0e_addressNumberB\x14\n" +
-	"\x12_addressPostalcodeB\x0e\n" +
+	"\x0e_addressNumberB\x11\n" +
+	"\x0f_addressZipCodeB\x0e\n" +
 	"\f_addressUnitB\r\n" +
 	"\v_addressLatB\r\n" +
 	"\v_addressLng\"`\n" +

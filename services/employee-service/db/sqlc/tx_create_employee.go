@@ -9,24 +9,24 @@ import (
 
 // CreateEmployeeTxParams contains the input parameters to create a employee
 type CreateEmployeeTxParams struct {
-	AccountID         int64   `json:"account_id"`
-	Name              string  `json:"name"`
-	Lastname          string  `json:"lastname"`
-	Email             string  `json:"email"`
-	Phone             string  `json:"phone"`
-	Gender            string  `json:"gender"`
-	RealID            string  `json:"real_id"`
-	FiscalID          string  `json:"fiscal_id"`
-	AddressCountry    string  `json:"address_country"`
-	AddressState      string  `json:"address_state"`
-	AddressSubState   string  `json:"address_sub_state"`
-	AddressStreet     string  `json:"address_street"`
-	AddressNumber     string  `json:"address_number"`
-	AddressUnit       string  `json:"address_unit"`
-	AddressPostalcode string  `json:"address_postalcode"`
-	AddressLat        float64 `json:"address_lat"`
-	AddressLng        float64 `json:"address_lng"`
-	FacilityIDs       []int64 `json:"facility_ids"`
+	AccountID       int64   `json:"account_id"`
+	Name            string  `json:"name"`
+	Lastname        string  `json:"lastname"`
+	Email           string  `json:"email"`
+	Phone           string  `json:"phone"`
+	Gender          string  `json:"gender"`
+	RealID          string  `json:"real_id"`
+	FiscalID        string  `json:"fiscal_id"`
+	AddressCountry  string  `json:"address_country"`
+	AddressState    string  `json:"address_state"`
+	AddressSubState string  `json:"address_sub_state"`
+	AddressStreet   string  `json:"address_street"`
+	AddressNumber   string  `json:"address_number"`
+	AddressUnit     string  `json:"address_unit"`
+	AddressZipCode  string  `json:"address_ZipCode"`
+	AddressLat      float64 `json:"address_lat"`
+	AddressLng      float64 `json:"address_lng"`
+	FacilityIDs     []int64 `json:"facility_ids"`
 }
 
 // CreateEmployeeTxResult is the result of the employee creation
@@ -75,7 +75,7 @@ func (store *SQLStore) CreateEmployeeTx(ctx context.Context, arg CreateEmployeeT
 				String: arg.AddressUnit,
 				Valid:  arg.AddressUnit != "",
 			},
-			PostalCode: arg.AddressPostalcode,
+			ZipCode: arg.AddressZipCode,
 			Lat: pgtype.Float8{
 				Float64: arg.AddressLat,
 				Valid:   true,

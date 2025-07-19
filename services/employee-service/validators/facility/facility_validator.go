@@ -80,7 +80,7 @@ func ValidateAddressUnit(value string) error {
 	return v.ValidString(value, 3, 100)
 }
 
-func ValidateAddressPostalcode(value string) error {
+func ValidateAddressZipCode(value string) error {
 	return v.ValidString(value, 3, 100)
 }
 

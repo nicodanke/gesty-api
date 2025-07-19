@@ -205,7 +205,7 @@
         "addressUnit": {
           "type": "string"
         },
-        "addressPostalcode": {
+        "addressZipCode": {
           "type": "string"
         },
         "addressLat": {
@@ -262,7 +262,7 @@
         "addressUnit": {
           "type": "string"
         },
-        "addressPostalcode": {
+        "addressZipCode": {
           "type": "string"
         },
         "addressLat": {

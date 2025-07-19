@@ -65,11 +65,11 @@ func (q *Queries) DeleteFacility(ctx context.Context, arg DeleteFacilityParams) 
 }
 
 const getFacilities = `-- name: GetFacilities :many
-SELECT f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng
+SELECT f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.zip_code, fa.lat, fa.lng
 FROM "facility" f
 LEFT JOIN facility_address fa ON f.id = fa.facility_id
 WHERE f.account_id = $1
-GROUP BY f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng
+GROUP BY f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.zip_code, fa.lat, fa.lng
 ORDER BY LOWER(f.name)
 LIMIT $2
 OFFSET $3
@@ -93,7 +93,7 @@ type GetFacilitiesRow struct {
 	Street      pgtype.Text   `json:"street"`
 	Number      pgtype.Text   `json:"number"`
 	Unit        pgtype.Text   `json:"unit"`
-	PostalCode  pgtype.Text   `json:"postal_code"`
+	ZipCode     pgtype.Text   `json:"zip_code"`
 	Lat         pgtype.Float8 `json:"lat"`
 	Lng         pgtype.Float8 `json:"lng"`
 }
@@ -119,7 +119,7 @@ func (q *Queries) GetFacilities(ctx context.Context, arg GetFacilitiesParams) ([
 			&i.Street,
 			&i.Number,
 			&i.Unit,
-			&i.PostalCode,
+			&i.ZipCode,
 			&i.Lat,
 			&i.Lng,
 		); err != nil {
@@ -134,11 +134,11 @@ func (q *Queries) GetFacilities(ctx context.Context, arg GetFacilitiesParams) ([
 }
 
 const getFacility = `-- name: GetFacility :one
-SELECT f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng
+SELECT f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.zip_code, fa.lat, fa.lng
 FROM "facility" f
 LEFT JOIN facility_address fa ON f.id = fa.facility_id
 WHERE f.account_id = $1 AND f.id = $2
-GROUP BY f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.postal_code, fa.lat, fa.lng
+GROUP BY f.id, f.name, f.description, f.open_time, f.close_time, fa.country, fa.state, fa.sub_state, fa.street, fa.number, fa.unit, fa.zip_code, fa.lat, fa.lng
 LIMIT 1
 `
 
@@ -159,7 +159,7 @@ type GetFacilityRow struct {
 	Street      pgtype.Text   `json:"street"`
 	Number      pgtype.Text   `json:"number"`
 	Unit        pgtype.Text   `json:"unit"`
-	PostalCode  pgtype.Text   `json:"postal_code"`
+	ZipCode     pgtype.Text   `json:"zip_code"`
 	Lat         pgtype.Float8 `json:"lat"`
 	Lng         pgtype.Float8 `json:"lng"`
 }
@@ -179,7 +179,7 @@ func (q *Queries) GetFacility(ctx context.Context, arg GetFacilityParams) (GetFa
 		&i.Street,
 		&i.Number,
 		&i.Unit,
-		&i.PostalCode,
+		&i.ZipCode,
 		&i.Lat,
 		&i.Lng,
 	)

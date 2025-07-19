@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package employee_service.requests.account.create_account;
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/account";
+
+message CreateAccountRequest {
+    int64 accountId = 1;
+}

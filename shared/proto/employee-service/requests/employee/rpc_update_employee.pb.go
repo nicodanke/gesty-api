@@ -37,7 +37,7 @@ type UpdateEmployeeRequest struct {
 	AddressSubState     *string                `protobuf:"bytes,11,opt,name=addressSubState,proto3,oneof" json:"addressSubState,omitempty"`
 	AddressStreet       *string                `protobuf:"bytes,12,opt,name=addressStreet,proto3,oneof" json:"addressStreet,omitempty"`
 	AddressNumber       *string                `protobuf:"bytes,13,opt,name=addressNumber,proto3,oneof" json:"addressNumber,omitempty"`
-	AddressPostalcode   *string                `protobuf:"bytes,14,opt,name=addressPostalcode,proto3,oneof" json:"addressPostalcode,omitempty"`
+	AddressZipCode      *string                `protobuf:"bytes,14,opt,name=addressZipCode,proto3,oneof" json:"addressZipCode,omitempty"`
 	AddressUnit         *string                `protobuf:"bytes,15,opt,name=addressUnit,proto3,oneof" json:"addressUnit,omitempty"`
 	AddressLat          *float64               `protobuf:"fixed64,16,opt,name=addressLat,proto3,oneof" json:"addressLat,omitempty"`
 	AddressLng          *float64               `protobuf:"fixed64,17,opt,name=addressLng,proto3,oneof" json:"addressLng,omitempty"`
@@ -168,9 +168,9 @@ func (x *UpdateEmployeeRequest) GetAddressNumber() string {
 	return ""
 }
 
-func (x *UpdateEmployeeRequest) GetAddressPostalcode() string {
-	if x != nil && x.AddressPostalcode != nil {
-		return *x.AddressPostalcode
+func (x *UpdateEmployeeRequest) GetAddressZipCode() string {
+	if x != nil && x.AddressZipCode != nil {
+		return *x.AddressZipCode
 	}
 	return ""
 }
@@ -258,7 +258,7 @@ var File_employee_service_requests_employee_rpc_update_employee_proto protorefle
 
 const file_employee_service_requests_employee_rpc_update_employee_proto_rawDesc = "" +
 	"\n" +
-	"<employee-service/requests/employee/rpc_update_employee.proto\x122employee_service.requests.employee.update_employee\x1a&employee-service/models/employee.proto\"\xcf\a\n" +
+	"<employee-service/requests/employee/rpc_update_employee.proto\x122employee_service.requests.employee.update_employee\x1a&employee-service/models/employee.proto\"\xc6\a\n" +
 	"\x15UpdateEmployeeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12\x1f\n" +
@@ -274,8 +274,8 @@ const file_employee_service_requests_employee_rpc_update_employee_proto_rawDesc 
 	"\x0faddressSubState\x18\v \x01(\tH\tR\x0faddressSubState\x88\x01\x01\x12)\n" +
 	"\raddressStreet\x18\f \x01(\tH\n" +
 	"R\raddressStreet\x88\x01\x01\x12)\n" +
-	"\raddressNumber\x18\r \x01(\tH\vR\raddressNumber\x88\x01\x01\x121\n" +
-	"\x11addressPostalcode\x18\x0e \x01(\tH\fR\x11addressPostalcode\x88\x01\x01\x12%\n" +
+	"\raddressNumber\x18\r \x01(\tH\vR\raddressNumber\x88\x01\x01\x12+\n" +
+	"\x0eaddressZipCode\x18\x0e \x01(\tH\fR\x0eaddressZipCode\x88\x01\x01\x12%\n" +
 	"\vaddressUnit\x18\x0f \x01(\tH\rR\vaddressUnit\x88\x01\x01\x12#\n" +
 	"\n" +
 	"addressLat\x18\x10 \x01(\x01H\x0eR\n" +
@@ -296,8 +296,8 @@ const file_employee_service_requests_employee_rpc_update_employee_proto_rawDesc 
 	"\r_addressStateB\x12\n" +
 	"\x10_addressSubStateB\x10\n" +
 	"\x0e_addressStreetB\x10\n" +
-	"\x0e_addressNumberB\x14\n" +
-	"\x12_addressPostalcodeB\x0e\n" +
+	"\x0e_addressNumberB\x11\n" +
+	"\x0f_addressZipCodeB\x0e\n" +
 	"\f_addressUnitB\r\n" +
 	"\v_addressLatB\r\n" +
 	"\v_addressLngB\x16\n" +

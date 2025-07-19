@@ -6,11 +6,12 @@ import (
 	"strings"
 
 	db "github.com/nicodanke/gesty-api/services/account-service/db/sqlc"
-	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/account"
-	"github.com/nicodanke/gesty-api/shared/utils"
 	"github.com/nicodanke/gesty-api/services/account-service/validators"
 	accountValidator "github.com/nicodanke/gesty-api/services/account-service/validators/account"
 	userValidator "github.com/nicodanke/gesty-api/services/account-service/validators/user"
+	"github.com/nicodanke/gesty-api/shared/proto/account-service/requests/account"
+	esa "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/account"
+	"github.com/nicodanke/gesty-api/shared/utils"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 )
@@ -44,7 +45,7 @@ func (server *Server) CreateAccount(ctx context.Context, req *account.CreateAcco
 		errCode := db.ErrorCode(err)
 		if errCode == db.UniqueViolation {
 			constraintName := db.ConstraintName(err)
-			return nil, conflictError(CONFLICT_UNIQUE,fmt.Sprintln("Failed to create account due to unique constraint violation"), constraintName)
+			return nil, conflictError(CONFLICT_UNIQUE, fmt.Sprintln("Failed to create account due to unique constraint violation"), constraintName)
 		}
 		if errCode == db.ForeignKeyViolation {
 			constraintName := db.ConstraintName(err)
@@ -52,6 +53,14 @@ func (server *Server) CreateAccount(ctx context.Context, req *account.CreateAcco
 		}
 
 		return nil, internalError(fmt.Sprintln("Failed to create account:", err))
+	}
+
+	// Create base actions in employee service
+	_, err = server.employeeClient.CreateAccount(ctx, &esa.CreateAccountRequest{
+		AccountId: result.Account.ID,
+	})
+	if err != nil {
+		return nil, internalError(fmt.Sprintf("Failed to create base actions: %v", err))
 	}
 
 	rsp := &account.CreateAccountResponse{

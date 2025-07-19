@@ -17,7 +17,7 @@ message CreateFacilityRequest {
     optional string addressSubState = 7;
     string addressStreet = 8;
     string addressNumber = 9;
-    string addressPostalcode = 10;
+    string addressZipCode = 10;
     optional string addressUnit = 11;
     optional double addressLat = 12;
     optional double addressLng = 13;

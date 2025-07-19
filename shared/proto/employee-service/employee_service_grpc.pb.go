@@ -8,6 +8,7 @@ package employee_service
 
 import (
 	context "context"
+	account "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/account"
 	action "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action"
 	device "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device"
 	employee "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee"
@@ -24,6 +25,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	EmployeeService_CreateAccount_FullMethodName          = "/employee_service.EmployeeService/CreateAccount"
 	EmployeeService_GetAction_FullMethodName              = "/employee_service.EmployeeService/GetAction"
 	EmployeeService_GetActions_FullMethodName             = "/employee_service.EmployeeService/GetActions"
 	EmployeeService_CreateAction_FullMethodName           = "/employee_service.EmployeeService/CreateAction"
@@ -53,6 +55,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EmployeeServiceClient interface {
+	// account
+	CreateAccount(ctx context.Context, in *account.CreateAccountRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// ACTION
 	GetAction(ctx context.Context, in *action.GetActionRequest, opts ...grpc.CallOption) (*action.GetActionResponse, error)
 	GetActions(ctx context.Context, in *action.GetActionsRequest, opts ...grpc.CallOption) (*action.GetActionsResponse, error)
@@ -88,6 +92,16 @@ type employeeServiceClient struct {
 
 func NewEmployeeServiceClient(cc grpc.ClientConnInterface) EmployeeServiceClient {
 	return &employeeServiceClient{cc}
+}
+
+func (c *employeeServiceClient) CreateAccount(ctx context.Context, in *account.CreateAccountRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, EmployeeService_CreateAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *employeeServiceClient) GetAction(ctx context.Context, in *action.GetActionRequest, opts ...grpc.CallOption) (*action.GetActionResponse, error) {
@@ -324,6 +338,8 @@ func (c *employeeServiceClient) RefreshDeviceToken(ctx context.Context, in *devi
 // All implementations must embed UnimplementedEmployeeServiceServer
 // for forward compatibility.
 type EmployeeServiceServer interface {
+	// account
+	CreateAccount(context.Context, *account.CreateAccountRequest) (*emptypb.Empty, error)
 	// ACTION
 	GetAction(context.Context, *action.GetActionRequest) (*action.GetActionResponse, error)
 	GetActions(context.Context, *action.GetActionsRequest) (*action.GetActionsResponse, error)
@@ -361,6 +377,9 @@ type EmployeeServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedEmployeeServiceServer struct{}
 
+func (UnimplementedEmployeeServiceServer) CreateAccount(context.Context, *account.CreateAccountRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAccount not implemented")
+}
 func (UnimplementedEmployeeServiceServer) GetAction(context.Context, *action.GetActionRequest) (*action.GetActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAction not implemented")
 }
@@ -449,6 +468,24 @@ func RegisterEmployeeServiceServer(s grpc.ServiceRegistrar, srv EmployeeServiceS
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&EmployeeService_ServiceDesc, srv)
+}
+
+func _EmployeeService_CreateAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(account.CreateAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).CreateAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_CreateAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).CreateAccount(ctx, req.(*account.CreateAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _EmployeeService_GetAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -872,6 +909,10 @@ var EmployeeService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "employee_service.EmployeeService",
 	HandlerType: (*EmployeeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateAccount",
+			Handler:    _EmployeeService_CreateAccount_Handler,
+		},
 		{
 			MethodName: "GetAction",
 			Handler:    _EmployeeService_GetAction_Handler,
