@@ -5,5 +5,5 @@ type Action struct {
 	Name         string `json:"name"`
 	Description  string `json:"description"`
 	Enabled      bool   `json:"enabled"`
-	CanBeDeleted bool   `json:"can_be_deleted"`
+	CanBeDeleted bool   `json:"canBeDeleted"`
 }
