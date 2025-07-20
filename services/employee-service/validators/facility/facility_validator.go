@@ -77,7 +77,7 @@ func ValidateAddressUnit(value string) error {
 	if len(value) == 0 {
 		return nil
 	}
-	return v.ValidString(value, 3, 100)
+	return v.ValidString(value, 1, 100)
 }
 
 func ValidateAddressZipCode(value string) error {
