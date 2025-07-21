@@ -5,6 +5,10 @@ INSERT INTO role_permission (
     $1, $2
 ) RETURNING *;
 
+-- name: GetRolePermissionsByRoleId :many
+SELECT * FROM role_permission
+WHERE role_id = $1;
+
 -- name: DeleteRolePermissions :exec
 DELETE FROM role_permission
 WHERE role_id = $1;

@@ -25,6 +25,7 @@ type Querier interface {
 	GetAccountModules(ctx context.Context, accountID int64) ([]string, error)
 	GetPermissions(ctx context.Context, arg GetPermissionsParams) ([]Permission, error)
 	GetRole(ctx context.Context, arg GetRoleParams) (GetRoleRow, error)
+	GetRolePermissionsByRoleId(ctx context.Context, roleID int64) ([]RolePermission, error)
 	GetRoles(ctx context.Context, arg GetRolesParams) ([]GetRolesRow, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetUser(ctx context.Context, arg GetUserParams) (User, error)

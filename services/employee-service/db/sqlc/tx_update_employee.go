@@ -102,9 +102,21 @@ func (store *SQLStore) UpdateEmployeeTx(ctx context.Context, arg UpdateEmployeeT
 					return err
 				}
 			}
-		}
+			result.FacilityIds = arg.FacilityIds
+		} else {
+			facilities, err := q.GetEmployeeFacilitiesByEmployeeId(ctx, arg.ID)
+			if err != nil {
+				fmt.Println("error getting employee facilities", err)
+				return err
+			}
 
-		result.FacilityIds = arg.FacilityIds
+			facilityIDs := make([]int64, len(facilities))
+			for i, facility := range facilities {
+				facilityIDs[i] = facility.FacilityID
+			}
+
+			result.FacilityIds = facilityIDs
+		}
 
 		return err
 	})

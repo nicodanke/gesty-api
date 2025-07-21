@@ -6,17 +6,17 @@ type Device struct {
 	Id                      string                 `json:"id"`
 	Name                    string                 `json:"name"`
 	Enabled                 bool                   `json:"enabled"`
-	ActionIds               []string               `json:"action_ids"`
-	FacilityId              string                 `json:"facility_id"`
+	ActionIds               []string               `json:"actionIds"`
+	FacilityId              string                 `json:"facilityId"`
 	Password                string                 `json:"password"`
-	DeviceName              string                 `json:"device_name"`
-	DeviceModel             string                 `json:"device_model"`
-	DeviceBrand             string                 `json:"device_brand"`
-	DeviceSerialNumber      string                 `json:"device_serial_number"`
-	DeviceOs                string                 `json:"device_os"`
-	DeviceRam               string                 `json:"device_ram"`
-	DeviceStorage           string                 `json:"device_storage"`
-	DeviceOsVersion         string                 `json:"device_os_version"`
-	ActivationCode          string                 `json:"activation_code"`
-	ActivationCodeExpiresAt *timestamppb.Timestamp `json:"activation_code_expires_at"`
+	DeviceName              string                 `json:"deviceName"`
+	DeviceModel             string                 `json:"deviceModel"`
+	DeviceBrand             string                 `json:"deviceBrand"`
+	DeviceSerialNumber      string                 `json:"deviceSerialNumber"`
+	DeviceOs                string                 `json:"deviceOs"`
+	DeviceRam               string                 `json:"deviceRam"`
+	DeviceStorage           string                 `json:"deviceStorage"`
+	DeviceOsVersion         string                 `json:"deviceOsVersion"`
+	ActivationCode          string                 `json:"activationCode"`
+	ActivationCodeExpiresAt *timestamppb.Timestamp `json:"activationCodeExpiresAt"`
 }

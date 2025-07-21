@@ -38,3 +38,28 @@ func (q *Queries) DeleteRolePermissions(ctx context.Context, roleID int64) error
 	_, err := q.db.Exec(ctx, deleteRolePermissions, roleID)
 	return err
 }
+
+const getRolePermissionsByRoleId = `-- name: GetRolePermissionsByRoleId :many
+SELECT role_id, permission_id FROM role_permission
+WHERE role_id = $1
+`
+
+func (q *Queries) GetRolePermissionsByRoleId(ctx context.Context, roleID int64) ([]RolePermission, error) {
+	rows, err := q.db.Query(ctx, getRolePermissionsByRoleId, roleID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []RolePermission{}
+	for rows.Next() {
+		var i RolePermission
+		if err := rows.Scan(&i.RoleID, &i.PermissionID); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

@@ -65,9 +65,22 @@ func (store *SQLStore) UpdateRoleTx(ctx context.Context, arg UpdateRoleTxParams)
 					return err
 				}
 			}
-		}
 
-		result.PermissionIDs = arg.PermissionIDs
+			result.PermissionIDs = arg.PermissionIDs
+		} else {
+			permissions, err := q.GetRolePermissionsByRoleId(ctx, arg.ID)
+			if err != nil {
+				fmt.Println("error getting role permissions", err)
+				return err
+			}
+
+			permissionIDs := make([]int64, len(permissions))
+			for i, permission := range permissions {
+				permissionIDs[i] = permission.PermissionID
+			}
+
+			result.PermissionIDs = permissionIDs
+		}
 
 		return err
 	})

@@ -67,9 +67,22 @@ func (store *SQLStore) UpdateDeviceTx(ctx context.Context, arg UpdateDeviceTxPar
 					return err
 				}
 			}
-		}
 
-		result.ActionIDs = arg.ActionIDs
+			result.ActionIDs = arg.ActionIDs
+		} else {
+			actions, err := q.GetDeviceActionsByDeviceId(ctx, arg.ID)
+			if err != nil {
+				fmt.Println("error getting device actions", err)
+				return err
+			}
+
+			actionIDs := make([]int64, len(actions))
+			for i, action := range actions {
+				actionIDs[i] = action.ActionID
+			}
+
+			result.ActionIDs = actionIDs
+		}
 
 		return err
 	})

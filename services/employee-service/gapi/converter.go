@@ -316,10 +316,12 @@ func convertEmployeeUpdateTxResultEvent(employee db.UpdateEmployeeTxResult) *eve
 
 func convertDeviceCreateTxResult(device db.CreateDeviceTxResult) *models.Device {
 	return &models.Device{
-		Id:        device.Device.ID,
-		Name:      device.Device.Name,
-		Enabled:   device.Device.Enabled,
-		ActionIds: device.ActionIDs,
+		Id:         device.Device.ID,
+		Name:       device.Device.Name,
+		Enabled:    device.Device.Enabled,
+		Password:   device.Device.Password,
+		ActionIds:  device.ActionIDs,
+		FacilityId: device.Device.FacilityID,
 	}
 }
 
@@ -330,10 +332,12 @@ func convertDeviceCreateTxResultEvent(device db.CreateDeviceTxResult) *eventdata
 	}
 
 	return &eventdata.Device{
-		Id:        strconv.FormatInt(device.Device.ID, 10),
-		Name:      device.Device.Name,
-		Enabled:   device.Device.Enabled,
-		ActionIds: actionIds,
+		Id:         strconv.FormatInt(device.Device.ID, 10),
+		Name:       device.Device.Name,
+		Enabled:    device.Device.Enabled,
+		Password:   device.Device.Password,
+		ActionIds:  actionIds,
+		FacilityId: strconv.FormatInt(device.Device.FacilityID, 10),
 	}
 }
 
@@ -430,9 +434,9 @@ func convertDeviceUpdateTxResultEvent(device db.UpdateDeviceTxResult) *eventdata
 		Id:                      strconv.FormatInt(device.Device.ID, 10),
 		Name:                    device.Device.Name,
 		Enabled:                 device.Device.Enabled,
+		Password:                device.Device.Password,
 		ActionIds:               actionIds,
 		FacilityId:              strconv.FormatInt(device.Device.FacilityID, 10),
-		Password:                device.Device.Password,
 		DeviceName:              device.Device.DeviceName.String,
 		DeviceModel:             device.Device.DeviceModel.String,
 		DeviceBrand:             device.Device.DeviceBrand.String,
