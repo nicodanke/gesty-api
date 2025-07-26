@@ -127,6 +127,39 @@ func (q *Queries) GetActions(ctx context.Context, arg GetActionsParams) ([]Actio
 	return items, nil
 }
 
+const getActionsEnabledByDeviceId = `-- name: GetActionsEnabledByDeviceId :many
+SELECT a.id, a.name, a.description, a.enabled, a.can_be_deleted, a.account_id FROM "action" a
+JOIN device_action da ON a.id = da.action_id
+WHERE da.device_id = $1 AND a.enabled = true
+`
+
+func (q *Queries) GetActionsEnabledByDeviceId(ctx context.Context, deviceID int64) ([]Action, error) {
+	rows, err := q.db.Query(ctx, getActionsEnabledByDeviceId, deviceID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Action{}
+	for rows.Next() {
+		var i Action
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Description,
+			&i.Enabled,
+			&i.CanBeDeleted,
+			&i.AccountID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const updateAction = `-- name: UpdateAction :one
 UPDATE "action"
 SET

@@ -16,6 +16,11 @@ ORDER BY LOWER(name)
 LIMIT $2
 OFFSET $3;
 
+-- name: GetActionsEnabledByDeviceId :many
+SELECT a.* FROM "action" a
+JOIN device_action da ON a.id = da.action_id
+WHERE da.device_id = $1 AND a.enabled = true;
+
 -- name: DeleteAction :exec
 DELETE FROM "action"
 WHERE account_id = $1 AND id = $2;

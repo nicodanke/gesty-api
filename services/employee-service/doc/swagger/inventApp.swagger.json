@@ -55,11 +55,11 @@
           "type": "string",
           "format": "date-time"
         },
-        "actionIds": {
+        "actions": {
           "type": "array",
           "items": {
-            "type": "string",
-            "format": "int64"
+            "type": "object",
+            "$ref": "#/definitions/actionAction"
           }
         }
       }
@@ -77,6 +77,18 @@
       "properties": {
         "device": {
           "$ref": "#/definitions/deviceDevice"
+        }
+      }
+    },
+    "create_device_healthCreateDeviceHealthResponse": {
+      "type": "object",
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/actionAction"
+          }
         }
       }
     },

@@ -3,6 +3,8 @@ syntax = "proto3";
 package employee_service.requests.device.activate_device;
 import "google/protobuf/timestamp.proto";
 
+import "employee-service/models/action.proto";
+
 option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device";
 
 message ActivateDeviceRequest {
@@ -23,5 +25,5 @@ message ActivateDeviceResponse {
     string refreshToken = 2;
     google.protobuf.Timestamp accessTokenExpiresAt = 3;
     google.protobuf.Timestamp refreshTokenExpiresAt = 4;
-    repeated int64 actionIds = 5;
+    repeated employee_service.models.action.Action actions= 5;
 }

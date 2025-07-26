@@ -10,6 +10,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/nicodanke/gesty-api/services/employee-service/db/sqlc"
+	"github.com/nicodanke/gesty-api/services/employee-service/sse"
 	"github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -87,12 +88,21 @@ func (server *Server) ActivateDevice(ctx context.Context, req *device.ActivateDe
 	})
 
 	if err != nil {
+		return nil, internalError(fmt.Sprintln("Failed to update device", err))
+	}
+
+	deviceRow, err := server.store.GetDevice(ctx, db.GetDeviceParams{AccountID: accountID, ID: deviceID})
+	if err != nil {
+		return nil, internalError(fmt.Sprintln("Failed to get device", err))
+	}
+
+	if err != nil {
 		return nil, conflictError("", fmt.Sprintln("Failed to update device", err), "id")
 	}
 
-	actionIds := make([]int64, 0)
-	for _, v := range deviceModel.ActionIds.([]interface{}) {
-		actionIds = append(actionIds, v.(int64))
+	actions, err := server.store.GetActionsEnabledByDeviceId(ctx, deviceID)
+	if err != nil {
+		return nil, internalError(fmt.Sprintln("Failed to get actions", err))
 	}
 
 	rsp := &device.ActivateDeviceResponse{
@@ -100,8 +110,13 @@ func (server *Server) ActivateDevice(ctx context.Context, req *device.ActivateDe
 		RefreshToken:          refreshToken,
 		AccessTokenExpiresAt:  timestamppb.New(payload.ExpiredAt),
 		RefreshTokenExpiresAt: timestamppb.New(refreshPayload.ExpiredAt),
-		ActionIds:             actionIds,
+		Actions:               convertActions(actions),
 	}
+
+	deviceEvent := convertGetDeviceRowEvent(deviceRow)
+
+	// Notify device update
+	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_update_device, deviceEvent), accountID, nil)
 
 	return rsp, nil
 }

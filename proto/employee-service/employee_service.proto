@@ -16,6 +16,7 @@ import "employee-service/requests/device/rpc_delete_device.proto";
 import "employee-service/requests/device/rpc_generate_activation_code.proto";
 import "employee-service/requests/device/rpc_activate_device.proto";
 import "employee-service/requests/device/rpc_refresh_device_token.proto";
+import "employee-service/requests/device_health/rpc_create_device_health.proto";
 import "employee-service/requests/employee/rpc_get_employees.proto";
 import "employee-service/requests/employee/rpc_get_employee.proto";
 import "employee-service/requests/employee/rpc_create_employee.proto";
@@ -87,4 +88,8 @@ service EmployeeService {
     rpc ActivateDevice (employee_service.requests.device.activate_device.ActivateDeviceRequest) returns (employee_service.requests.device.activate_device.ActivateDeviceResponse);
 
     rpc RefreshDeviceToken (employee_service.requests.device.refresh_device_token.RefreshDeviceTokenRequest) returns (employee_service.requests.device.refresh_device_token.RefreshDeviceTokenResponse);
+
+
+    // DEVICE HEALTH
+    rpc CreateDeviceHealth (employee_service.requests.device_health.create_device_health.CreateDeviceHealthRequest) returns (employee_service.requests.device_health.create_device_health.CreateDeviceHealthResponse);
 }

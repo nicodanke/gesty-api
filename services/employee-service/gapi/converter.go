@@ -319,6 +319,7 @@ func convertDeviceCreateTxResult(device db.CreateDeviceTxResult) *models.Device 
 		Id:         device.Device.ID,
 		Name:       device.Device.Name,
 		Enabled:    device.Device.Enabled,
+		Active:     device.Device.Active,
 		Password:   device.Device.Password,
 		ActionIds:  device.ActionIDs,
 		FacilityId: device.Device.FacilityID,
@@ -335,6 +336,7 @@ func convertDeviceCreateTxResultEvent(device db.CreateDeviceTxResult) *eventdata
 		Id:         strconv.FormatInt(device.Device.ID, 10),
 		Name:       device.Device.Name,
 		Enabled:    device.Device.Enabled,
+		Active:     device.Device.Active,
 		Password:   device.Device.Password,
 		ActionIds:  actionIds,
 		FacilityId: strconv.FormatInt(device.Device.FacilityID, 10),
@@ -351,7 +353,35 @@ func convertGetDeviceRow(device db.GetDeviceRow) *models.Device {
 		Id:                      device.ID,
 		Name:                    device.Name,
 		Enabled:                 device.Enabled,
+		Active:                  device.Active,
 		FacilityId:              device.FacilityID,
+		Password:                device.Password,
+		ActionIds:               actionIds,
+		DeviceName:              device.DeviceName.String,
+		DeviceModel:             device.DeviceModel.String,
+		DeviceBrand:             device.DeviceBrand.String,
+		DeviceSerialNumber:      device.DeviceSerialNumber.String,
+		DeviceOs:                device.DeviceOs.String,
+		DeviceRam:               strconv.FormatFloat(device.DeviceRam.Float64, 'f', -1, 64),
+		DeviceStorage:           strconv.FormatFloat(device.DeviceStorage.Float64, 'f', -1, 64),
+		DeviceOsVersion:         device.DeviceOsVersion.String,
+		ActivationCode:          device.ActivationCode.String,
+		ActivationCodeExpiresAt: timestamppb.New(device.ActivationCodeExpiresAt),
+	}
+}
+
+func convertGetDeviceRowEvent(device db.GetDeviceRow) *eventdata.Device {
+	actionIds := make([]string, 0)
+	for _, v := range device.ActionIds.([]interface{}) {
+		actionIds = append(actionIds, strconv.FormatInt(v.(int64), 10))
+	}
+
+	return &eventdata.Device{
+		Id:                      strconv.FormatInt(device.ID, 10),
+		Name:                    device.Name,
+		Enabled:                 device.Enabled,
+		Active:                  device.Active,
+		FacilityId:              strconv.FormatInt(device.FacilityID, 10),
 		Password:                device.Password,
 		ActionIds:               actionIds,
 		DeviceName:              device.DeviceName.String,
@@ -387,6 +417,7 @@ func convertGetDevicesRow(device db.GetDevicesRow) *models.Device {
 		Id:                      device.ID,
 		Name:                    device.Name,
 		Enabled:                 device.Enabled,
+		Active:                  device.Active,
 		FacilityId:              device.FacilityID,
 		Password:                device.Password,
 		ActionIds:               actionIds,
@@ -408,6 +439,7 @@ func convertDeviceUpdateTxResult(device db.UpdateDeviceTxResult) *models.Device 
 		Id:                      device.Device.ID,
 		Name:                    device.Device.Name,
 		Enabled:                 device.Device.Enabled,
+		Active:                  device.Device.Active,
 		ActionIds:               device.ActionIDs,
 		FacilityId:              device.Device.FacilityID,
 		Password:                device.Device.Password,
@@ -434,6 +466,7 @@ func convertDeviceUpdateTxResultEvent(device db.UpdateDeviceTxResult) *eventdata
 		Id:                      strconv.FormatInt(device.Device.ID, 10),
 		Name:                    device.Device.Name,
 		Enabled:                 device.Device.Enabled,
+		Active:                  device.Device.Active,
 		Password:                device.Device.Password,
 		ActionIds:               actionIds,
 		FacilityId:              strconv.FormatInt(device.Device.FacilityID, 10),

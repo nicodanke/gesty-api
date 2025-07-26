@@ -146,7 +146,7 @@ func (q *Queries) GetDevice(ctx context.Context, arg GetDeviceParams) (GetDevice
 }
 
 const getDevices = `-- name: GetDevices :many
-SELECT d.id, d.name, d.enabled, d.facility_id, d.password, d.created_at, d.updated_at, d.activation_code, d.activation_code_expires_at, d.device_name, d.device_brand, d.device_model, d.device_serial_number, d.device_os, d.device_ram, d.device_storage, d.device_os_version,
+SELECT d.id, d.name, d.enabled, d.active, d.facility_id, d.password, d.created_at, d.updated_at, d.activation_code, d.activation_code_expires_at, d.device_name, d.device_brand, d.device_model, d.device_serial_number, d.device_os, d.device_ram, d.device_storage, d.device_os_version,
     COALESCE(
         ARRAY_AGG(da.action_id) FILTER (WHERE da.action_id IS NOT NULL),
         '{}'::int8[]
@@ -170,6 +170,7 @@ type GetDevicesRow struct {
 	ID                      int64         `json:"id"`
 	Name                    string        `json:"name"`
 	Enabled                 bool          `json:"enabled"`
+	Active                  bool          `json:"active"`
 	FacilityID              int64         `json:"facility_id"`
 	Password                string        `json:"password"`
 	CreatedAt               time.Time     `json:"created_at"`
@@ -200,6 +201,7 @@ func (q *Queries) GetDevices(ctx context.Context, arg GetDevicesParams) ([]GetDe
 			&i.ID,
 			&i.Name,
 			&i.Enabled,
+			&i.Active,
 			&i.FacilityID,
 			&i.Password,
 			&i.CreatedAt,

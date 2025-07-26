@@ -7,6 +7,7 @@
 package device
 
 import (
+	models "github.com/nicodanke/gesty-api/shared/proto/employee-service/models"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -144,7 +145,7 @@ type ActivateDeviceResponse struct {
 	RefreshToken          string                 `protobuf:"bytes,2,opt,name=refreshToken,proto3" json:"refreshToken,omitempty"`
 	AccessTokenExpiresAt  *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=accessTokenExpiresAt,proto3" json:"accessTokenExpiresAt,omitempty"`
 	RefreshTokenExpiresAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=refreshTokenExpiresAt,proto3" json:"refreshTokenExpiresAt,omitempty"`
-	ActionIds             []int64                `protobuf:"varint,5,rep,packed,name=actionIds,proto3" json:"actionIds,omitempty"`
+	Actions               []*models.Action       `protobuf:"bytes,5,rep,name=actions,proto3" json:"actions,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -207,9 +208,9 @@ func (x *ActivateDeviceResponse) GetRefreshTokenExpiresAt() *timestamppb.Timesta
 	return nil
 }
 
-func (x *ActivateDeviceResponse) GetActionIds() []int64 {
+func (x *ActivateDeviceResponse) GetActions() []*models.Action {
 	if x != nil {
-		return x.ActionIds
+		return x.Actions
 	}
 	return nil
 }
@@ -218,7 +219,7 @@ var File_employee_service_requests_device_rpc_activate_device_proto protoreflect
 
 const file_employee_service_requests_device_rpc_activate_device_proto_rawDesc = "" +
 	"\n" +
-	":employee-service/requests/device/rpc_activate_device.proto\x120employee_service.requests.device.activate_device\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd9\x02\n" +
+	":employee-service/requests/device/rpc_activate_device.proto\x120employee_service.requests.device.activate_device\x1a\x1fgoogle/protobuf/timestamp.proto\x1a$employee-service/models/action.proto\"\xd9\x02\n" +
 	"\x15ActivateDeviceRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1e\n" +
@@ -232,13 +233,13 @@ const file_employee_service_requests_device_rpc_activate_device_proto_rawDesc = 
 	"\tdeviceRam\x18\b \x01(\x01R\tdeviceRam\x12$\n" +
 	"\rdeviceStorage\x18\t \x01(\x01R\rdeviceStorage\x12(\n" +
 	"\x0fdeviceOsVersion\x18\n" +
-	" \x01(\tR\x0fdeviceOsVersion\"\x9e\x02\n" +
+	" \x01(\tR\x0fdeviceOsVersion\"\xc2\x02\n" +
 	"\x16ActivateDeviceResponse\x12 \n" +
 	"\vaccessToken\x18\x01 \x01(\tR\vaccessToken\x12\"\n" +
 	"\frefreshToken\x18\x02 \x01(\tR\frefreshToken\x12N\n" +
 	"\x14accessTokenExpiresAt\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x14accessTokenExpiresAt\x12P\n" +
-	"\x15refreshTokenExpiresAt\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x15refreshTokenExpiresAt\x12\x1c\n" +
-	"\tactionIds\x18\x05 \x03(\x03R\tactionIdsBNZLgithub.com/nicodanke/gesty-api/shared/proto/employee-service/requests/deviceb\x06proto3"
+	"\x15refreshTokenExpiresAt\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x15refreshTokenExpiresAt\x12@\n" +
+	"\aactions\x18\x05 \x03(\v2&.employee_service.models.action.ActionR\aactionsBNZLgithub.com/nicodanke/gesty-api/shared/proto/employee-service/requests/deviceb\x06proto3"
 
 var (
 	file_employee_service_requests_device_rpc_activate_device_proto_rawDescOnce sync.Once
@@ -257,15 +258,17 @@ var file_employee_service_requests_device_rpc_activate_device_proto_goTypes = []
 	(*ActivateDeviceRequest)(nil),  // 0: employee_service.requests.device.activate_device.ActivateDeviceRequest
 	(*ActivateDeviceResponse)(nil), // 1: employee_service.requests.device.activate_device.ActivateDeviceResponse
 	(*timestamppb.Timestamp)(nil),  // 2: google.protobuf.Timestamp
+	(*models.Action)(nil),          // 3: employee_service.models.action.Action
 }
 var file_employee_service_requests_device_rpc_activate_device_proto_depIdxs = []int32{
 	2, // 0: employee_service.requests.device.activate_device.ActivateDeviceResponse.accessTokenExpiresAt:type_name -> google.protobuf.Timestamp
 	2, // 1: employee_service.requests.device.activate_device.ActivateDeviceResponse.refreshTokenExpiresAt:type_name -> google.protobuf.Timestamp
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	3, // 2: employee_service.requests.device.activate_device.ActivateDeviceResponse.actions:type_name -> employee_service.models.action.Action
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_employee_service_requests_device_rpc_activate_device_proto_init() }

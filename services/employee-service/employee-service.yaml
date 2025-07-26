@@ -60,3 +60,6 @@ http:
     - selector: employee_service.EmployeeService.RefreshDeviceToken
       post: /v1/devices/{id}/refresh-token
       body: "*"
+    - selector: employee_service.EmployeeService.CreateDeviceHealth
+      post: /v1/devices/{id}/health
+      body: "*"

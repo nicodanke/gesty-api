@@ -11,6 +11,7 @@ import (
 	account "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/account"
 	action "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action"
 	device "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device"
+	device_health "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device_health"
 	employee "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee"
 	facility "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/facility"
 	grpc "google.golang.org/grpc"
@@ -49,6 +50,7 @@ const (
 	EmployeeService_GenerateActivationCode_FullMethodName = "/employee_service.EmployeeService/GenerateActivationCode"
 	EmployeeService_ActivateDevice_FullMethodName         = "/employee_service.EmployeeService/ActivateDevice"
 	EmployeeService_RefreshDeviceToken_FullMethodName     = "/employee_service.EmployeeService/RefreshDeviceToken"
+	EmployeeService_CreateDeviceHealth_FullMethodName     = "/employee_service.EmployeeService/CreateDeviceHealth"
 )
 
 // EmployeeServiceClient is the client API for EmployeeService service.
@@ -84,6 +86,8 @@ type EmployeeServiceClient interface {
 	GenerateActivationCode(ctx context.Context, in *device.GenerateActivationCodeRequest, opts ...grpc.CallOption) (*device.GenerateActivationCodeResponse, error)
 	ActivateDevice(ctx context.Context, in *device.ActivateDeviceRequest, opts ...grpc.CallOption) (*device.ActivateDeviceResponse, error)
 	RefreshDeviceToken(ctx context.Context, in *device.RefreshDeviceTokenRequest, opts ...grpc.CallOption) (*device.RefreshDeviceTokenResponse, error)
+	// DEVICE HEALTH
+	CreateDeviceHealth(ctx context.Context, in *device_health.CreateDeviceHealthRequest, opts ...grpc.CallOption) (*device_health.CreateDeviceHealthResponse, error)
 }
 
 type employeeServiceClient struct {
@@ -334,6 +338,16 @@ func (c *employeeServiceClient) RefreshDeviceToken(ctx context.Context, in *devi
 	return out, nil
 }
 
+func (c *employeeServiceClient) CreateDeviceHealth(ctx context.Context, in *device_health.CreateDeviceHealthRequest, opts ...grpc.CallOption) (*device_health.CreateDeviceHealthResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(device_health.CreateDeviceHealthResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_CreateDeviceHealth_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EmployeeServiceServer is the server API for EmployeeService service.
 // All implementations must embed UnimplementedEmployeeServiceServer
 // for forward compatibility.
@@ -367,6 +381,8 @@ type EmployeeServiceServer interface {
 	GenerateActivationCode(context.Context, *device.GenerateActivationCodeRequest) (*device.GenerateActivationCodeResponse, error)
 	ActivateDevice(context.Context, *device.ActivateDeviceRequest) (*device.ActivateDeviceResponse, error)
 	RefreshDeviceToken(context.Context, *device.RefreshDeviceTokenRequest) (*device.RefreshDeviceTokenResponse, error)
+	// DEVICE HEALTH
+	CreateDeviceHealth(context.Context, *device_health.CreateDeviceHealthRequest) (*device_health.CreateDeviceHealthResponse, error)
 	mustEmbedUnimplementedEmployeeServiceServer()
 }
 
@@ -448,6 +464,9 @@ func (UnimplementedEmployeeServiceServer) ActivateDevice(context.Context, *devic
 }
 func (UnimplementedEmployeeServiceServer) RefreshDeviceToken(context.Context, *device.RefreshDeviceTokenRequest) (*device.RefreshDeviceTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshDeviceToken not implemented")
+}
+func (UnimplementedEmployeeServiceServer) CreateDeviceHealth(context.Context, *device_health.CreateDeviceHealthRequest) (*device_health.CreateDeviceHealthResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDeviceHealth not implemented")
 }
 func (UnimplementedEmployeeServiceServer) mustEmbedUnimplementedEmployeeServiceServer() {}
 func (UnimplementedEmployeeServiceServer) testEmbeddedByValue()                         {}
@@ -902,6 +921,24 @@ func _EmployeeService_RefreshDeviceToken_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmployeeService_CreateDeviceHealth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(device_health.CreateDeviceHealthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).CreateDeviceHealth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_CreateDeviceHealth_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).CreateDeviceHealth(ctx, req.(*device_health.CreateDeviceHealthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EmployeeService_ServiceDesc is the grpc.ServiceDesc for EmployeeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1004,6 +1041,10 @@ var EmployeeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RefreshDeviceToken",
 			Handler:    _EmployeeService_RefreshDeviceToken_Handler,
+		},
+		{
+			MethodName: "CreateDeviceHealth",
+			Handler:    _EmployeeService_CreateDeviceHealth_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

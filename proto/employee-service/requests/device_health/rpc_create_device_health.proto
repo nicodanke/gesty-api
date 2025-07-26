@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package employee_service.requests.device_health.create_device_health;
+
+import "employee-service/models/action.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device_health";
+
+message CreateDeviceHealthRequest {
+    int64 id = 1;
+    string connectionType = 2;
+    double freeRam = 3;
+    double freeStorage = 4;
+    double batteryLevel = 5;
+    bool batterySaveMode = 6;
+}
+
+message CreateDeviceHealthResponse {
+    repeated employee_service.models.action.Action actions = 1;
+}

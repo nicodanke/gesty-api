@@ -6,6 +6,7 @@ type Device struct {
 	Id                      string                 `json:"id"`
 	Name                    string                 `json:"name"`
 	Enabled                 bool                   `json:"enabled"`
+	Active                  bool                   `json:"active"`
 	ActionIds               []string               `json:"actionIds"`
 	FacilityId              string                 `json:"facilityId"`
 	Password                string                 `json:"password"`

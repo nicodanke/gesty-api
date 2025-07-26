@@ -34,6 +34,7 @@ type Querier interface {
 	DeleteFacilityAddress(ctx context.Context, facilityID int64) error
 	GetAction(ctx context.Context, arg GetActionParams) (Action, error)
 	GetActions(ctx context.Context, arg GetActionsParams) ([]Action, error)
+	GetActionsEnabledByDeviceId(ctx context.Context, deviceID int64) ([]Action, error)
 	GetAttendance(ctx context.Context, id uuid.UUID) (Attendance, error)
 	GetAttendances(ctx context.Context, arg GetAttendancesParams) ([]Attendance, error)
 	GetDevice(ctx context.Context, arg GetDeviceParams) (GetDeviceRow, error)

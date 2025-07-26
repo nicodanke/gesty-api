@@ -24,6 +24,13 @@ func (store *SQLStore) DeleteDeviceTx(ctx context.Context, arg DeleteDeviceTxPar
 			return err
 		}
 
+		// Deletes Device Health
+		err = q.DeleteDeviceHealth(ctx, arg.ID)
+		if err != nil {
+			fmt.Println("error deleting device health", err)
+			return err
+		}
+
 		// Deletes Device
 		err = q.DeleteDevice(ctx, DeleteDeviceParams(arg))
 

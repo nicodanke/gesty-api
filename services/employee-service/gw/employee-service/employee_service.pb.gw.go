@@ -19,6 +19,7 @@ import (
 	extEmployee_service "github.com/nicodanke/gesty-api/shared/proto/employee-service"
 	extAction "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action"
 	extDevice "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device"
+	extDevice_health "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device_health"
 	extEmployee "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee"
 	extFacility "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/facility"
 	"google.golang.org/grpc"
@@ -858,6 +859,48 @@ func local_request_EmployeeService_RefreshDeviceToken_0(ctx context.Context, mar
 	return msg, metadata, err
 }
 
+func request_EmployeeService_CreateDeviceHealth_0(ctx context.Context, marshaler runtime.Marshaler, client extEmployee_service.EmployeeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq extDevice_health.CreateDeviceHealthRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+	protoReq.Id, err = runtime.Int64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+	}
+	msg, err := client.CreateDeviceHealth(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_EmployeeService_CreateDeviceHealth_0(ctx context.Context, marshaler runtime.Marshaler, server extEmployee_service.EmployeeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq extDevice_health.CreateDeviceHealthRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+	protoReq.Id, err = runtime.Int64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+	}
+	msg, err := server.CreateDeviceHealth(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 // RegisterEmployeeServiceHandlerServer registers the http handlers for service EmployeeService to "mux".
 // UnaryRPC     :call EmployeeServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -1324,6 +1367,26 @@ func RegisterEmployeeServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		}
 		forward_EmployeeService_RefreshDeviceToken_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_EmployeeService_CreateDeviceHealth_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/employee_service.EmployeeService/CreateDeviceHealth", runtime.WithHTTPPathPattern("/v1/devices/{id}/health"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_EmployeeService_CreateDeviceHealth_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_EmployeeService_CreateDeviceHealth_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 
 	return nil
 }
@@ -1755,6 +1818,23 @@ func RegisterEmployeeServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		}
 		forward_EmployeeService_RefreshDeviceToken_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_EmployeeService_CreateDeviceHealth_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/employee_service.EmployeeService/CreateDeviceHealth", runtime.WithHTTPPathPattern("/v1/devices/{id}/health"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_EmployeeService_CreateDeviceHealth_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_EmployeeService_CreateDeviceHealth_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
@@ -1782,6 +1862,7 @@ var (
 	pattern_EmployeeService_GenerateActivationCode_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "devices", "id", "generate-activation-code"}, ""))
 	pattern_EmployeeService_ActivateDevice_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "devices", "id", "activate"}, ""))
 	pattern_EmployeeService_RefreshDeviceToken_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "devices", "id", "refresh-token"}, ""))
+	pattern_EmployeeService_CreateDeviceHealth_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "devices", "id", "health"}, ""))
 )
 
 var (
@@ -1808,4 +1889,5 @@ var (
 	forward_EmployeeService_GenerateActivationCode_0 = runtime.ForwardResponseMessage
 	forward_EmployeeService_ActivateDevice_0         = runtime.ForwardResponseMessage
 	forward_EmployeeService_RefreshDeviceToken_0     = runtime.ForwardResponseMessage
+	forward_EmployeeService_CreateDeviceHealth_0     = runtime.ForwardResponseMessage
 )

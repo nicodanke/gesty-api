@@ -18,7 +18,7 @@ GROUP BY d.id, d.name, d.enabled, d.facility_id
 LIMIT 1;
 
 -- name: GetDevices :many
-SELECT d.id, d.name, d.enabled, d.facility_id, d.password, d.created_at, d.updated_at, d.activation_code, d.activation_code_expires_at, d.device_name, d.device_brand, d.device_model, d.device_serial_number, d.device_os, d.device_ram, d.device_storage, d.device_os_version,
+SELECT d.id, d.name, d.enabled, d.active, d.facility_id, d.password, d.created_at, d.updated_at, d.activation_code, d.activation_code_expires_at, d.device_name, d.device_brand, d.device_model, d.device_serial_number, d.device_os, d.device_ram, d.device_storage, d.device_os_version,
     COALESCE(
         ARRAY_AGG(da.action_id) FILTER (WHERE da.action_id IS NOT NULL),
         '{}'::int8[]

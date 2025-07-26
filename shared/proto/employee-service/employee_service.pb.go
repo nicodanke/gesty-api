@@ -10,6 +10,7 @@ import (
 	account "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/account"
 	action "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action"
 	device "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device"
+	device_health "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device_health"
 	employee "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee"
 	facility "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/facility"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -30,7 +31,7 @@ var File_employee_service_employee_service_proto protoreflect.FileDescriptor
 
 const file_employee_service_employee_service_proto_rawDesc = "" +
 	"\n" +
-	"'employee-service/employee_service.proto\x12\x10employee_service\x1a:employee-service/requests/account/rpc_create_account.proto\x1a6employee-service/requests/action/rpc_get_actions.proto\x1a5employee-service/requests/action/rpc_get_action.proto\x1a8employee-service/requests/action/rpc_create_action.proto\x1a8employee-service/requests/action/rpc_update_action.proto\x1a8employee-service/requests/action/rpc_delete_action.proto\x1a6employee-service/requests/device/rpc_get_devices.proto\x1a5employee-service/requests/device/rpc_get_device.proto\x1a8employee-service/requests/device/rpc_create_device.proto\x1a8employee-service/requests/device/rpc_update_device.proto\x1a8employee-service/requests/device/rpc_delete_device.proto\x1aCemployee-service/requests/device/rpc_generate_activation_code.proto\x1a:employee-service/requests/device/rpc_activate_device.proto\x1a?employee-service/requests/device/rpc_refresh_device_token.proto\x1a:employee-service/requests/employee/rpc_get_employees.proto\x1a9employee-service/requests/employee/rpc_get_employee.proto\x1a<employee-service/requests/employee/rpc_create_employee.proto\x1a<employee-service/requests/employee/rpc_update_employee.proto\x1a<employee-service/requests/employee/rpc_delete_employee.proto\x1a;employee-service/requests/facility/rpc_get_facilities.proto\x1a9employee-service/requests/facility/rpc_get_facility.proto\x1a<employee-service/requests/facility/rpc_create_facility.proto\x1a<employee-service/requests/facility/rpc_update_facility.proto\x1a<employee-service/requests/facility/rpc_delete_facility.proto\x1a\x1bgoogle/protobuf/empty.proto2\xc9\x1c\n" +
+	"'employee-service/employee_service.proto\x12\x10employee_service\x1a:employee-service/requests/account/rpc_create_account.proto\x1a6employee-service/requests/action/rpc_get_actions.proto\x1a5employee-service/requests/action/rpc_get_action.proto\x1a8employee-service/requests/action/rpc_create_action.proto\x1a8employee-service/requests/action/rpc_update_action.proto\x1a8employee-service/requests/action/rpc_delete_action.proto\x1a6employee-service/requests/device/rpc_get_devices.proto\x1a5employee-service/requests/device/rpc_get_device.proto\x1a8employee-service/requests/device/rpc_create_device.proto\x1a8employee-service/requests/device/rpc_update_device.proto\x1a8employee-service/requests/device/rpc_delete_device.proto\x1aCemployee-service/requests/device/rpc_generate_activation_code.proto\x1a:employee-service/requests/device/rpc_activate_device.proto\x1a?employee-service/requests/device/rpc_refresh_device_token.proto\x1aFemployee-service/requests/device_health/rpc_create_device_health.proto\x1a:employee-service/requests/employee/rpc_get_employees.proto\x1a9employee-service/requests/employee/rpc_get_employee.proto\x1a<employee-service/requests/employee/rpc_create_employee.proto\x1a<employee-service/requests/employee/rpc_update_employee.proto\x1a<employee-service/requests/employee/rpc_delete_employee.proto\x1a;employee-service/requests/facility/rpc_get_facilities.proto\x1a9employee-service/requests/facility/rpc_get_facility.proto\x1a<employee-service/requests/facility/rpc_create_facility.proto\x1a<employee-service/requests/facility/rpc_update_facility.proto\x1a<employee-service/requests/facility/rpc_delete_facility.proto\x1a\x1bgoogle/protobuf/empty.proto2\x93\x1e\n" +
 	"\x0fEmployeeService\x12o\n" +
 	"\rCreateAccount\x12F.employee_service.requests.account.create_account.CreateAccountRequest\x1a\x16.google.protobuf.Empty\x12\x8a\x01\n" +
 	"\tGetAction\x12=.employee_service.requests.action.get_action.GetActionRequest\x1a>.employee_service.requests.action.get_action.GetActionResponse\x12\x8f\x01\n" +
@@ -57,53 +58,56 @@ const file_employee_service_employee_service_proto_rawDesc = "" +
 	"\fDeleteDevice\x12C.employee_service.requests.device.delete_device.DeleteDeviceRequest\x1a\x16.google.protobuf.Empty\x12\xcd\x01\n" +
 	"\x16GenerateActivationCode\x12X.employee_service.requests.device.generate_activation_code.GenerateActivationCodeRequest\x1aY.employee_service.requests.device.generate_activation_code.GenerateActivationCodeResponse\x12\xa3\x01\n" +
 	"\x0eActivateDevice\x12G.employee_service.requests.device.activate_device.ActivateDeviceRequest\x1aH.employee_service.requests.device.activate_device.ActivateDeviceResponse\x12\xb9\x01\n" +
-	"\x12RefreshDeviceToken\x12P.employee_service.requests.device.refresh_device_token.RefreshDeviceTokenRequest\x1aQ.employee_service.requests.device.refresh_device_token.RefreshDeviceTokenResponseB>Z<github.com/nicodanke/gesty-api/shared/proto/employee-serviceb\x06proto3"
+	"\x12RefreshDeviceToken\x12P.employee_service.requests.device.refresh_device_token.RefreshDeviceTokenRequest\x1aQ.employee_service.requests.device.refresh_device_token.RefreshDeviceTokenResponse\x12\xc7\x01\n" +
+	"\x12CreateDeviceHealth\x12W.employee_service.requests.device_health.create_device_health.CreateDeviceHealthRequest\x1aX.employee_service.requests.device_health.create_device_health.CreateDeviceHealthResponseB>Z<github.com/nicodanke/gesty-api/shared/proto/employee-serviceb\x06proto3"
 
 var file_employee_service_employee_service_proto_goTypes = []any{
-	(*account.CreateAccountRequest)(nil),          // 0: employee_service.requests.account.create_account.CreateAccountRequest
-	(*action.GetActionRequest)(nil),               // 1: employee_service.requests.action.get_action.GetActionRequest
-	(*action.GetActionsRequest)(nil),              // 2: employee_service.requests.action.get_actions.GetActionsRequest
-	(*action.CreateActionRequest)(nil),            // 3: employee_service.requests.action.create_action.CreateActionRequest
-	(*action.UpdateActionRequest)(nil),            // 4: employee_service.requests.action.update_action.UpdateActionRequest
-	(*action.DeleteActionRequest)(nil),            // 5: employee_service.requests.action.delete_action.DeleteActionRequest
-	(*facility.GetFacilityRequest)(nil),           // 6: employee_service.requests.facility.get_facility.GetFacilityRequest
-	(*facility.GetFacilitiesRequest)(nil),         // 7: employee_service.requests.facility.get_facilities.GetFacilitiesRequest
-	(*facility.CreateFacilityRequest)(nil),        // 8: employee_service.requests.facility.create_facility.CreateFacilityRequest
-	(*facility.UpdateFacilityRequest)(nil),        // 9: employee_service.requests.facility.update_facility.UpdateFacilityRequest
-	(*facility.DeleteFacilityRequest)(nil),        // 10: employee_service.requests.facility.delete_facility.DeleteFacilityRequest
-	(*employee.GetEmployeeRequest)(nil),           // 11: employee_service.requests.employee.get_employee.GetEmployeeRequest
-	(*employee.GetEmployeesRequest)(nil),          // 12: employee_service.requests.employee.get_employees.GetEmployeesRequest
-	(*employee.CreateEmployeeRequest)(nil),        // 13: employee_service.requests.employee.create_employee.CreateEmployeeRequest
-	(*employee.UpdateEmployeeRequest)(nil),        // 14: employee_service.requests.employee.update_employee.UpdateEmployeeRequest
-	(*employee.DeleteEmployeeRequest)(nil),        // 15: employee_service.requests.employee.delete_employee.DeleteEmployeeRequest
-	(*device.GetDeviceRequest)(nil),               // 16: employee_service.requests.device.get_device.GetDeviceRequest
-	(*device.GetDevicesRequest)(nil),              // 17: employee_service.requests.device.get_devices.GetDevicesRequest
-	(*device.CreateDeviceRequest)(nil),            // 18: employee_service.requests.device.create_device.CreateDeviceRequest
-	(*device.UpdateDeviceRequest)(nil),            // 19: employee_service.requests.device.update_device.UpdateDeviceRequest
-	(*device.DeleteDeviceRequest)(nil),            // 20: employee_service.requests.device.delete_device.DeleteDeviceRequest
-	(*device.GenerateActivationCodeRequest)(nil),  // 21: employee_service.requests.device.generate_activation_code.GenerateActivationCodeRequest
-	(*device.ActivateDeviceRequest)(nil),          // 22: employee_service.requests.device.activate_device.ActivateDeviceRequest
-	(*device.RefreshDeviceTokenRequest)(nil),      // 23: employee_service.requests.device.refresh_device_token.RefreshDeviceTokenRequest
-	(*emptypb.Empty)(nil),                         // 24: google.protobuf.Empty
-	(*action.GetActionResponse)(nil),              // 25: employee_service.requests.action.get_action.GetActionResponse
-	(*action.GetActionsResponse)(nil),             // 26: employee_service.requests.action.get_actions.GetActionsResponse
-	(*action.CreateActionResponse)(nil),           // 27: employee_service.requests.action.create_action.CreateActionResponse
-	(*action.UpdateActionResponse)(nil),           // 28: employee_service.requests.action.update_action.UpdateActionResponse
-	(*facility.GetFacilityResponse)(nil),          // 29: employee_service.requests.facility.get_facility.GetFacilityResponse
-	(*facility.GetFacilitiesResponse)(nil),        // 30: employee_service.requests.facility.get_facilities.GetFacilitiesResponse
-	(*facility.CreateFacilityResponse)(nil),       // 31: employee_service.requests.facility.create_facility.CreateFacilityResponse
-	(*facility.UpdateFacilityResponse)(nil),       // 32: employee_service.requests.facility.update_facility.UpdateFacilityResponse
-	(*employee.GetEmployeeResponse)(nil),          // 33: employee_service.requests.employee.get_employee.GetEmployeeResponse
-	(*employee.GetEmployeesResponse)(nil),         // 34: employee_service.requests.employee.get_employees.GetEmployeesResponse
-	(*employee.CreateEmployeeResponse)(nil),       // 35: employee_service.requests.employee.create_employee.CreateEmployeeResponse
-	(*employee.UpdateEmployeeResponse)(nil),       // 36: employee_service.requests.employee.update_employee.UpdateEmployeeResponse
-	(*device.GetDeviceResponse)(nil),              // 37: employee_service.requests.device.get_device.GetDeviceResponse
-	(*device.GetDevicesResponse)(nil),             // 38: employee_service.requests.device.get_devices.GetDevicesResponse
-	(*device.CreateDeviceResponse)(nil),           // 39: employee_service.requests.device.create_device.CreateDeviceResponse
-	(*device.UpdateDeviceResponse)(nil),           // 40: employee_service.requests.device.update_device.UpdateDeviceResponse
-	(*device.GenerateActivationCodeResponse)(nil), // 41: employee_service.requests.device.generate_activation_code.GenerateActivationCodeResponse
-	(*device.ActivateDeviceResponse)(nil),         // 42: employee_service.requests.device.activate_device.ActivateDeviceResponse
-	(*device.RefreshDeviceTokenResponse)(nil),     // 43: employee_service.requests.device.refresh_device_token.RefreshDeviceTokenResponse
+	(*account.CreateAccountRequest)(nil),             // 0: employee_service.requests.account.create_account.CreateAccountRequest
+	(*action.GetActionRequest)(nil),                  // 1: employee_service.requests.action.get_action.GetActionRequest
+	(*action.GetActionsRequest)(nil),                 // 2: employee_service.requests.action.get_actions.GetActionsRequest
+	(*action.CreateActionRequest)(nil),               // 3: employee_service.requests.action.create_action.CreateActionRequest
+	(*action.UpdateActionRequest)(nil),               // 4: employee_service.requests.action.update_action.UpdateActionRequest
+	(*action.DeleteActionRequest)(nil),               // 5: employee_service.requests.action.delete_action.DeleteActionRequest
+	(*facility.GetFacilityRequest)(nil),              // 6: employee_service.requests.facility.get_facility.GetFacilityRequest
+	(*facility.GetFacilitiesRequest)(nil),            // 7: employee_service.requests.facility.get_facilities.GetFacilitiesRequest
+	(*facility.CreateFacilityRequest)(nil),           // 8: employee_service.requests.facility.create_facility.CreateFacilityRequest
+	(*facility.UpdateFacilityRequest)(nil),           // 9: employee_service.requests.facility.update_facility.UpdateFacilityRequest
+	(*facility.DeleteFacilityRequest)(nil),           // 10: employee_service.requests.facility.delete_facility.DeleteFacilityRequest
+	(*employee.GetEmployeeRequest)(nil),              // 11: employee_service.requests.employee.get_employee.GetEmployeeRequest
+	(*employee.GetEmployeesRequest)(nil),             // 12: employee_service.requests.employee.get_employees.GetEmployeesRequest
+	(*employee.CreateEmployeeRequest)(nil),           // 13: employee_service.requests.employee.create_employee.CreateEmployeeRequest
+	(*employee.UpdateEmployeeRequest)(nil),           // 14: employee_service.requests.employee.update_employee.UpdateEmployeeRequest
+	(*employee.DeleteEmployeeRequest)(nil),           // 15: employee_service.requests.employee.delete_employee.DeleteEmployeeRequest
+	(*device.GetDeviceRequest)(nil),                  // 16: employee_service.requests.device.get_device.GetDeviceRequest
+	(*device.GetDevicesRequest)(nil),                 // 17: employee_service.requests.device.get_devices.GetDevicesRequest
+	(*device.CreateDeviceRequest)(nil),               // 18: employee_service.requests.device.create_device.CreateDeviceRequest
+	(*device.UpdateDeviceRequest)(nil),               // 19: employee_service.requests.device.update_device.UpdateDeviceRequest
+	(*device.DeleteDeviceRequest)(nil),               // 20: employee_service.requests.device.delete_device.DeleteDeviceRequest
+	(*device.GenerateActivationCodeRequest)(nil),     // 21: employee_service.requests.device.generate_activation_code.GenerateActivationCodeRequest
+	(*device.ActivateDeviceRequest)(nil),             // 22: employee_service.requests.device.activate_device.ActivateDeviceRequest
+	(*device.RefreshDeviceTokenRequest)(nil),         // 23: employee_service.requests.device.refresh_device_token.RefreshDeviceTokenRequest
+	(*device_health.CreateDeviceHealthRequest)(nil),  // 24: employee_service.requests.device_health.create_device_health.CreateDeviceHealthRequest
+	(*emptypb.Empty)(nil),                            // 25: google.protobuf.Empty
+	(*action.GetActionResponse)(nil),                 // 26: employee_service.requests.action.get_action.GetActionResponse
+	(*action.GetActionsResponse)(nil),                // 27: employee_service.requests.action.get_actions.GetActionsResponse
+	(*action.CreateActionResponse)(nil),              // 28: employee_service.requests.action.create_action.CreateActionResponse
+	(*action.UpdateActionResponse)(nil),              // 29: employee_service.requests.action.update_action.UpdateActionResponse
+	(*facility.GetFacilityResponse)(nil),             // 30: employee_service.requests.facility.get_facility.GetFacilityResponse
+	(*facility.GetFacilitiesResponse)(nil),           // 31: employee_service.requests.facility.get_facilities.GetFacilitiesResponse
+	(*facility.CreateFacilityResponse)(nil),          // 32: employee_service.requests.facility.create_facility.CreateFacilityResponse
+	(*facility.UpdateFacilityResponse)(nil),          // 33: employee_service.requests.facility.update_facility.UpdateFacilityResponse
+	(*employee.GetEmployeeResponse)(nil),             // 34: employee_service.requests.employee.get_employee.GetEmployeeResponse
+	(*employee.GetEmployeesResponse)(nil),            // 35: employee_service.requests.employee.get_employees.GetEmployeesResponse
+	(*employee.CreateEmployeeResponse)(nil),          // 36: employee_service.requests.employee.create_employee.CreateEmployeeResponse
+	(*employee.UpdateEmployeeResponse)(nil),          // 37: employee_service.requests.employee.update_employee.UpdateEmployeeResponse
+	(*device.GetDeviceResponse)(nil),                 // 38: employee_service.requests.device.get_device.GetDeviceResponse
+	(*device.GetDevicesResponse)(nil),                // 39: employee_service.requests.device.get_devices.GetDevicesResponse
+	(*device.CreateDeviceResponse)(nil),              // 40: employee_service.requests.device.create_device.CreateDeviceResponse
+	(*device.UpdateDeviceResponse)(nil),              // 41: employee_service.requests.device.update_device.UpdateDeviceResponse
+	(*device.GenerateActivationCodeResponse)(nil),    // 42: employee_service.requests.device.generate_activation_code.GenerateActivationCodeResponse
+	(*device.ActivateDeviceResponse)(nil),            // 43: employee_service.requests.device.activate_device.ActivateDeviceResponse
+	(*device.RefreshDeviceTokenResponse)(nil),        // 44: employee_service.requests.device.refresh_device_token.RefreshDeviceTokenResponse
+	(*device_health.CreateDeviceHealthResponse)(nil), // 45: employee_service.requests.device_health.create_device_health.CreateDeviceHealthResponse
 }
 var file_employee_service_employee_service_proto_depIdxs = []int32{
 	0,  // 0: employee_service.EmployeeService.CreateAccount:input_type -> employee_service.requests.account.create_account.CreateAccountRequest
@@ -130,32 +134,34 @@ var file_employee_service_employee_service_proto_depIdxs = []int32{
 	21, // 21: employee_service.EmployeeService.GenerateActivationCode:input_type -> employee_service.requests.device.generate_activation_code.GenerateActivationCodeRequest
 	22, // 22: employee_service.EmployeeService.ActivateDevice:input_type -> employee_service.requests.device.activate_device.ActivateDeviceRequest
 	23, // 23: employee_service.EmployeeService.RefreshDeviceToken:input_type -> employee_service.requests.device.refresh_device_token.RefreshDeviceTokenRequest
-	24, // 24: employee_service.EmployeeService.CreateAccount:output_type -> google.protobuf.Empty
-	25, // 25: employee_service.EmployeeService.GetAction:output_type -> employee_service.requests.action.get_action.GetActionResponse
-	26, // 26: employee_service.EmployeeService.GetActions:output_type -> employee_service.requests.action.get_actions.GetActionsResponse
-	27, // 27: employee_service.EmployeeService.CreateAction:output_type -> employee_service.requests.action.create_action.CreateActionResponse
-	28, // 28: employee_service.EmployeeService.UpdateAction:output_type -> employee_service.requests.action.update_action.UpdateActionResponse
-	24, // 29: employee_service.EmployeeService.DeleteAction:output_type -> google.protobuf.Empty
-	29, // 30: employee_service.EmployeeService.GetFacility:output_type -> employee_service.requests.facility.get_facility.GetFacilityResponse
-	30, // 31: employee_service.EmployeeService.GetFacilities:output_type -> employee_service.requests.facility.get_facilities.GetFacilitiesResponse
-	31, // 32: employee_service.EmployeeService.CreateFacility:output_type -> employee_service.requests.facility.create_facility.CreateFacilityResponse
-	32, // 33: employee_service.EmployeeService.UpdateFacility:output_type -> employee_service.requests.facility.update_facility.UpdateFacilityResponse
-	24, // 34: employee_service.EmployeeService.DeleteFacility:output_type -> google.protobuf.Empty
-	33, // 35: employee_service.EmployeeService.GetEmployee:output_type -> employee_service.requests.employee.get_employee.GetEmployeeResponse
-	34, // 36: employee_service.EmployeeService.GetEmployees:output_type -> employee_service.requests.employee.get_employees.GetEmployeesResponse
-	35, // 37: employee_service.EmployeeService.CreateEmployee:output_type -> employee_service.requests.employee.create_employee.CreateEmployeeResponse
-	36, // 38: employee_service.EmployeeService.UpdateEmployee:output_type -> employee_service.requests.employee.update_employee.UpdateEmployeeResponse
-	24, // 39: employee_service.EmployeeService.DeleteEmployee:output_type -> google.protobuf.Empty
-	37, // 40: employee_service.EmployeeService.GetDevice:output_type -> employee_service.requests.device.get_device.GetDeviceResponse
-	38, // 41: employee_service.EmployeeService.GetDevices:output_type -> employee_service.requests.device.get_devices.GetDevicesResponse
-	39, // 42: employee_service.EmployeeService.CreateDevice:output_type -> employee_service.requests.device.create_device.CreateDeviceResponse
-	40, // 43: employee_service.EmployeeService.UpdateDevice:output_type -> employee_service.requests.device.update_device.UpdateDeviceResponse
-	24, // 44: employee_service.EmployeeService.DeleteDevice:output_type -> google.protobuf.Empty
-	41, // 45: employee_service.EmployeeService.GenerateActivationCode:output_type -> employee_service.requests.device.generate_activation_code.GenerateActivationCodeResponse
-	42, // 46: employee_service.EmployeeService.ActivateDevice:output_type -> employee_service.requests.device.activate_device.ActivateDeviceResponse
-	43, // 47: employee_service.EmployeeService.RefreshDeviceToken:output_type -> employee_service.requests.device.refresh_device_token.RefreshDeviceTokenResponse
-	24, // [24:48] is the sub-list for method output_type
-	0,  // [0:24] is the sub-list for method input_type
+	24, // 24: employee_service.EmployeeService.CreateDeviceHealth:input_type -> employee_service.requests.device_health.create_device_health.CreateDeviceHealthRequest
+	25, // 25: employee_service.EmployeeService.CreateAccount:output_type -> google.protobuf.Empty
+	26, // 26: employee_service.EmployeeService.GetAction:output_type -> employee_service.requests.action.get_action.GetActionResponse
+	27, // 27: employee_service.EmployeeService.GetActions:output_type -> employee_service.requests.action.get_actions.GetActionsResponse
+	28, // 28: employee_service.EmployeeService.CreateAction:output_type -> employee_service.requests.action.create_action.CreateActionResponse
+	29, // 29: employee_service.EmployeeService.UpdateAction:output_type -> employee_service.requests.action.update_action.UpdateActionResponse
+	25, // 30: employee_service.EmployeeService.DeleteAction:output_type -> google.protobuf.Empty
+	30, // 31: employee_service.EmployeeService.GetFacility:output_type -> employee_service.requests.facility.get_facility.GetFacilityResponse
+	31, // 32: employee_service.EmployeeService.GetFacilities:output_type -> employee_service.requests.facility.get_facilities.GetFacilitiesResponse
+	32, // 33: employee_service.EmployeeService.CreateFacility:output_type -> employee_service.requests.facility.create_facility.CreateFacilityResponse
+	33, // 34: employee_service.EmployeeService.UpdateFacility:output_type -> employee_service.requests.facility.update_facility.UpdateFacilityResponse
+	25, // 35: employee_service.EmployeeService.DeleteFacility:output_type -> google.protobuf.Empty
+	34, // 36: employee_service.EmployeeService.GetEmployee:output_type -> employee_service.requests.employee.get_employee.GetEmployeeResponse
+	35, // 37: employee_service.EmployeeService.GetEmployees:output_type -> employee_service.requests.employee.get_employees.GetEmployeesResponse
+	36, // 38: employee_service.EmployeeService.CreateEmployee:output_type -> employee_service.requests.employee.create_employee.CreateEmployeeResponse
+	37, // 39: employee_service.EmployeeService.UpdateEmployee:output_type -> employee_service.requests.employee.update_employee.UpdateEmployeeResponse
+	25, // 40: employee_service.EmployeeService.DeleteEmployee:output_type -> google.protobuf.Empty
+	38, // 41: employee_service.EmployeeService.GetDevice:output_type -> employee_service.requests.device.get_device.GetDeviceResponse
+	39, // 42: employee_service.EmployeeService.GetDevices:output_type -> employee_service.requests.device.get_devices.GetDevicesResponse
+	40, // 43: employee_service.EmployeeService.CreateDevice:output_type -> employee_service.requests.device.create_device.CreateDeviceResponse
+	41, // 44: employee_service.EmployeeService.UpdateDevice:output_type -> employee_service.requests.device.update_device.UpdateDeviceResponse
+	25, // 45: employee_service.EmployeeService.DeleteDevice:output_type -> google.protobuf.Empty
+	42, // 46: employee_service.EmployeeService.GenerateActivationCode:output_type -> employee_service.requests.device.generate_activation_code.GenerateActivationCodeResponse
+	43, // 47: employee_service.EmployeeService.ActivateDevice:output_type -> employee_service.requests.device.activate_device.ActivateDeviceResponse
+	44, // 48: employee_service.EmployeeService.RefreshDeviceToken:output_type -> employee_service.requests.device.refresh_device_token.RefreshDeviceTokenResponse
+	45, // 49: employee_service.EmployeeService.CreateDeviceHealth:output_type -> employee_service.requests.device_health.create_device_health.CreateDeviceHealthResponse
+	25, // [25:50] is the sub-list for method output_type
+	0,  // [0:25] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
