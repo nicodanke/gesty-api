@@ -1,8 +1,8 @@
 -- name: CreateAttendance :one
 INSERT INTO "attendance" (
-    time_in, employee_id, action_id, device_id
+    time_in, employee_id, action_id, device_id, precision
 ) VALUES (
-    $1, $2, $3, $4
+    $1, $2, $3, $4, $5
 ) RETURNING *;
 
 -- name: GetAttendance :one

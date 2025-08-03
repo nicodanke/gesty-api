@@ -397,6 +397,30 @@ func convertGetDeviceRowEvent(device db.GetDeviceRow) *eventdata.Device {
 	}
 }
 
+func convertEmployeePhoto(employeePhotos []db.EmployeePhoto) []*models.EmployeeImage {
+	result := make([]*models.EmployeeImage, len(employeePhotos))
+
+	for i, v := range employeePhotos {
+		result[i] = convertEmployeePhotosGetRow(v)
+	}
+
+	return result
+}
+
+func convertEmployeePhotosGetRow(employeePhoto db.EmployeePhoto) *models.EmployeeImage {
+	return &models.EmployeeImage{
+		Id:          employeePhoto.ID,
+		ImageBase64: employeePhoto.ImageBase64,
+	}
+}
+
+func convertEmployeePhotoTxResult(employeePhoto db.CreateEmployeePhotoTxResult) *models.EmployeeImage {
+	return &models.EmployeeImage{
+		Id:          employeePhoto.EmployeePhoto.ID,
+		ImageBase64: employeePhoto.EmployeePhoto.ImageBase64,
+	}
+}
+
 func convertGetDevicesRows(devices []db.GetDevicesRow) []*models.Device {
 	result := make([]*models.Device, len(devices))
 

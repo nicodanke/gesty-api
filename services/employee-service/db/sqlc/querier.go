@@ -19,6 +19,7 @@ type Querier interface {
 	CreateEmployee(ctx context.Context, arg CreateEmployeeParams) (Employee, error)
 	CreateEmployeeAddress(ctx context.Context, arg CreateEmployeeAddressParams) (EmployeeAddress, error)
 	CreateEmployeeFacility(ctx context.Context, arg CreateEmployeeFacilityParams) (EmployeeFacility, error)
+	CreateEmployeePhoto(ctx context.Context, arg CreateEmployeePhotoParams) (EmployeePhoto, error)
 	CreateFacility(ctx context.Context, arg CreateFacilityParams) (Facility, error)
 	CreateFacilityAddress(ctx context.Context, arg CreateFacilityAddressParams) (FacilityAddress, error)
 	DeleteAction(ctx context.Context, arg DeleteActionParams) error
@@ -30,6 +31,7 @@ type Querier interface {
 	DeleteEmployeeAddress(ctx context.Context, employeeID int64) error
 	DeleteEmployeeFacilityByEmployeeId(ctx context.Context, employeeID int64) error
 	DeleteEmployeeFacilityByFacilityId(ctx context.Context, facilityID int64) error
+	DeleteEmployeePhoto(ctx context.Context, arg DeleteEmployeePhotoParams) error
 	DeleteFacility(ctx context.Context, arg DeleteFacilityParams) error
 	DeleteFacilityAddress(ctx context.Context, facilityID int64) error
 	GetAction(ctx context.Context, arg GetActionParams) (Action, error)
@@ -46,6 +48,8 @@ type Querier interface {
 	GetEmployeeAddressByEmployeeId(ctx context.Context, employeeID int64) (EmployeeAddress, error)
 	GetEmployeeFacilitiesByEmployeeId(ctx context.Context, employeeID int64) ([]EmployeeFacility, error)
 	GetEmployeeFacilitiesByFacilityId(ctx context.Context, facilityID int64) ([]EmployeeFacility, error)
+	GetEmployeePhotos(ctx context.Context, arg GetEmployeePhotosParams) ([]EmployeePhoto, error)
+	GetEmployeeProfilePhoto(ctx context.Context, arg GetEmployeeProfilePhotoParams) (EmployeePhoto, error)
 	GetEmployees(ctx context.Context, arg GetEmployeesParams) ([]GetEmployeesRow, error)
 	GetFacilities(ctx context.Context, arg GetFacilitiesParams) ([]GetFacilitiesRow, error)
 	GetFacility(ctx context.Context, arg GetFacilityParams) (GetFacilityRow, error)

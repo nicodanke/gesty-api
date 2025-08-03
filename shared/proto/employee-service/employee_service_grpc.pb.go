@@ -42,6 +42,9 @@ const (
 	EmployeeService_CreateEmployee_FullMethodName         = "/employee_service.EmployeeService/CreateEmployee"
 	EmployeeService_UpdateEmployee_FullMethodName         = "/employee_service.EmployeeService/UpdateEmployee"
 	EmployeeService_DeleteEmployee_FullMethodName         = "/employee_service.EmployeeService/DeleteEmployee"
+	EmployeeService_AddImageEmployee_FullMethodName       = "/employee_service.EmployeeService/AddImageEmployee"
+	EmployeeService_GetImagesEmployee_FullMethodName      = "/employee_service.EmployeeService/GetImagesEmployee"
+	EmployeeService_DeleteImageEmployee_FullMethodName    = "/employee_service.EmployeeService/DeleteImageEmployee"
 	EmployeeService_GetDevice_FullMethodName              = "/employee_service.EmployeeService/GetDevice"
 	EmployeeService_GetDevices_FullMethodName             = "/employee_service.EmployeeService/GetDevices"
 	EmployeeService_CreateDevice_FullMethodName           = "/employee_service.EmployeeService/CreateDevice"
@@ -77,6 +80,9 @@ type EmployeeServiceClient interface {
 	CreateEmployee(ctx context.Context, in *employee.CreateEmployeeRequest, opts ...grpc.CallOption) (*employee.CreateEmployeeResponse, error)
 	UpdateEmployee(ctx context.Context, in *employee.UpdateEmployeeRequest, opts ...grpc.CallOption) (*employee.UpdateEmployeeResponse, error)
 	DeleteEmployee(ctx context.Context, in *employee.DeleteEmployeeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	AddImageEmployee(ctx context.Context, in *employee.AddImageEmployeeRequest, opts ...grpc.CallOption) (*employee.AddImageEmployeeResponse, error)
+	GetImagesEmployee(ctx context.Context, in *employee.GetImagesEmployeeRequest, opts ...grpc.CallOption) (*employee.GetImagesEmployeeResponse, error)
+	DeleteImageEmployee(ctx context.Context, in *employee.DeleteImageEmployeeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// DEVICE
 	GetDevice(ctx context.Context, in *device.GetDeviceRequest, opts ...grpc.CallOption) (*device.GetDeviceResponse, error)
 	GetDevices(ctx context.Context, in *device.GetDevicesRequest, opts ...grpc.CallOption) (*device.GetDevicesResponse, error)
@@ -258,6 +264,36 @@ func (c *employeeServiceClient) DeleteEmployee(ctx context.Context, in *employee
 	return out, nil
 }
 
+func (c *employeeServiceClient) AddImageEmployee(ctx context.Context, in *employee.AddImageEmployeeRequest, opts ...grpc.CallOption) (*employee.AddImageEmployeeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(employee.AddImageEmployeeResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_AddImageEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) GetImagesEmployee(ctx context.Context, in *employee.GetImagesEmployeeRequest, opts ...grpc.CallOption) (*employee.GetImagesEmployeeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(employee.GetImagesEmployeeResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_GetImagesEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) DeleteImageEmployee(ctx context.Context, in *employee.DeleteImageEmployeeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, EmployeeService_DeleteImageEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *employeeServiceClient) GetDevice(ctx context.Context, in *device.GetDeviceRequest, opts ...grpc.CallOption) (*device.GetDeviceResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(device.GetDeviceResponse)
@@ -372,6 +408,9 @@ type EmployeeServiceServer interface {
 	CreateEmployee(context.Context, *employee.CreateEmployeeRequest) (*employee.CreateEmployeeResponse, error)
 	UpdateEmployee(context.Context, *employee.UpdateEmployeeRequest) (*employee.UpdateEmployeeResponse, error)
 	DeleteEmployee(context.Context, *employee.DeleteEmployeeRequest) (*emptypb.Empty, error)
+	AddImageEmployee(context.Context, *employee.AddImageEmployeeRequest) (*employee.AddImageEmployeeResponse, error)
+	GetImagesEmployee(context.Context, *employee.GetImagesEmployeeRequest) (*employee.GetImagesEmployeeResponse, error)
+	DeleteImageEmployee(context.Context, *employee.DeleteImageEmployeeRequest) (*emptypb.Empty, error)
 	// DEVICE
 	GetDevice(context.Context, *device.GetDeviceRequest) (*device.GetDeviceResponse, error)
 	GetDevices(context.Context, *device.GetDevicesRequest) (*device.GetDevicesResponse, error)
@@ -440,6 +479,15 @@ func (UnimplementedEmployeeServiceServer) UpdateEmployee(context.Context, *emplo
 }
 func (UnimplementedEmployeeServiceServer) DeleteEmployee(context.Context, *employee.DeleteEmployeeRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteEmployee not implemented")
+}
+func (UnimplementedEmployeeServiceServer) AddImageEmployee(context.Context, *employee.AddImageEmployeeRequest) (*employee.AddImageEmployeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddImageEmployee not implemented")
+}
+func (UnimplementedEmployeeServiceServer) GetImagesEmployee(context.Context, *employee.GetImagesEmployeeRequest) (*employee.GetImagesEmployeeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetImagesEmployee not implemented")
+}
+func (UnimplementedEmployeeServiceServer) DeleteImageEmployee(context.Context, *employee.DeleteImageEmployeeRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteImageEmployee not implemented")
 }
 func (UnimplementedEmployeeServiceServer) GetDevice(context.Context, *device.GetDeviceRequest) (*device.GetDeviceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDevice not implemented")
@@ -777,6 +825,60 @@ func _EmployeeService_DeleteEmployee_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmployeeService_AddImageEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(employee.AddImageEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).AddImageEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_AddImageEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).AddImageEmployee(ctx, req.(*employee.AddImageEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_GetImagesEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(employee.GetImagesEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).GetImagesEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_GetImagesEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).GetImagesEmployee(ctx, req.(*employee.GetImagesEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_DeleteImageEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(employee.DeleteImageEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).DeleteImageEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_DeleteImageEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).DeleteImageEmployee(ctx, req.(*employee.DeleteImageEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _EmployeeService_GetDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(device.GetDeviceRequest)
 	if err := dec(in); err != nil {
@@ -1009,6 +1111,18 @@ var EmployeeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteEmployee",
 			Handler:    _EmployeeService_DeleteEmployee_Handler,
+		},
+		{
+			MethodName: "AddImageEmployee",
+			Handler:    _EmployeeService_AddImageEmployee_Handler,
+		},
+		{
+			MethodName: "GetImagesEmployee",
+			Handler:    _EmployeeService_GetImagesEmployee_Handler,
+		},
+		{
+			MethodName: "DeleteImageEmployee",
+			Handler:    _EmployeeService_DeleteImageEmployee_Handler,
 		},
 		{
 			MethodName: "GetDevice",

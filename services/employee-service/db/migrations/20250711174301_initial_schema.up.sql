@@ -109,7 +109,18 @@ CREATE TABLE "attendance" (
   "time_in" timestamptz NOT NULL DEFAULT (now()),
   "employee_id" bigserial NOT NULL,
   "action_id" bigserial NOT NULL,
-  "device_id" bigserial NOT NULL
+  "device_id" bigserial NOT NULL,
+  "precision" float8 NOT NULL
+);
+
+CREATE TABLE "employee_photo" (
+  "id" bigserial PRIMARY KEY,
+  "employee_id" bigserial NOT NULL,
+  "account_id" bigserial NOT NULL,
+  "image_base_64" varchar NOT NULL,
+  "vector_image" varchar NOT NULL,
+  "is_profile" bool NOT NULL DEFAULT false,
+  "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 CREATE UNIQUE INDEX ON "action" ("name", "account_id");
@@ -143,3 +154,5 @@ ALTER TABLE "device_action" ADD FOREIGN KEY ("device_id") REFERENCES "device" ("
 ALTER TABLE "device_action" ADD FOREIGN KEY ("action_id") REFERENCES "action" ("id");
 
 ALTER TABLE "device_health" ADD FOREIGN KEY ("device_id") REFERENCES "device" ("id");
+
+ALTER TABLE "employee_photo" ADD FOREIGN KEY ("employee_id") REFERENCES "employee" ("id");

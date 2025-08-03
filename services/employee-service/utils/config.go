@@ -19,6 +19,7 @@ type Config struct {
 	RefreshTokenDuration       time.Duration `mapstructure:"REFRESH_TOKEN_DURATION"`
 	DeviceAccessTokenDuration  time.Duration `mapstructure:"DEVICE_ACCESS_TOKEN_DURATION"`
 	DeviceRefreshTokenDuration time.Duration `mapstructure:"DEVICE_REFRESH_TOKEN_DURATION"`
+	DeepfaceServiceAddress     string        `mapstructure:"DEEPFACE_SERVICE_ADDRESS"`
 }
 
 func LoadConfig() (config Config, err error) {

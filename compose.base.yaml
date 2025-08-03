@@ -76,6 +76,17 @@ services:
       db-employee:
         condition: service_healthy
 
+  deepface-service:
+    build:
+      context: ./services/deepface-service
+      dockerfile: Dockerfile
+    container_name: deepface-service
+    networks:
+      - traefik-net
+    depends_on:
+      db-employee:
+        condition: service_healthy
+
   db-account:
     image: postgres
     user: postgres

@@ -27,6 +27,7 @@ type Attendance struct {
 	EmployeeID int64     `json:"employee_id"`
 	ActionID   int64     `json:"action_id"`
 	DeviceID   int64     `json:"device_id"`
+	Precision  float64   `json:"precision"`
 }
 
 type Device struct {
@@ -97,6 +98,16 @@ type EmployeeAddress struct {
 type EmployeeFacility struct {
 	FacilityID int64 `json:"facility_id"`
 	EmployeeID int64 `json:"employee_id"`
+}
+
+type EmployeePhoto struct {
+	ID          int64     `json:"id"`
+	EmployeeID  int64     `json:"employee_id"`
+	AccountID   int64     `json:"account_id"`
+	ImageBase64 string    `json:"image_base_64"`
+	VectorImage string    `json:"vector_image"`
+	IsProfile   bool      `json:"is_profile"`
+	CreatedAt   time.Time `json:"created_at"`
 }
 
 type Facility struct {

@@ -8,3 +8,4 @@ DROP TABLE IF EXISTS "employee";
 DROP TABLE IF EXISTS "facility_address";
 DROP TABLE IF EXISTS "facility";
 DROP TABLE IF EXISTS "action";
+DROP TABLE IF EXISTS "employee_photo";

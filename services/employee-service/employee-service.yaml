@@ -63,3 +63,10 @@ http:
     - selector: employee_service.EmployeeService.CreateDeviceHealth
       post: /v1/devices/{id}/health
       body: "*"
+    - selector: employee_service.EmployeeService.AddImageEmployee
+      post: /v1/employees/{id}/images
+      body: "*"
+    - selector: employee_service.EmployeeService.GetImagesEmployee
+      get: /v1/employees/{id}/images
+    - selector: employee_service.EmployeeService.DeleteImageEmployee
+      delete: /v1/employees/{employee_id}/images/{id}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package employee_service.models.employee_image;
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/models";
+
+message EmployeeImage {
+    int64 id = 1;
+    string imageBase64 = 2;
+}

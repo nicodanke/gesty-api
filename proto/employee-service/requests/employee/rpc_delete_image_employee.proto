@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package employee_service.requests.employee.delete_image_employee;
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee";
+
+message DeleteImageEmployeeRequest {
+    int64 employee_id = 1;
+    int64 id = 2;
+}

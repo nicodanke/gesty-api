@@ -2,7 +2,10 @@ package gapi
 
 import (
 	"fmt"
+	"net/http"
+	"time"
 
+	"github.com/nicodanke/gesty-api/services/employee-service/clients"
 	db "github.com/nicodanke/gesty-api/services/employee-service/db/sqlc"
 	"github.com/nicodanke/gesty-api/services/employee-service/sse"
 	"github.com/nicodanke/gesty-api/services/employee-service/utils"
@@ -12,10 +15,11 @@ import (
 
 type Server struct {
 	es.UnimplementedEmployeeServiceServer
-	config     utils.Config
-	store      db.Store
-	tokenMaker token.Maker
-	notifier   sse.Notifier
+	config         utils.Config
+	store          db.Store
+	tokenMaker     token.Maker
+	notifier       sse.Notifier
+	deepfaceClient *clients.DeepfaceClient
 }
 
 func NewServer(config utils.Config, store db.Store, notifier sse.Notifier) (*Server, error) {
@@ -24,7 +28,12 @@ func NewServer(config utils.Config, store db.Store, notifier sse.Notifier) (*Ser
 		return nil, fmt.Errorf("cannot create token maker: %w", err)
 	}
 
-	server := &Server{store: store, tokenMaker: tokenMaker, config: config, notifier: notifier}
+	deepfaceClient := &clients.DeepfaceClient{
+		BaseURL: config.DeepfaceServiceAddress,
+		Client:  &http.Client{Timeout: time.Second * 50},
+	}
+
+	server := &Server{store: store, tokenMaker: tokenMaker, config: config, notifier: notifier, deepfaceClient: deepfaceClient}
 
 	return server, nil
 }

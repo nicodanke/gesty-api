@@ -14,10 +14,10 @@ import (
 
 const createAttendance = `-- name: CreateAttendance :one
 INSERT INTO "attendance" (
-    time_in, employee_id, action_id, device_id
+    time_in, employee_id, action_id, device_id, precision
 ) VALUES (
-    $1, $2, $3, $4
-) RETURNING id, created_at, time_in, employee_id, action_id, device_id
+    $1, $2, $3, $4, $5
+) RETURNING id, created_at, time_in, employee_id, action_id, device_id, precision
 `
 
 type CreateAttendanceParams struct {
@@ -25,6 +25,7 @@ type CreateAttendanceParams struct {
 	EmployeeID int64     `json:"employee_id"`
 	ActionID   int64     `json:"action_id"`
 	DeviceID   int64     `json:"device_id"`
+	Precision  float64   `json:"precision"`
 }
 
 func (q *Queries) CreateAttendance(ctx context.Context, arg CreateAttendanceParams) (Attendance, error) {
@@ -33,6 +34,7 @@ func (q *Queries) CreateAttendance(ctx context.Context, arg CreateAttendancePara
 		arg.EmployeeID,
 		arg.ActionID,
 		arg.DeviceID,
+		arg.Precision,
 	)
 	var i Attendance
 	err := row.Scan(
@@ -42,6 +44,7 @@ func (q *Queries) CreateAttendance(ctx context.Context, arg CreateAttendancePara
 		&i.EmployeeID,
 		&i.ActionID,
 		&i.DeviceID,
+		&i.Precision,
 	)
 	return i, err
 }
@@ -57,7 +60,7 @@ func (q *Queries) DeleteAttendance(ctx context.Context, id uuid.UUID) error {
 }
 
 const getAttendance = `-- name: GetAttendance :one
-SELECT id, created_at, time_in, employee_id, action_id, device_id FROM "attendance"
+SELECT id, created_at, time_in, employee_id, action_id, device_id, precision FROM "attendance"
 WHERE id = $1 LIMIT 1
 `
 
@@ -71,12 +74,13 @@ func (q *Queries) GetAttendance(ctx context.Context, id uuid.UUID) (Attendance, 
 		&i.EmployeeID,
 		&i.ActionID,
 		&i.DeviceID,
+		&i.Precision,
 	)
 	return i, err
 }
 
 const getAttendances = `-- name: GetAttendances :many
-SELECT id, created_at, time_in, employee_id, action_id, device_id FROM "attendance"
+SELECT id, created_at, time_in, employee_id, action_id, device_id, precision FROM "attendance"
 ORDER BY time_in DESC
 LIMIT $1
 OFFSET $2
@@ -103,6 +107,7 @@ func (q *Queries) GetAttendances(ctx context.Context, arg GetAttendancesParams) 
 			&i.EmployeeID,
 			&i.ActionID,
 			&i.DeviceID,
+			&i.Precision,
 		); err != nil {
 			return nil, err
 		}

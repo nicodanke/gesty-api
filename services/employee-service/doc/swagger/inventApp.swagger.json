@@ -64,6 +64,14 @@
         }
       }
     },
+    "add_image_employeeAddImageEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "employeeImage": {
+          "$ref": "#/definitions/employee_imageEmployeeImage"
+        }
+      }
+    },
     "create_actionCreateActionResponse": {
       "type": "object",
       "properties": {
@@ -237,6 +245,18 @@
         }
       }
     },
+    "employee_imageEmployeeImage": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "imageBase64": {
+          "type": "string"
+        }
+      }
+    },
     "facilityFacility": {
       "type": "object",
       "properties": {
@@ -372,6 +392,18 @@
       "properties": {
         "facility": {
           "$ref": "#/definitions/facilityFacility"
+        }
+      }
+    },
+    "get_images_employeeGetImagesEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "employeeImages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/employee_imageEmployeeImage"
+          }
         }
       }
     },

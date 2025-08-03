@@ -22,6 +22,9 @@ import "employee-service/requests/employee/rpc_get_employee.proto";
 import "employee-service/requests/employee/rpc_create_employee.proto";
 import "employee-service/requests/employee/rpc_update_employee.proto";
 import "employee-service/requests/employee/rpc_delete_employee.proto";
+import "employee-service/requests/employee/rpc_add_image_employee.proto";
+import "employee-service/requests/employee/rpc_delete_image_employee.proto";
+import "employee-service/requests/employee/rpc_get_images_employee.proto";
 import "employee-service/requests/facility/rpc_get_facilities.proto";
 import "employee-service/requests/facility/rpc_get_facility.proto";
 import "employee-service/requests/facility/rpc_create_facility.proto";
@@ -70,6 +73,12 @@ service EmployeeService {
     rpc UpdateEmployee (employee_service.requests.employee.update_employee.UpdateEmployeeRequest) returns (employee_service.requests.employee.update_employee.UpdateEmployeeResponse);
 
     rpc DeleteEmployee (employee_service.requests.employee.delete_employee.DeleteEmployeeRequest) returns (google.protobuf.Empty);
+
+    rpc AddImageEmployee (employee_service.requests.employee.add_image_employee.AddImageEmployeeRequest) returns (employee_service.requests.employee.add_image_employee.AddImageEmployeeResponse);
+
+    rpc GetImagesEmployee (employee_service.requests.employee.get_images_employee.GetImagesEmployeeRequest) returns (employee_service.requests.employee.get_images_employee.GetImagesEmployeeResponse);
+
+    rpc DeleteImageEmployee (employee_service.requests.employee.delete_image_employee.DeleteImageEmployeeRequest) returns (google.protobuf.Empty);
 
 
     // DEVICE

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package employee_service.requests.employee.get_images_employee;
+
+import "employee-service/models/employee_image.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee";
+
+message GetImagesEmployeeRequest {
+    int64 id = 1;
+}
+
+message GetImagesEmployeeResponse {
+    repeated employee_service.models.employee_image.EmployeeImage employeeImages = 1;
+}
