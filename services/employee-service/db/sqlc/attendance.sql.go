@@ -10,30 +10,35 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createAttendance = `-- name: CreateAttendance :one
 INSERT INTO "attendance" (
-    time_in, employee_id, action_id, device_id, precision
+    id, time_in, employee_id, action_id, device_id, account_id, precision
 ) VALUES (
-    $1, $2, $3, $4, $5
-) RETURNING id, created_at, time_in, employee_id, action_id, device_id, precision
+    $1, $2, $3, $4, $5, $6, $7
+) RETURNING id, created_at, time_in, employee_id, action_id, device_id, account_id, precision
 `
 
 type CreateAttendanceParams struct {
-	TimeIn     time.Time `json:"time_in"`
-	EmployeeID int64     `json:"employee_id"`
-	ActionID   int64     `json:"action_id"`
-	DeviceID   int64     `json:"device_id"`
-	Precision  float64   `json:"precision"`
+	ID         uuid.UUID     `json:"id"`
+	TimeIn     time.Time     `json:"time_in"`
+	EmployeeID int64         `json:"employee_id"`
+	ActionID   int64         `json:"action_id"`
+	DeviceID   pgtype.Int8   `json:"device_id"`
+	AccountID  int64         `json:"account_id"`
+	Precision  pgtype.Float8 `json:"precision"`
 }
 
 func (q *Queries) CreateAttendance(ctx context.Context, arg CreateAttendanceParams) (Attendance, error) {
 	row := q.db.QueryRow(ctx, createAttendance,
+		arg.ID,
 		arg.TimeIn,
 		arg.EmployeeID,
 		arg.ActionID,
 		arg.DeviceID,
+		arg.AccountID,
 		arg.Precision,
 	)
 	var i Attendance
@@ -44,6 +49,7 @@ func (q *Queries) CreateAttendance(ctx context.Context, arg CreateAttendancePara
 		&i.EmployeeID,
 		&i.ActionID,
 		&i.DeviceID,
+		&i.AccountID,
 		&i.Precision,
 	)
 	return i, err
@@ -60,13 +66,36 @@ func (q *Queries) DeleteAttendance(ctx context.Context, id uuid.UUID) error {
 }
 
 const getAttendance = `-- name: GetAttendance :one
-SELECT id, created_at, time_in, employee_id, action_id, device_id, precision FROM "attendance"
-WHERE id = $1 LIMIT 1
+SELECT a.id, a.created_at, a.time_in, a.employee_id, a.action_id, a.device_id, a.account_id, a.precision, e.name as employee_name, d.name as device_name, ac.name as action_name
+FROM "attendance" a
+LEFT JOIN "employee" e ON a.employee_id = e.id
+LEFT JOIN "device" d ON a.device_id = d.id
+LEFT JOIN "action" ac ON a.action_id = ac.id
+WHERE a.account_id = $1 AND a.id = $2 LIMIT 1
 `
 
-func (q *Queries) GetAttendance(ctx context.Context, id uuid.UUID) (Attendance, error) {
-	row := q.db.QueryRow(ctx, getAttendance, id)
-	var i Attendance
+type GetAttendanceParams struct {
+	AccountID int64     `json:"account_id"`
+	ID        uuid.UUID `json:"id"`
+}
+
+type GetAttendanceRow struct {
+	ID           uuid.UUID     `json:"id"`
+	CreatedAt    time.Time     `json:"created_at"`
+	TimeIn       time.Time     `json:"time_in"`
+	EmployeeID   int64         `json:"employee_id"`
+	ActionID     int64         `json:"action_id"`
+	DeviceID     pgtype.Int8   `json:"device_id"`
+	AccountID    int64         `json:"account_id"`
+	Precision    pgtype.Float8 `json:"precision"`
+	EmployeeName pgtype.Text   `json:"employee_name"`
+	DeviceName   pgtype.Text   `json:"device_name"`
+	ActionName   pgtype.Text   `json:"action_name"`
+}
+
+func (q *Queries) GetAttendance(ctx context.Context, arg GetAttendanceParams) (GetAttendanceRow, error) {
+	row := q.db.QueryRow(ctx, getAttendance, arg.AccountID, arg.ID)
+	var i GetAttendanceRow
 	err := row.Scan(
 		&i.ID,
 		&i.CreatedAt,
@@ -74,32 +103,56 @@ func (q *Queries) GetAttendance(ctx context.Context, id uuid.UUID) (Attendance, 
 		&i.EmployeeID,
 		&i.ActionID,
 		&i.DeviceID,
+		&i.AccountID,
 		&i.Precision,
+		&i.EmployeeName,
+		&i.DeviceName,
+		&i.ActionName,
 	)
 	return i, err
 }
 
 const getAttendances = `-- name: GetAttendances :many
-SELECT id, created_at, time_in, employee_id, action_id, device_id, precision FROM "attendance"
+SELECT a.id, a.created_at, a.time_in, a.employee_id, a.action_id, a.device_id, a.account_id, a.precision, e.name as employee_name, d.name as device_name, ac.name as action_name
+FROM "attendance" a
+LEFT JOIN "employee" e ON a.employee_id = e.id
+LEFT JOIN "device" d ON a.device_id = d.id
+LEFT JOIN "action" ac ON a.action_id = ac.id
+WHERE a.account_id = $1
 ORDER BY time_in DESC
-LIMIT $1
-OFFSET $2
+LIMIT $2
+OFFSET $3
 `
 
 type GetAttendancesParams struct {
-	Limit  int32 `json:"limit"`
-	Offset int32 `json:"offset"`
+	AccountID int64 `json:"account_id"`
+	Limit     int32 `json:"limit"`
+	Offset    int32 `json:"offset"`
 }
 
-func (q *Queries) GetAttendances(ctx context.Context, arg GetAttendancesParams) ([]Attendance, error) {
-	rows, err := q.db.Query(ctx, getAttendances, arg.Limit, arg.Offset)
+type GetAttendancesRow struct {
+	ID           uuid.UUID     `json:"id"`
+	CreatedAt    time.Time     `json:"created_at"`
+	TimeIn       time.Time     `json:"time_in"`
+	EmployeeID   int64         `json:"employee_id"`
+	ActionID     int64         `json:"action_id"`
+	DeviceID     pgtype.Int8   `json:"device_id"`
+	AccountID    int64         `json:"account_id"`
+	Precision    pgtype.Float8 `json:"precision"`
+	EmployeeName pgtype.Text   `json:"employee_name"`
+	DeviceName   pgtype.Text   `json:"device_name"`
+	ActionName   pgtype.Text   `json:"action_name"`
+}
+
+func (q *Queries) GetAttendances(ctx context.Context, arg GetAttendancesParams) ([]GetAttendancesRow, error) {
+	rows, err := q.db.Query(ctx, getAttendances, arg.AccountID, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Attendance{}
+	items := []GetAttendancesRow{}
 	for rows.Next() {
-		var i Attendance
+		var i GetAttendancesRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.CreatedAt,
@@ -107,7 +160,11 @@ func (q *Queries) GetAttendances(ctx context.Context, arg GetAttendancesParams) 
 			&i.EmployeeID,
 			&i.ActionID,
 			&i.DeviceID,
+			&i.AccountID,
 			&i.Precision,
+			&i.EmployeeName,
+			&i.DeviceName,
+			&i.ActionName,
 		); err != nil {
 			return nil, err
 		}

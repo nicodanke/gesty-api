@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package employee_service.requests.attendance.create_attendance;
+
+import "google/protobuf/timestamp.proto";
+
+import "employee-service/models/attendance.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/attendance";
+
+message CreateAttendanceRequest {
+    google.protobuf.Timestamp timeIn = 1;
+    int64 employeeId = 2;
+    int64 actionId = 3;
+}
+
+message CreateAttendanceResponse {
+    employee_service.models.attendance.Attendance attendance = 1;
+}

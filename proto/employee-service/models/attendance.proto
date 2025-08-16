@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package employee_service.models.attendance;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/models";
+
+message Attendance {
+    string id = 1;
+    google.protobuf.Timestamp timeIn = 2;
+    int64 employeeId = 3;
+    string employeeName = 4;
+    int64 actionId = 5;
+    string actionName = 6;
+    int64 deviceId = 7;
+    string deviceName = 8;
+    double precision = 9;
+}

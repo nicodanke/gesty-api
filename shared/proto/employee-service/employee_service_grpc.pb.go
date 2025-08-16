@@ -10,6 +10,7 @@ import (
 	context "context"
 	account "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/account"
 	action "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/action"
+	attendance "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/attendance"
 	device "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device"
 	device_health "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/device_health"
 	employee "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/employee"
@@ -54,6 +55,11 @@ const (
 	EmployeeService_ActivateDevice_FullMethodName         = "/employee_service.EmployeeService/ActivateDevice"
 	EmployeeService_RefreshDeviceToken_FullMethodName     = "/employee_service.EmployeeService/RefreshDeviceToken"
 	EmployeeService_CreateDeviceHealth_FullMethodName     = "/employee_service.EmployeeService/CreateDeviceHealth"
+	EmployeeService_GetAttendance_FullMethodName          = "/employee_service.EmployeeService/GetAttendance"
+	EmployeeService_GetAttendances_FullMethodName         = "/employee_service.EmployeeService/GetAttendances"
+	EmployeeService_CreateAttendance_FullMethodName       = "/employee_service.EmployeeService/CreateAttendance"
+	EmployeeService_DeleteAttendance_FullMethodName       = "/employee_service.EmployeeService/DeleteAttendance"
+	EmployeeService_MarkAttendance_FullMethodName         = "/employee_service.EmployeeService/MarkAttendance"
 )
 
 // EmployeeServiceClient is the client API for EmployeeService service.
@@ -94,6 +100,12 @@ type EmployeeServiceClient interface {
 	RefreshDeviceToken(ctx context.Context, in *device.RefreshDeviceTokenRequest, opts ...grpc.CallOption) (*device.RefreshDeviceTokenResponse, error)
 	// DEVICE HEALTH
 	CreateDeviceHealth(ctx context.Context, in *device_health.CreateDeviceHealthRequest, opts ...grpc.CallOption) (*device_health.CreateDeviceHealthResponse, error)
+	// ATTENDANCE
+	GetAttendance(ctx context.Context, in *attendance.GetAttendanceRequest, opts ...grpc.CallOption) (*attendance.GetAttendanceResponse, error)
+	GetAttendances(ctx context.Context, in *attendance.GetAttendancesRequest, opts ...grpc.CallOption) (*attendance.GetAttendancesResponse, error)
+	CreateAttendance(ctx context.Context, in *attendance.CreateAttendanceRequest, opts ...grpc.CallOption) (*attendance.CreateAttendanceResponse, error)
+	DeleteAttendance(ctx context.Context, in *attendance.DeleteAttendanceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	MarkAttendance(ctx context.Context, in *attendance.MarkAttendanceRequest, opts ...grpc.CallOption) (*attendance.MarkAttendanceResponse, error)
 }
 
 type employeeServiceClient struct {
@@ -384,6 +396,56 @@ func (c *employeeServiceClient) CreateDeviceHealth(ctx context.Context, in *devi
 	return out, nil
 }
 
+func (c *employeeServiceClient) GetAttendance(ctx context.Context, in *attendance.GetAttendanceRequest, opts ...grpc.CallOption) (*attendance.GetAttendanceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(attendance.GetAttendanceResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_GetAttendance_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) GetAttendances(ctx context.Context, in *attendance.GetAttendancesRequest, opts ...grpc.CallOption) (*attendance.GetAttendancesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(attendance.GetAttendancesResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_GetAttendances_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) CreateAttendance(ctx context.Context, in *attendance.CreateAttendanceRequest, opts ...grpc.CallOption) (*attendance.CreateAttendanceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(attendance.CreateAttendanceResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_CreateAttendance_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) DeleteAttendance(ctx context.Context, in *attendance.DeleteAttendanceRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, EmployeeService_DeleteAttendance_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *employeeServiceClient) MarkAttendance(ctx context.Context, in *attendance.MarkAttendanceRequest, opts ...grpc.CallOption) (*attendance.MarkAttendanceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(attendance.MarkAttendanceResponse)
+	err := c.cc.Invoke(ctx, EmployeeService_MarkAttendance_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EmployeeServiceServer is the server API for EmployeeService service.
 // All implementations must embed UnimplementedEmployeeServiceServer
 // for forward compatibility.
@@ -422,6 +484,12 @@ type EmployeeServiceServer interface {
 	RefreshDeviceToken(context.Context, *device.RefreshDeviceTokenRequest) (*device.RefreshDeviceTokenResponse, error)
 	// DEVICE HEALTH
 	CreateDeviceHealth(context.Context, *device_health.CreateDeviceHealthRequest) (*device_health.CreateDeviceHealthResponse, error)
+	// ATTENDANCE
+	GetAttendance(context.Context, *attendance.GetAttendanceRequest) (*attendance.GetAttendanceResponse, error)
+	GetAttendances(context.Context, *attendance.GetAttendancesRequest) (*attendance.GetAttendancesResponse, error)
+	CreateAttendance(context.Context, *attendance.CreateAttendanceRequest) (*attendance.CreateAttendanceResponse, error)
+	DeleteAttendance(context.Context, *attendance.DeleteAttendanceRequest) (*emptypb.Empty, error)
+	MarkAttendance(context.Context, *attendance.MarkAttendanceRequest) (*attendance.MarkAttendanceResponse, error)
 	mustEmbedUnimplementedEmployeeServiceServer()
 }
 
@@ -515,6 +583,21 @@ func (UnimplementedEmployeeServiceServer) RefreshDeviceToken(context.Context, *d
 }
 func (UnimplementedEmployeeServiceServer) CreateDeviceHealth(context.Context, *device_health.CreateDeviceHealthRequest) (*device_health.CreateDeviceHealthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDeviceHealth not implemented")
+}
+func (UnimplementedEmployeeServiceServer) GetAttendance(context.Context, *attendance.GetAttendanceRequest) (*attendance.GetAttendanceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAttendance not implemented")
+}
+func (UnimplementedEmployeeServiceServer) GetAttendances(context.Context, *attendance.GetAttendancesRequest) (*attendance.GetAttendancesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAttendances not implemented")
+}
+func (UnimplementedEmployeeServiceServer) CreateAttendance(context.Context, *attendance.CreateAttendanceRequest) (*attendance.CreateAttendanceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAttendance not implemented")
+}
+func (UnimplementedEmployeeServiceServer) DeleteAttendance(context.Context, *attendance.DeleteAttendanceRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAttendance not implemented")
+}
+func (UnimplementedEmployeeServiceServer) MarkAttendance(context.Context, *attendance.MarkAttendanceRequest) (*attendance.MarkAttendanceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MarkAttendance not implemented")
 }
 func (UnimplementedEmployeeServiceServer) mustEmbedUnimplementedEmployeeServiceServer() {}
 func (UnimplementedEmployeeServiceServer) testEmbeddedByValue()                         {}
@@ -1041,6 +1124,96 @@ func _EmployeeService_CreateDeviceHealth_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmployeeService_GetAttendance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(attendance.GetAttendanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).GetAttendance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_GetAttendance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).GetAttendance(ctx, req.(*attendance.GetAttendanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_GetAttendances_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(attendance.GetAttendancesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).GetAttendances(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_GetAttendances_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).GetAttendances(ctx, req.(*attendance.GetAttendancesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_CreateAttendance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(attendance.CreateAttendanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).CreateAttendance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_CreateAttendance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).CreateAttendance(ctx, req.(*attendance.CreateAttendanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_DeleteAttendance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(attendance.DeleteAttendanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).DeleteAttendance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_DeleteAttendance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).DeleteAttendance(ctx, req.(*attendance.DeleteAttendanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmployeeService_MarkAttendance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(attendance.MarkAttendanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmployeeServiceServer).MarkAttendance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmployeeService_MarkAttendance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmployeeServiceServer).MarkAttendance(ctx, req.(*attendance.MarkAttendanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EmployeeService_ServiceDesc is the grpc.ServiceDesc for EmployeeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1159,6 +1332,26 @@ var EmployeeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateDeviceHealth",
 			Handler:    _EmployeeService_CreateDeviceHealth_Handler,
+		},
+		{
+			MethodName: "GetAttendance",
+			Handler:    _EmployeeService_GetAttendance_Handler,
+		},
+		{
+			MethodName: "GetAttendances",
+			Handler:    _EmployeeService_GetAttendances_Handler,
+		},
+		{
+			MethodName: "CreateAttendance",
+			Handler:    _EmployeeService_CreateAttendance_Handler,
+		},
+		{
+			MethodName: "DeleteAttendance",
+			Handler:    _EmployeeService_DeleteAttendance_Handler,
+		},
+		{
+			MethodName: "MarkAttendance",
+			Handler:    _EmployeeService_MarkAttendance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

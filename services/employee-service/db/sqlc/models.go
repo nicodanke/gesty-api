@@ -21,13 +21,14 @@ type Action struct {
 }
 
 type Attendance struct {
-	ID         uuid.UUID `json:"id"`
-	CreatedAt  time.Time `json:"created_at"`
-	TimeIn     time.Time `json:"time_in"`
-	EmployeeID int64     `json:"employee_id"`
-	ActionID   int64     `json:"action_id"`
-	DeviceID   int64     `json:"device_id"`
-	Precision  float64   `json:"precision"`
+	ID         uuid.UUID     `json:"id"`
+	CreatedAt  time.Time     `json:"created_at"`
+	TimeIn     time.Time     `json:"time_in"`
+	EmployeeID int64         `json:"employee_id"`
+	ActionID   int64         `json:"action_id"`
+	DeviceID   pgtype.Int8   `json:"device_id"`
+	AccountID  int64         `json:"account_id"`
+	Precision  pgtype.Float8 `json:"precision"`
 }
 
 type Device struct {

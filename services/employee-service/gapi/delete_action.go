@@ -59,7 +59,7 @@ func (server *Server) DeleteAction(ctx context.Context, req *action.DeleteAction
 		return nil, internalError(fmt.Sprintln("Failed to delete action:", err))
 	}
 
-	// Notify delete user
+	// Notify delete action
 	var data = map[string]any{}
 	data["id"] = strconv.FormatInt(req.GetId(), 10)
 	server.notifier.BoadcastMessageToAccount(sse.NewEventMessage(sse_delete_action, data), authPayload.AccountID, &authPayload.UserID)

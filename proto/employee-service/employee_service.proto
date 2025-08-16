@@ -8,6 +8,11 @@ import "employee-service/requests/action/rpc_get_action.proto";
 import "employee-service/requests/action/rpc_create_action.proto";
 import "employee-service/requests/action/rpc_update_action.proto";
 import "employee-service/requests/action/rpc_delete_action.proto";
+import "employee-service/requests/attendance/rpc_get_attendances.proto";
+import "employee-service/requests/attendance/rpc_get_attendance.proto";
+import "employee-service/requests/attendance/rpc_create_attendance.proto";
+import "employee-service/requests/attendance/rpc_delete_attendance.proto";
+import "employee-service/requests/attendance/rpc_mark_attendance.proto";
 import "employee-service/requests/device/rpc_get_devices.proto";
 import "employee-service/requests/device/rpc_get_device.proto";
 import "employee-service/requests/device/rpc_create_device.proto";
@@ -101,4 +106,16 @@ service EmployeeService {
 
     // DEVICE HEALTH
     rpc CreateDeviceHealth (employee_service.requests.device_health.create_device_health.CreateDeviceHealthRequest) returns (employee_service.requests.device_health.create_device_health.CreateDeviceHealthResponse);
+
+
+    // ATTENDANCE
+    rpc GetAttendance (employee_service.requests.attendance.get_attendance.GetAttendanceRequest) returns (employee_service.requests.attendance.get_attendance.GetAttendanceResponse);
+
+    rpc GetAttendances (employee_service.requests.attendance.get_attendances.GetAttendancesRequest) returns (employee_service.requests.attendance.get_attendances.GetAttendancesResponse);
+
+    rpc CreateAttendance (employee_service.requests.attendance.create_attendance.CreateAttendanceRequest) returns (employee_service.requests.attendance.create_attendance.CreateAttendanceResponse);
+
+    rpc DeleteAttendance (employee_service.requests.attendance.delete_attendance.DeleteAttendanceRequest) returns (google.protobuf.Empty);
+
+    rpc MarkAttendance (employee_service.requests.attendance.mark_attendance.MarkAttendanceRequest) returns (employee_service.requests.attendance.mark_attendance.MarkAttendanceResponse);
 }

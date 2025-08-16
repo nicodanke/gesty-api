@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package employee_service.requests.attendance.mark_attendance;
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/attendance";
+
+message MarkAttendanceRequest {
+    int64 deviceId = 1;
+    int64 actionId = 2;
+    string imageBase64 = 3;
+}
+
+message MarkAttendanceResponse {
+    string employeeName = 1;
+}

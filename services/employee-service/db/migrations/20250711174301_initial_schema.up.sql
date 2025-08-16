@@ -109,8 +109,9 @@ CREATE TABLE "attendance" (
   "time_in" timestamptz NOT NULL DEFAULT (now()),
   "employee_id" bigserial NOT NULL,
   "action_id" bigserial NOT NULL,
-  "device_id" bigserial NOT NULL,
-  "precision" float8 NOT NULL
+  "device_id" bigserial,
+  "account_id" bigserial NOT NULL,
+  "precision" float8
 );
 
 CREATE TABLE "employee_photo" (
@@ -156,3 +157,5 @@ ALTER TABLE "device_action" ADD FOREIGN KEY ("action_id") REFERENCES "action" ("
 ALTER TABLE "device_health" ADD FOREIGN KEY ("device_id") REFERENCES "device" ("id");
 
 ALTER TABLE "employee_photo" ADD FOREIGN KEY ("employee_id") REFERENCES "employee" ("id");
+
+ALTER TABLE "attendance" ALTER COLUMN "device_id" DROP NOT NULL;

@@ -72,11 +72,56 @@
         }
       }
     },
+    "attendanceAttendance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "timeIn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "employeeId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "employeeName": {
+          "type": "string"
+        },
+        "actionId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "actionName": {
+          "type": "string"
+        },
+        "deviceId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deviceName": {
+          "type": "string"
+        },
+        "precision": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
     "create_actionCreateActionResponse": {
       "type": "object",
       "properties": {
         "action": {
           "$ref": "#/definitions/actionAction"
+        }
+      }
+    },
+    "create_attendanceCreateAttendanceResponse": {
+      "type": "object",
+      "properties": {
+        "attendance": {
+          "$ref": "#/definitions/attendanceAttendance"
         }
       }
     },
@@ -335,6 +380,26 @@
         }
       }
     },
+    "get_attendanceGetAttendanceResponse": {
+      "type": "object",
+      "properties": {
+        "attendance": {
+          "$ref": "#/definitions/attendanceAttendance"
+        }
+      }
+    },
+    "get_attendancesGetAttendancesResponse": {
+      "type": "object",
+      "properties": {
+        "attendances": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/attendanceAttendance"
+          }
+        }
+      }
+    },
     "get_deviceGetDeviceResponse": {
       "type": "object",
       "properties": {
@@ -404,6 +469,14 @@
             "type": "object",
             "$ref": "#/definitions/employee_imageEmployeeImage"
           }
+        }
+      }
+    },
+    "mark_attendanceMarkAttendanceResponse": {
+      "type": "object",
+      "properties": {
+        "employeeName": {
+          "type": "string"
         }
       }
     },

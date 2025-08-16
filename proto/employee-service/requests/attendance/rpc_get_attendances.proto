@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package employee_service.requests.attendance.get_attendances;
+
+import "employee-service/models/attendance.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/attendance";
+
+message GetAttendancesRequest {
+    optional int32 page = 1;
+    optional int32 size = 2;
+}
+
+message GetAttendancesResponse {
+    repeated employee_service.models.attendance.Attendance attendances= 1;
+}

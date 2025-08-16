@@ -96,13 +96,13 @@ func (server *Server) ActivateDevice(ctx context.Context, req *device.ActivateDe
 		return nil, internalError(fmt.Sprintln("Failed to get device", err))
 	}
 
-	if err != nil {
-		return nil, conflictError("", fmt.Sprintln("Failed to update device", err), "id")
-	}
-
 	actions, err := server.store.GetActionsEnabledByDeviceId(ctx, deviceID)
 	if err != nil {
 		return nil, internalError(fmt.Sprintln("Failed to get actions", err))
+	}
+
+	if err != nil {
+		return nil, conflictError("", fmt.Sprintln("Failed to update device", err), "id")
 	}
 
 	rsp := &device.ActivateDeviceResponse{

@@ -414,6 +414,66 @@ func convertEmployeePhotosGetRow(employeePhoto db.EmployeePhoto) *models.Employe
 	}
 }
 
+func convertAttendance(attendance db.Attendance, employee db.GetEmployeeRow, action db.Action) *models.Attendance {
+	return &models.Attendance{
+		Id:           attendance.ID.String(),
+		TimeIn:       timestamppb.New(attendance.TimeIn),
+		EmployeeId:   attendance.EmployeeID,
+		EmployeeName: employee.Name,
+		ActionId:     attendance.ActionID,
+		ActionName:   action.Name,
+	}
+}
+
+func convertAttendanceEvent(attendance db.Attendance, employee db.GetEmployeeRow, action db.Action) *eventdata.Attendance {
+	return &eventdata.Attendance{
+		Id:           attendance.ID.String(),
+		TimeIn:       timestamppb.New(attendance.TimeIn),
+		EmployeeId:   attendance.EmployeeID,
+		EmployeeName: employee.Name,
+		ActionId:     attendance.ActionID,
+		ActionName:   action.Name,
+	}
+}
+
+func convertAttendanceRow(attendance db.GetAttendanceRow) *models.Attendance {
+	return &models.Attendance{
+		Id:           attendance.ID.String(),
+		TimeIn:       timestamppb.New(attendance.TimeIn),
+		EmployeeId:   attendance.EmployeeID,
+		EmployeeName: attendance.EmployeeName.String,
+		ActionId:     attendance.ActionID,
+		ActionName:   attendance.ActionName.String,
+		DeviceId:     attendance.DeviceID.Int64,
+		DeviceName:   attendance.DeviceName.String,
+		Precision:    attendance.Precision.Float64,
+	}
+}
+
+func convertAttendancesRows(attendances []db.GetAttendancesRow) []*models.Attendance {
+	result := make([]*models.Attendance, len(attendances))
+
+	for i, v := range attendances {
+		result[i] = convertAttendancesRow(v)
+	}
+
+	return result
+}
+
+func convertAttendancesRow(attendance db.GetAttendancesRow) *models.Attendance {
+	return &models.Attendance{
+		Id:           attendance.ID.String(),
+		TimeIn:       timestamppb.New(attendance.TimeIn),
+		EmployeeId:   attendance.EmployeeID,
+		EmployeeName: attendance.EmployeeName.String,
+		ActionId:     attendance.ActionID,
+		ActionName:   attendance.ActionName.String,
+		DeviceId:     attendance.DeviceID.Int64,
+		DeviceName:   attendance.DeviceName.String,
+		Precision:    attendance.Precision.Float64,
+	}
+}
+
 func convertEmployeePhotoTxResult(employeePhoto db.CreateEmployeePhotoTxResult) *models.EmployeeImage {
 	return &models.EmployeeImage{
 		Id:          employeePhoto.EmployeePhoto.ID,

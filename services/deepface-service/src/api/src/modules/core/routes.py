@@ -6,6 +6,7 @@ from flask import Blueprint, request
 import numpy as np
 import psycopg2
 import tensorflow as tf
+import ast
 
 # project dependencies
 from deepface import DeepFace
@@ -18,12 +19,6 @@ logger = Logger()
 blueprint = Blueprint("routes", __name__)
 
 # pylint: disable=no-else-return, broad-except
-
-
-@blueprint.route("/")
-def home():
-    return f"<h1>Welcome to DeepFace API v{DeepFace.__version__}!</h1>"
-
 
 def extract_image_from_request(img_key: str) -> Union[str, np.ndarray]:
     """
@@ -134,23 +129,23 @@ def verify():
 
     try:
         conn = psycopg2.connect(
-            host="db-face-recognition",
+            host="db-employee",
             port="5432", 
-            database="face-recognition",
+            database="employee",
             user="postgres",
             password="test"
         )
         cursor = conn.cursor()
         
         cursor.execute(
-            "SELECT embedded, employee_id FROM face_embedded WHERE account_id = %s",
+            "SELECT vector_image, employee_id FROM employee_photo WHERE account_id = %s",
             (account_id,)
         )
         
         db_embeddings = []
         employee_ids = []
         for row in cursor.fetchall():
-            db_embeddings.append(row[0])
+            db_embeddings.append(ast.literal_eval(row[0]))
             employee_ids.append(row[1])
         
         cursor.close()
@@ -161,7 +156,7 @@ def verify():
         return {"error": f"Failed to query database: {str(err)}"}, 500
     
     if len(employee_ids) == 0:
-        return {"error": "No employees saved for this account"}, 422
+        return {"error": "No employees saved for this account"}, 422 
 
     embedding_np = np.array(embedding)
     db_embeddings_np = np.array(db_embeddings)
@@ -171,11 +166,10 @@ def verify():
     similarities = tf.reduce_sum(norm_embedding * norm_embedding_group, axis=-1)
     
     similarities = similarities.numpy()
-    print(similarities)
 
     max_index = np.argmax(similarities)
 
     if similarities[max_index] < 0.95:
         return {"error": "No employee matched"}, 422
     
-    return {"employee_id": str(employee_ids[max_index])}, 200
+    return {"employee_id": str(employee_ids[max_index]), "precision": similarities[max_index]}, 200

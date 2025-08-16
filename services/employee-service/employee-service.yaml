@@ -70,3 +70,15 @@ http:
       get: /v1/employees/{id}/images
     - selector: employee_service.EmployeeService.DeleteImageEmployee
       delete: /v1/employees/{employee_id}/images/{id}
+    - selector: employee_service.EmployeeService.GetAttendances
+      get: /v1/attendances
+    - selector: employee_service.EmployeeService.GetAttendance
+      get: /v1/attendances/{id}
+    - selector: employee_service.EmployeeService.CreateAttendance
+      post: /v1/attendances
+      body: "*"
+    - selector: employee_service.EmployeeService.DeleteAttendance
+      delete: /v1/attendances/{id}
+    - selector: employee_service.EmployeeService.MarkAttendance
+      post: /v1/attendances/mark
+      body: "*"

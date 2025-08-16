@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package employee_service.requests.attendance.get_attendance;
+
+import "employee-service/models/attendance.proto";
+
+option go_package = "github.com/nicodanke/gesty-api/shared/proto/employee-service/requests/attendance";
+
+message GetAttendanceRequest {
+    string id = 1;
+}
+
+message GetAttendanceResponse {
+    employee_service.models.attendance.Attendance attendance = 1;
+}
