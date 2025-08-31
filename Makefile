@@ -22,4 +22,10 @@ stop-all:
 stop-dbs:
 	docker compose -f compose.base.dbs.yaml down
 
-.PHONY: generate-proto run-all stop-all run-dbs stop-dbs
+run-all-prod:
+	docker compose -f compose.prod.yaml up -d --build
+
+stop-all-prod:
+	docker compose -f compose.prod.yaml down
+
+.PHONY: generate-proto run-all stop-all run-dbs stop-dbs run-all-prod stop-all-prod

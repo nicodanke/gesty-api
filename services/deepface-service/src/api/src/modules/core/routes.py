@@ -129,11 +129,11 @@ def verify():
 
     try:
         conn = psycopg2.connect(
-            host="db-employee",
+            host="ep-long-field-ac9nv0z8-pooler.sa-east-1.aws.neon.tech",
             port="5432", 
             database="employee",
-            user="postgres",
-            password="test"
+            user="neondb_owner",
+            password="npg_dLZE7q5euaQi"
         )
         cursor = conn.cursor()
         
